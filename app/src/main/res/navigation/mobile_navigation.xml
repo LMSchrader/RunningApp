@@ -12,14 +12,20 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.runningapp.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_running_schedule"
+        android:name="com.example.runningapp.ui.schedule.RunningScheduleFragment"
+        android:label="@string/menu_running_schedule"
+        tools:layout="@layout/fragment_running_schedule" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.runningapp.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_history"
+        android:name="com.example.runningapp.ui.history.HistoryFragment"
+        android:label="@string/menu_history"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/nav_record_run"
+        android:name="com.example.runningapp.ui.record.RecordRunFragment"
+        android:label="@string/menu_record_run"
+        tools:layout="@layout/fragment_record_run" />
 </navigation>
