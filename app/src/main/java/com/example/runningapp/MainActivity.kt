@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.appBarMain.fab.setOnClickListener {
             // TODO: navigiere zu record run
-            val intent = Intent(this, RecordRunActivity::class.java).apply {}
+            //val intent = Intent(this, RecordRunActivity::class.java).apply {}
+            val intent = Intent(this, RunningScheduleActivity::class.java).apply {}
             startActivity(intent)
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout

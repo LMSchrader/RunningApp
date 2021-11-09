@@ -2,11 +2,18 @@ package com.example.runningapp
 
 import android.app.Activity
 import android.os.Bundle
+import com.example.runningapp.databinding.ActivityRecordRunBinding
 
 class RecordRunActivity : Activity() {
+
+    private lateinit var binding: ActivityRecordRunBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_running_schedule)
+
+        binding = ActivityRecordRunBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
     }
 
 }

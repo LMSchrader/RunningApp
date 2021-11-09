@@ -24,6 +24,10 @@
             android:name=".RecordRunActivity"
             android:theme="@style/Theme.RunningApp.NoActionBar">
         </activity>
+        <activity
+            android:name=".RunningScheduleActivity"
+            android:theme="@style/Theme.RunningApp.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
