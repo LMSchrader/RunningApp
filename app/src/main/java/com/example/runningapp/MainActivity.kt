@@ -1,8 +1,8 @@
 package com.example.runningapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -26,9 +26,10 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        binding.appBarMain.fab.setOnClickListener {
+            // TODO: navigiere zu record run
+            val intent = Intent(this, RecordRunActivity::class.java).apply {}
+            startActivity(intent)
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.home, R.id.nav_running_schedule, R.id.nav_history, R.id.nav_record_run
+                R.id.nav_home, R.id.nav_running_schedule, R.id.nav_history, R.id.nav_record_run
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

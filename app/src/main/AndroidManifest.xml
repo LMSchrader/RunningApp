@@ -20,6 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RecordRunActivity"
+            android:theme="@style/Theme.RunningApp.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

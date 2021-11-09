@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/nav_running_schedule"
-        android:name="com.example.runningapp.ui.schedule.RunningScheduleFragment"
+        android:name="com.example.runningapp.ui.runningSchedule.RunningScheduleFragment"
         android:label="@string/menu_running_schedule"
-        tools:layout="@layout/fragment_running_schedule" />
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_history"

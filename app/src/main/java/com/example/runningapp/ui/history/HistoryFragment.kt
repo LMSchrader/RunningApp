@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.runningapp.databinding.FragmentHistoryBinding
 
@@ -23,7 +22,7 @@ class HistoryFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         historyViewModel =
             ViewModelProvider(this).get(HistoryViewModel::class.java)
 
@@ -31,7 +30,7 @@ class HistoryFragment : Fragment() {
         val root: View = binding.root
 
         val textView: TextView = binding.textGallery
-        historyViewModel.text.observe(viewLifecycleOwner, Observer {
+        historyViewModel.text.observe(viewLifecycleOwner, {
             textView.text = it
         })
         return root

@@ -1,4 +1,4 @@
-package com.example.runningapp.ui.schedule
+package com.example.runningapp.ui.runningSchedule
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

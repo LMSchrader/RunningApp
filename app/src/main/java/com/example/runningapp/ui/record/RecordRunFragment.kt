@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.runningapp.databinding.FragmentRecordRunBinding
 
@@ -23,7 +22,7 @@ class RecordRunFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         recordRunViewModel =
             ViewModelProvider(this).get(RecordRunViewModel::class.java)
 
@@ -31,7 +30,7 @@ class RecordRunFragment : Fragment() {
         val root: View = binding.root
 
         val textView: TextView = binding.textSlideshow
-        recordRunViewModel.text.observe(viewLifecycleOwner, Observer {
+        recordRunViewModel.text.observe(viewLifecycleOwner, {
             textView.text = it
         })
         return root

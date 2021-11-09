@@ -1,4 +1,4 @@
-package com.example.runningapp.ui.schedule
+package com.example.runningapp.ui.runningSchedule
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.runningapp.databinding.FragmentRunningScheduleBinding
 
@@ -23,7 +22,7 @@ class RunningScheduleFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         runningScheduleViewModel =
             ViewModelProvider(this).get(RunningScheduleViewModel::class.java)
 
@@ -31,7 +30,7 @@ class RunningScheduleFragment : Fragment() {
         val root: View = binding.root
 
         val textView: TextView = binding.textHome
-        runningScheduleViewModel.text.observe(viewLifecycleOwner, Observer {
+        runningScheduleViewModel.text.observe(viewLifecycleOwner, {
             textView.text = it
         })
         return root
