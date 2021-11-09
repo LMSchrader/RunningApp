@@ -17,9 +17,11 @@ class RunningScheduleActivity : Activity() {
         binding = ActivityRunningScheduleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // TODO: remove dummy data
         val data = RunningScheduleEntry.StaticFunctions.getDummyData()
         binding.title.text = data.getTitle()
         val date = data.getStartDate().toString() + " - " + data.getEndDate().toString()
         binding.period.text = date
+        binding.weekdays.text = "Mo Fr"
     }
 }
