@@ -1,20 +1,32 @@
 package com.example.runningapp
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.example.runningapp.model.RunningScheduleEntry
 
-class CustomAdapter(private val dataSet: Array<String>) :
-    RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+
+    // TODO: remove dummy data
+    @RequiresApi(Build.VERSION_CODES.O)
+    val data = arrayListOf(RunningScheduleEntry.StaticFunctions.getDummyData())
+    //binding.title.text = data.getTitle()
+    //val date = data.getStartDate().toString() + " - " + data.getEndDate().toString()
+    //binding.period.text = date
+    val weekdays = "Mo Fr"
 
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView = view.findViewById(R.id.textView)
+        val title : TextView = view.findViewById(R.id.title)
+        val period : TextView = view.findViewById(R.id.period)
+        val weekdays : TextView = view.findViewById(R.id.weekdays)
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -35,11 +47,13 @@ class CustomAdapter(private val dataSet: Array<String>) :
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.textView.text = dataSet[position]
+        viewHolder.title.text = data[position].getTitle()
+        viewHolder.period.text = data[position].getStartDate().toString() + " - " + data[position].getEndDate().toString()
+        viewHolder.weekdays.text = weekdays
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = dataSet.size
+    override fun getItemCount() = data.size
 
 }
 
