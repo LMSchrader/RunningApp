@@ -8,6 +8,7 @@ class RunningScheduleEntry {
     private lateinit var title: String
     private lateinit var startDate: LocalDate
     private lateinit var endDate: LocalDate
+    private var description : String = ""
     private var monday: Boolean = false
     private var tuesday: Boolean = false
     private var wednesday: Boolean = false
