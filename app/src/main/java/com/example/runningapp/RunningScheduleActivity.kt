@@ -9,7 +9,7 @@ import com.example.runningapp.databinding.ActivityRunningScheduleBinding
 class RunningScheduleActivity : Activity() {
     private lateinit var binding: ActivityRunningScheduleBinding
     private var layoutManager : RecyclerView.LayoutManager? = null
-    private var adapter : RecyclerView.Adapter<CustomAdapter.ViewHolder>? = null
+    private var adapter : RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +20,7 @@ class RunningScheduleActivity : Activity() {
         layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
 
-        adapter = CustomAdapter()
+        adapter = RunningScheduleAdapter()
         binding.recyclerView.adapter = adapter
     }
 }

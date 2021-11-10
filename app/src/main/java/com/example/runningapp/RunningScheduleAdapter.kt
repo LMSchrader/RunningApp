@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.model.RunningScheduleEntry
 
-class CustomAdapter : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class RunningScheduleAdapter : RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>() {
 
     // TODO: remove dummy data
     @RequiresApi(Build.VERSION_CODES.O)
@@ -34,7 +34,7 @@ class CustomAdapter : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.text_row_item, viewGroup, false)
+            .inflate(R.layout.running_schedule_item, viewGroup, false)
 
         return ViewHolder(view)
     }
