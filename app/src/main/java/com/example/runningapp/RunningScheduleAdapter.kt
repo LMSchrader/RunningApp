@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.model.RunningScheduleEntry
@@ -13,8 +14,8 @@ class RunningScheduleAdapter : RecyclerView.Adapter<RunningScheduleAdapter.ViewH
 
     // TODO: remove dummy data
     @RequiresApi(Build.VERSION_CODES.O)
-    val data = arrayListOf(RunningScheduleEntry.StaticFunctions.getDummyData(), RunningScheduleEntry.StaticFunctions.getDummyData())
-    val weekdays = arrayListOf("Mo Fr", "Di Fr So")
+    private val data = arrayListOf(RunningScheduleEntry.StaticFunctions.getDummyData(), RunningScheduleEntry.StaticFunctions.getDummyData())
+    private val weekdays = arrayListOf("Mo Fr", "Di Fr So")
 
     /**
      * Provide a reference to the type of views that you are using
@@ -27,6 +28,11 @@ class RunningScheduleAdapter : RecyclerView.Adapter<RunningScheduleAdapter.ViewH
 
         init {
             // Define click listener for the ViewHolder's View.
+            view.setOnClickListener {
+                val position : Int = adapterPosition
+                //TODO: replace
+                Toast.makeText(view.context, "replace with an action", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -40,6 +46,7 @@ class RunningScheduleAdapter : RecyclerView.Adapter<RunningScheduleAdapter.ViewH
     }
 
     // Replace the contents of a view (invoked by the layout manager)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
         // Get element from your dataset at this position and replace the
@@ -50,6 +57,7 @@ class RunningScheduleAdapter : RecyclerView.Adapter<RunningScheduleAdapter.ViewH
     }
 
     // Return the size of your dataset (invoked by the layout manager)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getItemCount() = data.size
 
 }
