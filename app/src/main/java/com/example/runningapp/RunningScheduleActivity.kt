@@ -1,27 +1,26 @@
 package com.example.runningapp
 
 import android.app.Activity
-import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.databinding.ActivityRunningScheduleBinding
-import com.example.runningapp.model.RunningScheduleEntry
 
 class RunningScheduleActivity : Activity() {
     private lateinit var binding: ActivityRunningScheduleBinding
+    private var layoutManager : RecyclerView.LayoutManager? = null
+    private var adapter : RecyclerView.Adapter<CustomAdapter.ViewHolder>? = null
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityRunningScheduleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // TODO: remove dummy data
-        //val data = RunningScheduleEntry.StaticFunctions.getDummyData()
-        //binding.title.text = data.getTitle()
-        //val date = data.getStartDate().toString() + " - " + data.getEndDate().toString()
-        //binding.period.text = date
-        //binding.weekdays.text = "Mo Fr"
+        layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = layoutManager
+
+        adapter = CustomAdapter()
+        binding.recyclerView.adapter = adapter
     }
 }
