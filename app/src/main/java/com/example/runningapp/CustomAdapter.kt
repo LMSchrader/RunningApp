@@ -13,11 +13,8 @@ class CustomAdapter : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     // TODO: remove dummy data
     @RequiresApi(Build.VERSION_CODES.O)
-    val data = arrayListOf(RunningScheduleEntry.StaticFunctions.getDummyData())
-    //binding.title.text = data.getTitle()
-    //val date = data.getStartDate().toString() + " - " + data.getEndDate().toString()
-    //binding.period.text = date
-    val weekdays = "Mo Fr"
+    val data = arrayListOf(RunningScheduleEntry.StaticFunctions.getDummyData(), RunningScheduleEntry.StaticFunctions.getDummyData())
+    val weekdays = arrayListOf("Mo Fr", "Di Fr So")
 
     /**
      * Provide a reference to the type of views that you are using
@@ -49,7 +46,7 @@ class CustomAdapter : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
         // contents of the view with that element
         viewHolder.title.text = data[position].getTitle()
         viewHolder.period.text = data[position].getStartDate().toString() + " - " + data[position].getEndDate().toString()
-        viewHolder.weekdays.text = weekdays
+        viewHolder.weekdays.text = weekdays[position]
     }
 
     // Return the size of your dataset (invoked by the layout manager)
