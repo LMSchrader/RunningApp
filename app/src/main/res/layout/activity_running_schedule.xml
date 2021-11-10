@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <include
+    <!--<include
         layout="@layout/app_bar_running_schedule"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
