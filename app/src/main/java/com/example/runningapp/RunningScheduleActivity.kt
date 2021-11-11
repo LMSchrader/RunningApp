@@ -1,13 +1,13 @@
 package com.example.runningapp
 
-import android.app.Activity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.databinding.ActivityRunningScheduleBinding
 
-class RunningScheduleActivity : Activity() {
+class RunningScheduleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRunningScheduleBinding
     private var layoutManager : RecyclerView.LayoutManager? = null
     private var adapter : RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>? = null
