@@ -1,6 +1,7 @@
 package com.example.runningapp
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.runningapp.databinding.ActivityRunningScheduleEntryBinding
 
@@ -14,9 +15,19 @@ class RunningScheduleEntryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.include.toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false);
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        binding.include.imageView3.setOnClickListener {
+        binding.include.imageBack.setOnClickListener {
+            finish()
+        }
+
+        binding.include.imageEdit.setOnClickListener {
+            //TODO:implement
+            Toast.makeText(applicationContext, "replace with an action", Toast.LENGTH_LONG).show()
+        }
+
+        binding.include.imageDelete.setOnClickListener {
+            // TODO: delete entry
             finish()
         }
     }

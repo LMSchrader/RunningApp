@@ -19,20 +19,20 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 app:srcCompat="@drawable/ic_baseline_delete_24" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/imageBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_baseline_arrow_back_ios_new_24" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
