@@ -31,10 +31,9 @@ class RunningScheduleAdapter : RecyclerView.Adapter<RunningScheduleAdapter.ViewH
             // Define click listener for the ViewHolder's View.
             view.setOnClickListener {
                 val position : Int = adapterPosition
-                //TODO: replace
-                Toast.makeText(view.context, "replace with an action", Toast.LENGTH_LONG).show()
-                //val intent = Intent(view.context, RunningScheduleEntryActivity::class.java).apply {}
-                //view.context.startActivity(intent)
+                //TODO: edit
+                val intent = Intent(view.context, RunningScheduleEntryActivity::class.java).apply {}
+                view.context.startActivity(intent)
             }
         }
     }

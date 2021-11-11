@@ -1,10 +1,10 @@
 package com.example.runningapp
 
-import android.app.Activity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.runningapp.databinding.ActivityRunningScheduleEntryBinding
 
-class RunningScheduleEntryActivity : Activity() {
+class RunningScheduleEntryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRunningScheduleEntryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,5 +12,12 @@ class RunningScheduleEntryActivity : Activity() {
 
         binding = ActivityRunningScheduleEntryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.include.toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false);
+
+        binding.include.imageView3.setOnClickListener {
+            finish()
+        }
     }
 }
