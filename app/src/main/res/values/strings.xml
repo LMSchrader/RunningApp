@@ -11,4 +11,8 @@
     <string name="menu_running_schedule">Laufplan</string>
     <string name="menu_history">Historie</string>
     <string name="menu_record_run">Lauf aufnehmen</string>
+
+    <string name="weekdays">Wochentage</string>
+    <string name="period">Zeitraum</string>
+    <string name="description">Beschreibung</string>
 </resources>
