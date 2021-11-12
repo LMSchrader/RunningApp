@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item  android:id="@+id/imageEdit"
+        android:title="TODO"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_edit_24"/>
+    <item  android:id="@+id/imageDelete"
+        android:orderInCategory="3"
+        android:title="TODO"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_delete_24"/>
+</menu>
