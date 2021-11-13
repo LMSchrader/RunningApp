@@ -24,7 +24,7 @@ class HistoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         historyViewModel =
-            ViewModelProvider(this).get(HistoryViewModel::class.java)
+            ViewModelProvider(this)[HistoryViewModel::class.java]
 
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val root: View = binding.root

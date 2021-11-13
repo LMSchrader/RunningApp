@@ -1,6 +1,5 @@
 package com.example.runningapp
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import com.google.android.material.navigation.NavigationView
@@ -26,12 +25,6 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        binding.appBarMain.fab.setOnClickListener {
-            // TODO: navigiere zu record run
-            //val intent = Intent(this, RecordRunActivity::class.java).apply {}
-            val intent = Intent(this, RunningScheduleActivity::class.java).apply {}
-            startActivity(intent)
-        }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)

@@ -24,7 +24,7 @@ class RecordRunFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         recordRunViewModel =
-            ViewModelProvider(this).get(RecordRunViewModel::class.java)
+            ViewModelProvider(this)[RecordRunViewModel::class.java]
 
         _binding = FragmentRecordRunBinding.inflate(inflater, container, false)
         val root: View = binding.root
