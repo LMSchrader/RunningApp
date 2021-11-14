@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RunningApp</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Einstellungen</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_running_schedule">Laufplan</string>
+    <string name="menu_history">Historie</string>
+    <string name="menu_record_run">Lauf aufnehmen</string>
+
+    <string name="weekdays">Wochentage</string>
+    <string name="period">Zeitraum</string>
+    <string name="description">Beschreibung</string>
+
+    <string name="language">Sprache</string>
+</resources>
