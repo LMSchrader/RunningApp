@@ -5,12 +5,29 @@
     <string name="navigation_drawer_close">Schließe Navigation</string>
     <string name="action_settings">Einstellungen</string>
 
+    <!--navigation drawer-->
     <string name="menu_home">Home</string>
     <string name="menu_running_schedule">Laufplan</string>
     <string name="menu_history">Historie</string>
     <string name="menu_record_run">Lauf aufnehmen</string>
 
+    <!-- running schedule-->
+    <string name="title">Title</string>
     <string name="weekdays">Wochentage</string>
     <string name="period">Zeitraum</string>
     <string name="description">Beschreibung</string>
+    <string name="from">Von</string>
+    <string name="to">Bis</string>
+    <string name="monday">Mo</string>
+    <string name="tuesday">Di</string>
+    <string name="wednesday">Mi</string>
+    <string name="thursday">Do</string>
+    <string name="friday">Fr</string>
+    <string name="saturday">Sa</string>
+    <string name="sunday">So</string>
+
+    <string name="save">Speichern</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="delete">Löschen</string>
 </resources>

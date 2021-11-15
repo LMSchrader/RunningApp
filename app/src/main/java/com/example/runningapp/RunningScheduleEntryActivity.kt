@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.runningapp.databinding.ActivityRunningScheduleEntryBinding
 import android.view.Menu
 import android.view.MenuItem
+import android.content.Intent
 
 class RunningScheduleEntryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRunningScheduleEntryBinding
@@ -32,6 +33,14 @@ class RunningScheduleEntryActivity : AppCompatActivity() {
                 finish()
                 true
             }
+
+            R.id.imageEdit -> {
+                //TODO: entry mitgeben
+                val intent = Intent(this, EditRunningScheduleEntryActivity::class.java)
+                startActivity(intent)
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

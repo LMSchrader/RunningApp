@@ -24,6 +24,10 @@
             android:name=".RunningScheduleEntryActivity"
             android:theme="@style/Theme.RunningApp.NoActionBar">
         </activity>
+        <activity
+            android:name=".EditRunningScheduleEntryActivity"
+            android:theme="@style/Theme.RunningApp.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

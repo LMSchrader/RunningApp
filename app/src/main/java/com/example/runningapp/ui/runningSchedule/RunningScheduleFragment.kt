@@ -1,14 +1,15 @@
 package com.example.runningapp.ui.runningSchedule
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.runningapp.EditRunningScheduleEntryActivity
 import com.example.runningapp.RunningScheduleAdapter
 import com.example.runningapp.databinding.FragmentRunningScheduleBinding
 
@@ -47,9 +48,8 @@ class RunningScheduleFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         binding.addButton.setOnClickListener {
-            // TODO: aendern
-            Toast.makeText(context?.applicationContext, "replace with an action", Toast.LENGTH_LONG)
-                .show()
+            val intent = Intent(activity, EditRunningScheduleEntryActivity::class.java)
+            startActivity(intent)
         }
 
         return root
