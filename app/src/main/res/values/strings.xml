@@ -12,6 +12,4 @@
     <string name="weekdays">Weekdays</string>
     <string name="period">Time period</string>
     <string name="description">Description</string>
-
-    <string name="language">Language</string>
 </resources>

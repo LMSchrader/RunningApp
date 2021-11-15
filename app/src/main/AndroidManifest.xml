@@ -21,10 +21,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RecordRunActivity"
-            android:theme="@style/Theme.RunningApp.NoActionBar">
-        </activity>
-        <activity
             android:name=".RunningScheduleEntryActivity"
             android:theme="@style/Theme.RunningApp.NoActionBar">
         </activity>
