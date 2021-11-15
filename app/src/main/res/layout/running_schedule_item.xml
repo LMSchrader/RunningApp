@@ -33,6 +33,6 @@
             android:layout_below="@id/title"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_toRightOf="@id/period" />
+            android:layout_toEndOf="@id/period" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

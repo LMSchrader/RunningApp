@@ -12,6 +12,7 @@
     <string name="menu_record_run">Lauf aufnehmen</string>
 
     <!-- running schedule-->
+    <string name="addRunningSchedule">Laufplaneintrag hinzufügen</string>
     <string name="title">Title</string>
     <string name="weekdays">Wochentage</string>
     <string name="period">Zeitraum</string>

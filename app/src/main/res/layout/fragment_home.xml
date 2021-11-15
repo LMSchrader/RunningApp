@@ -16,5 +16,6 @@
         app:backgroundTint="@color/purple_200"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_baseline_directions_run_24" />
+        app:srcCompat="@drawable/ic_baseline_directions_run_24"
+        android:contentDescription="@string/menu_record_run" />
 </androidx.constraintlayout.widget.ConstraintLayout>

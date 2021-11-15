@@ -11,6 +11,7 @@
     <string name="menu_record_run">Record run</string>
 
     <!-- running schedule-->
+    <string name="addRunningSchedule">Add running schedule entry</string>
     <string name="title">Title</string>
     <string name="weekdays">Weekdays</string>
     <string name="period">Time period</string>
