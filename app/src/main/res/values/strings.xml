@@ -26,6 +26,16 @@
     <string name="saturday">Sa</string>
     <string name="sunday">So</string>
 
+    <!-- record run-->
+    <string name="time">Time</string>
+    <string name="kilometer">KM</string>
+    <string name="current_pace">Current Pace</string>
+    <string name="avg_pace">Avg Pace</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="pause">Pause</string>
+
+    <!-- general -->
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="edit">Edit</string>
