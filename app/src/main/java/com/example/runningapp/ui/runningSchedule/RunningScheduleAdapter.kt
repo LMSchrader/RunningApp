@@ -1,4 +1,4 @@
-package com.example.runningapp
+package com.example.runningapp.ui.runningSchedule
 
 import android.content.Intent
 import android.os.Build
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.example.runningapp.R
+import com.example.runningapp.RunningScheduleEntryActivity
 import com.example.runningapp.model.RunningScheduleEntry
 
 class RunningScheduleAdapter : RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>() {

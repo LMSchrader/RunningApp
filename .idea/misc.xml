@@ -3,21 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout-land/fragment_history.xml" value="0.5" />
-        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/activity_running_schedule.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/activity_running_schedule_entry.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/app_bar_main.xml" value="0.1" />
-        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_history.xml" value="0.33" />
-        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_history_graph.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_history_recycler_view.xml" value="0.2015625" />
-        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_running_schedule.xml" value="0.1" />
-        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/menu/activity_main_drawer.xml" value="0.19635416666666666" />
-        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/menu/main.xml" value="0.22" />
-        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/menu/menu_edit_running_schedule_entry.xml" value="0.19635416666666666" />
-        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/menu/menu_running_schedule_entry.xml" value="0.19635416666666666" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2703125" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.18229166666666666" />
+        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/drawable/ic_baseline_directions_run_24.xml" value="0.2703125" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/drawable/ic_menu_camera.xml" value="0.22760416666666666" />
@@ -25,27 +13,31 @@
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.2703125" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.2703125" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/drawable/side_nav_bar.xml" value="0.2703125" />
-        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/activity_edit_running_schedule_entry.xml" value="0.1" />
+        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout-land/fragment_history.xml" value="0.2635416666666667" />
+        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/activity_edit_running_schedule_entry.xml" value="0.264" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/activity_record_run.xml" value="0.1" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/activity_record_run_entry.xml" value="0.2" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/activity_running_schedule.xml" value="0.264" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/activity_running_schedule2.xml" value="0.23854166666666668" />
-        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/activity_running_schedule_entry.xml" value="0.1" />
+        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/activity_running_schedule_entry.xml" value="0.264" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/activity_running_schedule_test.xml" value="0.34" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/app_bar_main.xml" value="0.25" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/app_bar_other.xml" value="0.2359375" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/app_bar_running_schedule.xml" value="0.1" />
-        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/content_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/content_main.xml" value="0.18613138686131386" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_gallery.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_history.xml" value="0.15260416666666668" />
+        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_history_graph.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_history_recycler_view.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_home_test.xml" value="0.2359375" />
-        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_record_run.xml" value="0.13020833333333334" />
-        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_running_schedule.xml" value="0.1" />
+        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_record_run.xml" value="0.176" />
+        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_running_schedule.xml" value="0.264" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_slideshow.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/nav_header_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/running_schedule_item.xml" value="0.26350710900473934" />
+        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/settings.xml" value="0.16197916666666667" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/test.xml" value="0.176" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/test2.xml" value="0.22239583333333332" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/layout/text_row_item.xml" value="0.16510416666666666" />
@@ -53,9 +45,12 @@
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/menu/activity_main_drawer.xml" value="0.4" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/menu/edit_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/menu/main.xml" value="0.21302083333333333" />
+        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/menu/menu_edit_running_schedule_entry.xml" value="0.17239583333333333" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/menu/menu_running_schedule_entry.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/menu/toolbar.xml" value="0.264" />
         <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/xml/settings.xml" value="0.536" />
+        <entry key="..\:/Users/licha/AndroidStudioProjects/RunningApp/app/src/main/res/xml/shape.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
@@ -68,7 +63,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.264" />
+        <option name="scale" value="0.4" />
       </ProjectState>
     </option>
   </component>

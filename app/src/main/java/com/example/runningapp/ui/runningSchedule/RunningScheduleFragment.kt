@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.EditRunningScheduleEntryActivity
-import com.example.runningapp.RunningScheduleAdapter
 import com.example.runningapp.databinding.FragmentRunningScheduleBinding
 
 class RunningScheduleFragment : Fragment() {

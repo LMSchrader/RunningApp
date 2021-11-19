@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.runningapp.RunningScheduleAdapter
+import com.example.runningapp.ui.runningSchedule.RunningScheduleAdapter
 import com.example.runningapp.databinding.FragmentHistoryRecyclerViewBinding
 
 class HistoryRecyclerViewFragment : Fragment() {
