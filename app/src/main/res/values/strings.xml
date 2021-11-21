@@ -35,6 +35,11 @@
     <string name="stop">Stop</string>
     <string name="pause">Pause</string>
 
+    <!-- run history-->
+    <string name="intro_text">Run from</string>
+    <string name="pace_label">Pace</string>
+    <string name="altitude_label">Altitude</string>
+
     <!-- general -->
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>

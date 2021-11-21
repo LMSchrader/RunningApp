@@ -1,18 +1,17 @@
 package com.example.runningapp.ui.history
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SeekBar
-import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import com.example.runningapp.R
 
 import com.example.runningapp.databinding.FragmentHistoryGraphBinding
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.DataSet
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -20,7 +19,7 @@ import com.github.mikephil.charting.data.LineDataSet
 
 class HistoryGraphFragment : Fragment() {
 
-    private lateinit var historyViewModel: HistoryViewModel
+    private val historyViewModel: HistoryViewModel by activityViewModels()
     private var _binding: FragmentHistoryGraphBinding? = null
 
     private val binding get() = _binding!!
@@ -33,13 +32,12 @@ class HistoryGraphFragment : Fragment() {
         return LineData(dataSet)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        historyViewModel =
-            ViewModelProvider(this)[HistoryViewModel::class.java]
 
         _binding = FragmentHistoryGraphBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -50,14 +48,23 @@ class HistoryGraphFragment : Fragment() {
 
         chart.setDrawGridBackground(false)
 
-        chart.data = generateData()
-
-        chart.animateX(3000)
-
-        //val textView: TextView = binding.textHome
-        //runningScheduleViewModel.text.observe(viewLifecycleOwner, {
-        //    textView.text = it
-        //})
+        historyViewModel.currentRunHistoryEntry.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
+            val idx = currentRunHistoryEntry
+            historyViewModel.getRunHistoryEntries().removeObservers(viewLifecycleOwner)
+            historyViewModel.getRunHistoryEntries().observe(viewLifecycleOwner) { runHistoryEntries ->
+                val timeList = runHistoryEntries[idx].getTimeValues()
+                val paceList = runHistoryEntries[idx].getPaceValues()
+                val altitudeList = runHistoryEntries[idx].getAltitudeValues()
+                val paceTimeSeries : MutableList<Entry> = mutableListOf<Entry>()
+                val altitudeTimeSeries : MutableList<Entry> = mutableListOf<Entry>()
+                for (i in timeList.indices) {
+                    paceTimeSeries.add(Entry(timeList[i],paceList[i]))
+                    altitudeTimeSeries.add(Entry(timeList[i],altitudeList[i]))
+                }
+                chart.data = LineData(LineDataSet(paceTimeSeries, root.context.resources.getString(R.string.pace_label)),LineDataSet(altitudeTimeSeries, root.context.resources.getString(R.string.altitude_label)))
+                chart.animateX(500)
+            }
+        }
 
         return root
     }

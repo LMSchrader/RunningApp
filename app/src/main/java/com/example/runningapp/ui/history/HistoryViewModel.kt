@@ -1,13 +1,37 @@
 package com.example.runningapp.ui.history
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.runningapp.model.RunHistoryEntry
 
+@RequiresApi(Build.VERSION_CODES.O)
 class HistoryViewModel : ViewModel() {
 
-    //private val _text = MutableLiveData<String>().apply {
-    //    value = "This is history Fragment"
-    //}
-    //val text: LiveData<String> = _text
+    private val runHistoryEntries: MutableLiveData<List<RunHistoryEntry>> by lazy {
+        MutableLiveData<List<RunHistoryEntry>>(loadRunHistoryEntries())
+    }
+
+    var currentRunHistoryEntry : MutableLiveData<Int> = MutableLiveData<Int>(0)
+
+    fun getRunHistoryEntries(): LiveData<List<RunHistoryEntry>> {
+        return runHistoryEntries
+    }
+
+    private fun loadRunHistoryEntries(): List<RunHistoryEntry> {
+        //TODO implement
+        return loadDummyRunHistoryEntries()
+
+        // Do an asynchronous operation to fetch users.
+    }
+
+    private fun loadDummyRunHistoryEntries(): List<RunHistoryEntry> {
+        return RunHistoryEntry.StaticFunctions.getDummyData()
+    }
+
+    private fun setCurrentRunningHistoryEntry(newIdx : Int) {
+        currentRunHistoryEntry.value = newIdx
+    }
 }
