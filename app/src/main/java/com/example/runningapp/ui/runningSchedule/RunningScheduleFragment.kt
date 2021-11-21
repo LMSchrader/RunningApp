@@ -12,12 +12,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.runningapp.EditRunningScheduleEntryActivity
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleBinding
-import com.example.runningapp.ui.runningScheduleEntry.RunningScheduleEntryFragment
 import com.example.runningapp.util.Util.StaticFunctions.isLandscapeMode
 
 class RunningScheduleFragment : Fragment() {
 
-    private lateinit var runningScheduleViewModel: RunningScheduleViewModel
+    private lateinit var viewModel: RunningScheduleViewModel
     private var _binding: FragmentRunningScheduleBinding? = null
 
     // This property is only valid between onCreateView and
@@ -44,7 +43,7 @@ class RunningScheduleFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        runningScheduleViewModel =
+        viewModel =
             ViewModelProvider(this)[RunningScheduleViewModel::class.java]
 
         _binding = FragmentRunningScheduleBinding.inflate(inflater, container, false)
