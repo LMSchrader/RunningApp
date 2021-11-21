@@ -1,4 +1,4 @@
-package com.example.runningapp.ui.history
+package com.example.runningapp.ui.runningSchedule
 
 import android.os.Build
 import android.os.Bundle
@@ -6,19 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRecyclerViewBinding
+import com.example.runningapp.ui.runningScheduleEntry.RunningScheduleEntryFragment
+import com.example.runningapp.util.Util.StaticFunctions.isLandscapeMode
 
-class HistoryRecyclerViewFragment : Fragment() {
-
-    private val historyViewModel: HistoryViewModel by activityViewModels()
+class RunningScheduleRecyclerViewFragment : Fragment() {
+    private val viewModel: RunningScheduleViewModel by activityViewModels()
     private var _binding: FragmentRecyclerViewBinding? = null
 
     private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: RecyclerView.Adapter<HistoryAdapter.ViewHolder>? = null
+    private var adapter: RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>? = null
 
     private val binding get() = _binding!!
 
@@ -35,7 +36,16 @@ class HistoryRecyclerViewFragment : Fragment() {
         layoutManager = LinearLayoutManager(context)
         binding.recyclerView.layoutManager = layoutManager
 
-        adapter = HistoryAdapter(historyViewModel.getRunHistoryEntries(), {position ->  historyViewModel.currentRunHistoryEntry.value = position}, viewLifecycleOwner)
+        adapter = RunningScheduleAdapter(viewModel.getEntries(), { position ->
+            viewModel.currentEntry.value = position
+            if (!isLandscapeMode()) {
+                parentFragment?.childFragmentManager?.commit {
+                    setReorderingAllowed(true)
+                    replace<RunningScheduleEntryFragment>(R.id.recyclerView)
+                    addToBackStack(null)
+                }
+            }
+        }, viewLifecycleOwner)
         binding.recyclerView.adapter = adapter
 
         return root

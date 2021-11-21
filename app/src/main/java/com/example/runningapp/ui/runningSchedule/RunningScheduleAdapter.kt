@@ -1,40 +1,36 @@
 package com.example.runningapp.ui.runningSchedule
 
-import android.content.Intent
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.R
-import com.example.runningapp.RunningScheduleEntryActivity
 import com.example.runningapp.model.RunningScheduleEntry
 
-class RunningScheduleAdapter : RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>() {
+class RunningScheduleAdapter(private val liveData: LiveData<List<RunningScheduleEntry>>, private val onClickListener: (position: Int?) -> Unit, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>() {
 
     // TODO: remove dummy data
     @RequiresApi(Build.VERSION_CODES.O)
-    private val data = arrayListOf(RunningScheduleEntry.StaticFunctions.getDummyData(), RunningScheduleEntry.StaticFunctions.getDummyData())
+    private val data = RunningScheduleEntry.StaticFunctions.getDummyData()
     private val weekdays = arrayListOf("Mo Fr", "Di Fr So")
 
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View,  private val onClickListener: (position: Int?) -> Unit) : RecyclerView.ViewHolder(view) {
         val title : TextView = view.findViewById(R.id.title)
         val period : TextView = view.findViewById(R.id.period)
         val weekdays : TextView = view.findViewById(R.id.weekdays)
 
         init {
-            // Define click listener for the ViewHolder's View.
             view.setOnClickListener {
-                val position : Int = adapterPosition
-                //TODO: edit
-                val intent = Intent(view.context, RunningScheduleEntryActivity::class.java).apply {}
-                view.context.startActivity(intent)
+                onClickListener.invoke(adapterPosition)
             }
         }
     }
@@ -45,7 +41,7 @@ class RunningScheduleAdapter : RecyclerView.Adapter<RunningScheduleAdapter.ViewH
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.running_schedule_item, viewGroup, false)
 
-        return ViewHolder(view)
+        return ViewHolder(view, onClickListener)
     }
 
     // Replace the contents of a view (invoked by the layout manager)

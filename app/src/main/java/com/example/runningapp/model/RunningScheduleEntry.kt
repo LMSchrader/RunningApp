@@ -32,14 +32,15 @@ class RunningScheduleEntry {
     object StaticFunctions {
         @RequiresApi(Build.VERSION_CODES.O)
         @JvmStatic
-        fun getDummyData(): RunningScheduleEntry {
+        fun getDummyData(): List<RunningScheduleEntry> {
             val dummy = RunningScheduleEntry()
             dummy.title = "Test"
             dummy.startDate = LocalDate.of(2021, 12, 12)
             dummy.endDate = LocalDate.of(2021, 12, 31)
             dummy.monday = true
             dummy.friday = true
-            return dummy
+
+            return arrayListOf(dummy, dummy)
         }
     }
 
