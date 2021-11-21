@@ -7,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.*
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRecyclerViewBinding
-import com.example.runningapp.ui.runningScheduleEntry.RunningScheduleEntryFragment
+import com.example.runningapp.ui.runningSchedule.RunningScheduleEntryFragment
 import com.example.runningapp.util.Util.StaticFunctions.isLandscapeMode
 
 class RunningScheduleRecyclerViewFragment : Fragment() {
@@ -39,6 +40,8 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
         adapter = RunningScheduleAdapter(viewModel.getEntries(), { position ->
             viewModel.currentEntry.value = position
             if (!isLandscapeMode()) {
+                //view?.findNavController()?.navigate(R.id.action_nav_running_schedule_to_nav_running_schedule_entry)
+
                 parentFragment?.childFragmentManager?.commit {
                     setReorderingAllowed(true)
                     replace<RunningScheduleEntryFragment>(R.id.recyclerView)
