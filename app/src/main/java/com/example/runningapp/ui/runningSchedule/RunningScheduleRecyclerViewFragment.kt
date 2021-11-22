@@ -36,18 +36,14 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
         layoutManager = LinearLayoutManager(context)
         binding.recyclerView.layoutManager = layoutManager
 
-        adapter = RunningScheduleAdapter(viewModel.getEntries(), { position ->
-            viewModel.currentEntry.value = position
-            if (!context?.let { isLandscapeMode(it) }!!) {
-                view?.findNavController()?.navigate(R.id.action_nav_running_schedule_to_nav_running_schedule_entry)
-
-                //parentFragment?.childFragmentManager?.commit {
-                //    setReorderingAllowed(true)
-                //    replace<RunningScheduleEntryFragment>(R.id.recyclerView)
-                //    addToBackStack(null)
-                //}
-            }
-        }, viewLifecycleOwner)
+        adapter = context?.let {
+            RunningScheduleAdapter(it, viewModel.getEntries(), { position ->
+                viewModel.currentEntry.value = position
+                if (!context?.let { isLandscapeMode(it) }!!) {
+                    view?.findNavController()?.navigate(R.id.action_nav_running_schedule_to_nav_running_schedule_entry)
+                }
+            }, viewLifecycleOwner)
+        }
         binding.recyclerView.adapter = adapter
 
         return root

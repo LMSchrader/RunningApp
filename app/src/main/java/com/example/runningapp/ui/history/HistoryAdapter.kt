@@ -13,12 +13,12 @@ import com.example.runningapp.R
 import com.example.runningapp.model.RunHistoryEntry
 import java.time.format.DateTimeFormatter
 
-class HistoryAdapter(private val runHistoryLiveData: LiveData<List<RunHistoryEntry>>, private val onClickListener: (position: Int?) -> Unit,  private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
+class HistoryAdapter(runHistoryLiveData: LiveData<List<RunHistoryEntry>>, private val onClickListener: (position: Int?) -> Unit, lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     private var data: List<RunHistoryEntry> = emptyList()
     init {
         runHistoryLiveData.observe(lifecycleOwner) { runHistoryEntries ->
             data = runHistoryEntries
-            notifyDataSetChanged()
+            notifyDataSetChanged()  // TODO: use notifyItemRangeChanged() instead
         }
     }
 

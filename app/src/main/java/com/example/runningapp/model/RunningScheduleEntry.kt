@@ -81,7 +81,15 @@ class RunningScheduleEntry {
             dummy.monday = true
             dummy.friday = true
 
-            return arrayListOf(dummy, dummy)
+            val dummy2 = RunningScheduleEntry()
+            dummy2.title = "Test2"
+            dummy2.startDate = LocalDate.of(2021, 11, 12)
+            dummy2.endDate = LocalDate.of(2022, 1, 31)
+            dummy2.tuesday = true
+            dummy2.thursday = true
+            dummy2.saturday = true
+
+            return arrayListOf(dummy, dummy2)
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.runningapp.ui.runningSchedule
 
+import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +13,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.R
 import com.example.runningapp.model.RunningScheduleEntry
 
-class RunningScheduleAdapter(private val liveData: LiveData<List<RunningScheduleEntry>>, private val onClickListener: (position: Int?) -> Unit, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>() {
+class RunningScheduleAdapter(private val context: Context, liveData: LiveData<List<RunningScheduleEntry>>, private val onClickListener: (position: Int?) -> Unit, lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>() {
 
     // TODO: remove dummy data
-    @RequiresApi(Build.VERSION_CODES.O)
-    private val data = RunningScheduleEntry.StaticFunctions.getDummyData()
-    private val weekdays = arrayListOf("Mo Fr", "Di Fr So")
+   // @RequiresApi(Build.VERSION_CODES.O)
+   // private val data = RunningScheduleEntry.StaticFunctions.getDummyData()
+
+    private var data: List<RunningScheduleEntry> = emptyList()
+    init {
+        liveData.observe(lifecycleOwner) { entries ->
+            data = entries
+            notifyDataSetChanged() // TODO: use notifyItemRangeChanged() instead
+        }
+    }
 
     /**
      * Provide a reference to the type of views that you are using
@@ -54,7 +62,7 @@ class RunningScheduleAdapter(private val liveData: LiveData<List<RunningSchedule
         viewHolder.title.text = data[position].getTitle()
         viewHolder.startDate.text = data[position].getStartDate().toString()
         viewHolder.endDate.text = data[position].getEndDate().toString()
-        viewHolder.weekdays.text = weekdays[position]
+        viewHolder.weekdays.text = data[position].getWeekdayString(context)
     }
 
     // Return the size of your dataset (invoked by the layout manager)

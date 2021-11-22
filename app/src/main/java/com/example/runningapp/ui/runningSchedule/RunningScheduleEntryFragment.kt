@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleEntryBinding
+import com.example.runningapp.util.Util
 
 class RunningScheduleEntryFragment : Fragment() {
     private val viewModel: RunningScheduleViewModel by activityViewModels()
@@ -54,15 +55,19 @@ class RunningScheduleEntryFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                activity?.onBackPressed()
-                true
-            }
+        if (context?.let { Util.StaticFunctions.isLandscapeMode(it) } == true) {
 
+            if (item.itemId == android.R.id.home) {
+                activity?.onBackPressed()
+                return true
+            }
+        }
+
+        return when (item.itemId) {
             R.id.imageEdit -> {
                 //TODO: entry mitgeben
-                view?.findNavController()?.navigate(R.id.action_nav_running_schedule_entry_to_nav_edit_running_schedule_entry)
+                view?.findNavController()
+                    ?.navigate(R.id.action_nav_running_schedule_entry_to_nav_edit_running_schedule_entry)
                 true
             }
 
