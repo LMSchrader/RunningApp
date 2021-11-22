@@ -1,6 +1,5 @@
 package com.example.runningapp.ui.runningSchedule
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
-import com.example.runningapp.EditRunningScheduleEntryActivity
+import androidx.navigation.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleBinding
 import com.example.runningapp.util.Util.StaticFunctions.isLandscapeMode
@@ -50,8 +49,7 @@ class RunningScheduleFragment : Fragment() {
         val root: View = binding.root
 
         binding.addButton.setOnClickListener {
-            val intent = Intent(activity, EditRunningScheduleEntryActivity::class.java)
-            startActivity(intent)
+            view?.findNavController()?.navigate(R.id.action_nav_running_schedule_to_nav_add_running_schedule_entry)
         }
 
         return root

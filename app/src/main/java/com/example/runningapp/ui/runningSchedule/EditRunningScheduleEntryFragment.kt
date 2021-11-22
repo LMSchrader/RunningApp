@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBinding
 
-class EditRunningScheduleEntryFragment : Fragment() {
+class EditRunningScheduleEntryFragment : Fragment() { //TODO: implement
 
     private lateinit var viewModel: RunningScheduleViewModel
     private var _binding: FragmentEditRunningScheduleEntryBinding? = null

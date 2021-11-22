@@ -2,12 +2,12 @@ package com.example.runningapp.ui.runningSchedule
 
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
+import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleEntryBinding
 
 class RunningScheduleEntryFragment : Fragment() {
@@ -25,8 +25,8 @@ class RunningScheduleEntryFragment : Fragment() {
     ): View {
 
         _binding = FragmentRunningScheduleEntryBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
+        setHasOptionsMenu(true)
 
         viewModel.currentEntry.observe(viewLifecycleOwner) { currentEntry ->
             viewModel.getEntries().removeObservers(viewLifecycleOwner)
@@ -37,7 +37,7 @@ class RunningScheduleEntryFragment : Fragment() {
             }
         }
 
-        return root
+        return binding.root
     }
 
     override fun onDestroyView() {
@@ -45,4 +45,26 @@ class RunningScheduleEntryFragment : Fragment() {
         _binding = null
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.menu_running_schedule_entry, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                activity?.onBackPressed()
+                true
+            }
+
+            R.id.imageEdit -> {
+                //TODO: entry mitgeben
+                view?.findNavController()?.navigate(R.id.action_nav_running_schedule_entry_to_nav_edit_running_schedule_entry)
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }
