@@ -14,7 +14,7 @@
         android:orientation="vertical"/>
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/leftFragment"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -32,9 +32,9 @@
         app:layout_constraintStart_toStartOf="parent" />-->
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/running_schedule_entry"
+        android:id="@+id/rightFragment"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"

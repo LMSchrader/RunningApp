@@ -31,9 +31,11 @@ class RunningScheduleEntryFragment : Fragment() {
         viewModel.currentEntry.observe(viewLifecycleOwner) { currentEntry ->
             viewModel.getEntries().removeObservers(viewLifecycleOwner)
             viewModel.getEntries().observe(viewLifecycleOwner) { entries ->
-                //val timeList = entries[currentEntry].getTimeValues()
-                //val paceList = entries[currentEntry].getPaceValues()
-                //val altitudeList = entries[currentEntry].getAltitudeValues()
+                binding.title.text = entries[currentEntry].getTitle()
+                binding.weekdays.text = context?.let { entries[currentEntry].getWeekdayString(it) }
+                binding.startDate.text = entries[currentEntry].getStartDate().toString()
+                binding.endDate.text = entries[currentEntry].getEndDate().toString()
+                binding.description.text = entries[currentEntry].getDescription()
             }
         }
 
@@ -61,6 +63,12 @@ class RunningScheduleEntryFragment : Fragment() {
             R.id.imageEdit -> {
                 //TODO: entry mitgeben
                 view?.findNavController()?.navigate(R.id.action_nav_running_schedule_entry_to_nav_edit_running_schedule_entry)
+                true
+            }
+
+            R.id.imageDelete -> {
+                //TODO: entry loeschen
+                activity?.onBackPressed()
                 true
             }
 

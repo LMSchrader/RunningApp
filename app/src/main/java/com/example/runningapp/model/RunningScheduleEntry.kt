@@ -1,7 +1,9 @@
 package com.example.runningapp.model
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.runningapp.R
 import java.time.LocalDate
 
 class RunningScheduleEntry {
@@ -27,6 +29,45 @@ class RunningScheduleEntry {
 
     fun getEndDate(): LocalDate {
         return endDate
+    }
+
+    fun getDescription(): String {
+        return description
+    }
+
+    fun getWeekdayString(context: Context): String {
+        val sb = StringBuilder()
+
+        if(monday) {
+            sb.append(context.getString(R.string.monday))
+            sb.append(" ")
+        }
+        if(tuesday) {
+            sb.append(context.getString(R.string.tuesday))
+            sb.append(" ")
+        }
+        if(wednesday) {
+            sb.append(context.getString(R.string.wednesday))
+            sb.append(" ")
+        }
+        if(thursday) {
+            sb.append(context.getString(R.string.thursday))
+            sb.append(" ")
+        }
+        if(friday) {
+            sb.append(context.getString(R.string.friday))
+            sb.append(" ")
+        }
+        if(saturday) {
+            sb.append(context.getString(R.string.saturday))
+            sb.append(" ")
+        }
+        if(sunday) {
+            sb.append(context.getString(R.string.sunday))
+            sb.append(" ")
+        }
+
+        return sb.toString()
     }
 
     object StaticFunctions {

@@ -25,7 +25,8 @@ class RunningScheduleAdapter(private val liveData: LiveData<List<RunningSchedule
      */
     class ViewHolder(view: View,  private val onClickListener: (position: Int?) -> Unit) : RecyclerView.ViewHolder(view) {
         val title : TextView = view.findViewById(R.id.title)
-        val period : TextView = view.findViewById(R.id.period)
+        val startDate : TextView = view.findViewById(R.id.startDate)
+        val endDate : TextView = view.findViewById(R.id.endDate)
         val weekdays : TextView = view.findViewById(R.id.weekdays)
 
         init {
@@ -51,7 +52,8 @@ class RunningScheduleAdapter(private val liveData: LiveData<List<RunningSchedule
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         viewHolder.title.text = data[position].getTitle()
-        viewHolder.period.text = data[position].getStartDate().toString() + " - " + data[position].getEndDate().toString()
+        viewHolder.startDate.text = data[position].getStartDate().toString()
+        viewHolder.endDate.text = data[position].getEndDate().toString()
         viewHolder.weekdays.text = weekdays[position]
     }
 

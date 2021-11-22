@@ -132,7 +132,8 @@ class AddRunningScheduleEntryFragment : Fragment() { //TODO: datepicker auslager
 
             R.id.imageSave -> {
                 //TODO: save entry
-                super.onOptionsItemSelected(item)
+                activity?.onBackPressed()
+                true
             }
             else -> super.onOptionsItemSelected(item)
         }

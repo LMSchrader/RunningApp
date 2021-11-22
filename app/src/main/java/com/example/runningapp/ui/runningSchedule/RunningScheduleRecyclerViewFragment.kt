@@ -38,7 +38,7 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
 
         adapter = RunningScheduleAdapter(viewModel.getEntries(), { position ->
             viewModel.currentEntry.value = position
-            if (!isLandscapeMode()) {
+            if (!context?.let { isLandscapeMode(it) }!!) {
                 view?.findNavController()?.navigate(R.id.action_nav_running_schedule_to_nav_running_schedule_entry)
 
                 //parentFragment?.childFragmentManager?.commit {

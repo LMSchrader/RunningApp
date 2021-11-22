@@ -28,10 +28,10 @@ class RunningScheduleFragment : Fragment() {
         if (savedInstanceState == null) {
             childFragmentManager.commit {
                 setReorderingAllowed(true)
-                add<RunningScheduleRecyclerViewFragment>(R.id.recyclerView)
+                add<RunningScheduleRecyclerViewFragment>(R.id.leftFragment)
 
-                if (isLandscapeMode()) {
-                    add<RunningScheduleEntryFragment>(R.id.running_schedule_entry)
+                if (context?.let { isLandscapeMode(it) } == true) {
+                    add<RunningScheduleEntryFragment>(R.id.rightFragment)
                 }
             }
         }

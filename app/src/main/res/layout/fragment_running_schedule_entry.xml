@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Dummy Titel"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textIsSelectable="false"
@@ -36,9 +35,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:text="Mo Di Mi Do Fr Sa So"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/weekdayTitle" />
@@ -54,16 +50,34 @@
         app:layout_constraintTop_toBottomOf="@id/weekdays" />
 
     <TextView
-        android:id="@+id/period"
+        android:id="@+id/startDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:text="31.10.2021 - 01.01.2022"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/periodTitle" />
+
+    <TextView
+        android:id="@+id/dateSplitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/to"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/startDate"
+        app:layout_constraintTop_toBottomOf="@id/periodTitle" />
+
+    <TextView
+        android:id="@+id/endDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/dateSplitter"
         app:layout_constraintTop_toBottomOf="@id/periodTitle" />
 
     <TextView
@@ -74,7 +88,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/description"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/period" />
+        app:layout_constraintTop_toBottomOf="@id/startDate" />
 
     <TextView
         android:id="@+id/description"
@@ -82,9 +96,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:text="description"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/descriptionTitle" />
