@@ -14,7 +14,8 @@ class HistoryViewModel : ViewModel() {
         MutableLiveData<List<RunHistoryEntry>>(loadRunHistoryEntries())
     }
 
-    var currentRunHistoryEntry : MutableLiveData<Int> = MutableLiveData<Int>(0)
+    val currentRunHistoryEntry : MutableLiveData<Int> = MutableLiveData<Int>(0)
+    var isInSplitScreenMode : Boolean = false
 
     fun getRunHistoryEntries(): LiveData<List<RunHistoryEntry>> {
         return runHistoryEntries
@@ -29,9 +30,5 @@ class HistoryViewModel : ViewModel() {
 
     private fun loadDummyRunHistoryEntries(): List<RunHistoryEntry> {
         return RunHistoryEntry.StaticFunctions.getDummyData()
-    }
-
-    private fun setCurrentRunningHistoryEntry(newIdx : Int) {
-        currentRunHistoryEntry.value = newIdx
     }
 }

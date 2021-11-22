@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout-land/fragment_history.xml" value="0.33" />
+        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout-land/fragment_history_scene.xml" value="0.17372134038800705" />
         <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/activity_running_schedule_entry.xml" value="0.33489583333333334" />
-        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_history.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_history.xml" value="0.22" />
+        <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_history_scene.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/fragment_running_schedule.xml" value="0.5" />
         <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/run_history_item.xml" value="0.75" />
         <entry key="..\:/Users/Thilo/AndroidStudioProjects/RunningApp/app/src/main/res/layout/running_schedule_item.xml" value="0.7502153316106804" />
