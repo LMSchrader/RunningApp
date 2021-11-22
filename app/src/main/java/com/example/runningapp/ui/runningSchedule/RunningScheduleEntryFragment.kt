@@ -11,7 +11,7 @@ import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleEntryBinding
 import com.example.runningapp.util.Util
 
-class RunningScheduleEntryFragment : Fragment() {
+class RunningScheduleEntryFragment : Fragment() { //TODO: wechsel portrait auf landscape: es soll wieder runningSCheduleFragment mit diesem Fragment als child angezeigt werden
     private val viewModel: RunningScheduleViewModel by activityViewModels()
     private var _binding: FragmentRunningScheduleEntryBinding? = null
 
@@ -57,14 +57,11 @@ class RunningScheduleEntryFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (context?.let { Util.StaticFunctions.isLandscapeMode(it) } == true) {
             return when (item.itemId) {
-                R.id.home -> {
-                    activity?.onBackPressed()
-                    return true
-                }
-
                 R.id.imageEdit -> {
                     //TODO: entry mitgeben
-                    (parentFragment as? RunningScheduleFragment)?.replaceSecondFragment()
+                    //TODO: bug
+                    view?.findNavController()
+                        ?.navigate(R.id.action_nav_running_schedule_to_nav_edit_running_schedule_entry)
                     true
                 }
 
@@ -77,6 +74,11 @@ class RunningScheduleEntryFragment : Fragment() {
             }
         } else {
             return when (item.itemId) {
+                R.id.home -> {
+                    activity?.onBackPressed()
+                    return true
+                }
+
                 R.id.imageEdit -> {
                     //TODO: entry mitgeben
                     view?.findNavController()

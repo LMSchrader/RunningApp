@@ -5,14 +5,13 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleBinding
 
 class RunningScheduleFragment : Fragment() {
-
+//TODO: bug, menu items vom Fragment running schedule entry werden beim wechsel auf portrait weiterhin angezeigt
     private lateinit var viewModel: RunningScheduleViewModel
     private var _binding: FragmentRunningScheduleBinding? = null
 
@@ -34,12 +33,12 @@ class RunningScheduleFragment : Fragment() {
                 //}
             }
         } //else if (context?.let { isLandscapeMode(it) } == true && parentFragmentManager.findFragmentById(
-          //      R.id.rightFragment
-          //  ) == null) {
-          //  childFragmentManager.commit {
-          //      setReorderingAllowed(true)
-          //      add<RunningScheduleEntryFragment>(R.id.rightFragment)
-          //  }
+        //      R.id.rightFragment
+        //  ) == null) {
+        //  childFragmentManager.commit {
+        //      setReorderingAllowed(true)
+        //      add<RunningScheduleEntryFragment>(R.id.rightFragment)
+        //  }
         //}
     }
 
@@ -71,13 +70,6 @@ class RunningScheduleFragment : Fragment() {
         childFragmentManager.commit {
             setReorderingAllowed(true)
             add<RunningScheduleEntryFragment>(R.id.rightFragment)
-        }
-    }
-
-    fun replaceSecondFragment() {
-        childFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<EditRunningScheduleEntryFragment>(R.id.rightFragment)
         }
     }
 }

@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_nav_running_schedule_to_nav_add_running_schedule_entry"
             app:destination="@id/nav_add_running_schedule_entry" />
+        <action
+            android:id="@+id/action_nav_running_schedule_to_nav_edit_running_schedule_entry"
+            app:destination="@id/nav_edit_running_schedule_entry" />
     </fragment>
 
     <fragment

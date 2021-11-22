@@ -42,7 +42,7 @@ class EditRunningScheduleEntryFragment : Fragment() { //TODO: implement
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean { //TODO config
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 activity?.onBackPressed()
