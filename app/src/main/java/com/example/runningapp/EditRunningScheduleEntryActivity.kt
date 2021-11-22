@@ -13,7 +13,7 @@ import com.example.runningapp.databinding.ActivityEditRunningScheduleEntryBindin
 import java.time.LocalDate
 import java.util.*
 
-class EditRunningScheduleEntryActivity : AppCompatActivity() { //TODO: currently only add entry, add also edit functionality (same layout)
+class EditRunningScheduleEntryActivity : AppCompatActivity() { //TODO: remove later
     private lateinit var binding: ActivityEditRunningScheduleEntryBinding
     private lateinit var datePickerDialogFromDate: DatePickerDialog
     private lateinit var datePickerDialogToDate: DatePickerDialog
@@ -26,9 +26,9 @@ class EditRunningScheduleEntryActivity : AppCompatActivity() { //TODO: currently
         binding = ActivityEditRunningScheduleEntryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.include.toolbar)
+        //setSupportActionBar(binding.include.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        binding.include.toolbar.setNavigationIcon(R.drawable.ic_baseline_clear_24)
+        //binding.include.toolbar.setNavigationIcon(R.drawable.ic_baseline_clear_24)
 
         initDatePickerFromDate()
         initDatePickerToDate()

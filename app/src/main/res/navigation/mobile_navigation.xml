@@ -15,7 +15,11 @@
         android:id="@+id/nav_running_schedule"
         android:name="com.example.runningapp.ui.runningSchedule.RunningScheduleFragment"
         android:label="@string/menu_running_schedule"
-        tools:layout="@layout/fragment_running_schedule" />
+        tools:layout="@layout/fragment_running_schedule" >
+        <action
+            android:id="@+id/action_nav_running_schedule_to_nav_running_schedule_entry"
+            app:destination="@id/nav_running_schedule_entry" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_history"
@@ -28,4 +32,18 @@
         android:name="com.example.runningapp.ui.record.RecordRunFragment"
         android:label="@string/menu_record_run"
         tools:layout="@layout/fragment_record_run" />
+
+    <fragment
+        android:id="@+id/nav_running_schedule_entry"
+        android:name="com.example.runningapp.ui.runningSchedule.RunningScheduleEntryFragment"
+        tools:layout="@layout/fragment_running_schedule_entry" >
+        <action
+            android:id="@+id/action_nav_running_schedule_entry_to_nav_edit_running_schedule_entry"
+            app:destination="@id/nav_edit_running_schedule_entry" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_edit_running_schedule_entry"
+        android:name="com.example.runningapp.ui.runningSchedule.EditRunningScheduleEntryFragment"
+        tools:layout="@layout/fragment_edit_running_schedule_entry" />
 </navigation>
