@@ -9,7 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.runningapp.databinding.ActivityEditRunningScheduleEntryBinding
+//import com.example.runningapp.databinding.ActivityEditRunningScheduleEntryBinding
 import java.time.LocalDate
 import java.util.*
 

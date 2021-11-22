@@ -1,11 +1,10 @@
 package com.example.runningapp.ui.runningSchedule
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBinding
 
 class EditRunningScheduleEntryFragment : Fragment() { //TODO: implement
@@ -27,11 +26,35 @@ class EditRunningScheduleEntryFragment : Fragment() { //TODO: implement
 
         _binding = FragmentEditRunningScheduleEntryBinding.inflate(inflater, container, false)
 
+        setHasOptionsMenu(true)
+
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.menu_edit_running_schedule_entry, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean { //TODO config
+        return when (item.itemId) {
+            android.R.id.home -> {
+                activity?.onBackPressed()
+                true
+            }
+
+            R.id.imageSave -> {
+                //TODO: save entry
+                activity?.onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
