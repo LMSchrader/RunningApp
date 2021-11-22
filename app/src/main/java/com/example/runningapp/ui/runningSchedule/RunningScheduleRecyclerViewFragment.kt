@@ -41,6 +41,10 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
                 viewModel.currentEntry.value = position
                 if (!context?.let { isLandscapeMode(it) }!!) {
                     view?.findNavController()?.navigate(R.id.action_nav_running_schedule_to_nav_running_schedule_entry)
+                } else {
+                    if(parentFragmentManager.findFragmentById(R.id.rightFragment) == null) {
+                        (parentFragment as? RunningScheduleFragment)?.addSecondFragment()
+                    }
                 }
             }, viewLifecycleOwner)
         }

@@ -56,28 +56,42 @@ class RunningScheduleEntryFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (context?.let { Util.StaticFunctions.isLandscapeMode(it) } == true) {
+            return when (item.itemId) {
+                R.id.home -> {
+                    activity?.onBackPressed()
+                    return true
+                }
 
-            if (item.itemId == android.R.id.home) {
-                activity?.onBackPressed()
-                return true
+                R.id.imageEdit -> {
+                    //TODO: entry mitgeben
+                    (parentFragment as? RunningScheduleFragment)?.replaceSecondFragment()
+                    true
+                }
+
+                R.id.imageDelete -> {
+                    //TODO: entry loeschen
+                    true
+                }
+
+                else -> super.onOptionsItemSelected(item)
             }
-        }
+        } else {
+            return when (item.itemId) {
+                R.id.imageEdit -> {
+                    //TODO: entry mitgeben
+                    view?.findNavController()
+                        ?.navigate(R.id.action_nav_running_schedule_entry_to_nav_edit_running_schedule_entry)
+                    true
+                }
 
-        return when (item.itemId) {
-            R.id.imageEdit -> {
-                //TODO: entry mitgeben
-                view?.findNavController()
-                    ?.navigate(R.id.action_nav_running_schedule_entry_to_nav_edit_running_schedule_entry)
-                true
+                R.id.imageDelete -> {
+                    //TODO: entry loeschen
+                    activity?.onBackPressed()
+                    true
+                }
+
+                else -> super.onOptionsItemSelected(item)
             }
-
-            R.id.imageDelete -> {
-                //TODO: entry loeschen
-                activity?.onBackPressed()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
         }
     }
 }
