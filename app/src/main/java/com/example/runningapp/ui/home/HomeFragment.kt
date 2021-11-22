@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -35,11 +36,7 @@ class HomeFragment : Fragment() {
         //})
 
         binding.recordRunButton.setOnClickListener {
-            // TODO: aendern
-            Toast.makeText(context?.applicationContext, "replace with an action", Toast.LENGTH_LONG)
-                .show()
-            //val intent = Intent(this, RecordRunActivity::class.java).apply {}
-            //startActivity(intent)
+            view?.findNavController()?.navigate(R.id.action_nav_home_to_nav_record_run)
         }
 
         return root
