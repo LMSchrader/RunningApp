@@ -34,6 +34,11 @@ class RunningScheduleFragment : Fragment() {
                     add<RunningScheduleEntryFragment>(R.id.rightFragment)
                 }
             }
+        } else if (context?.let { isLandscapeMode(it) } == true && parentFragmentManager.findFragmentById(R.id.rightFragment) == null) {
+            childFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<RunningScheduleEntryFragment>(R.id.rightFragment)
+            }
         }
     }
 
