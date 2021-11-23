@@ -1,4 +1,4 @@
-package com.example.runningapp.ui.runningSchedule
+package com.example.runningapp.ui.runningSchedule.addRunningScheduleEntry
 
 import android.app.DatePickerDialog
 import android.os.Build
@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBinding
+import com.example.runningapp.ui.runningSchedule.RunningScheduleViewModel
 import java.time.LocalDate
 import java.util.*
 

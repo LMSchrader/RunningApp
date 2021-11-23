@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleBinding
+import com.example.runningapp.ui.runningSchedule.runningScheduleEntry.RunningScheduleEntryFragment
 
 class RunningScheduleFragment : Fragment() {
 //TODO: bug, menu items vom Fragment running schedule entry werden beim wechsel auf portrait weiterhin angezeigt

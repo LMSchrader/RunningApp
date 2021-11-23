@@ -1,4 +1,4 @@
-package com.example.runningapp.ui.runningSchedule
+package com.example.runningapp.ui.runningSchedule.runningScheduleEntry
 
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleEntryBinding
+import com.example.runningapp.ui.runningSchedule.RunningScheduleViewModel
 import com.example.runningapp.util.Util
 
 class RunningScheduleEntryFragment : Fragment() { //TODO: wechsel portrait auf landscape: es soll wieder runningSCheduleFragment mit diesem Fragment als child angezeigt werden

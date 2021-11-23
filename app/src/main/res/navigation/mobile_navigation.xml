@@ -45,7 +45,7 @@
 
     <fragment
         android:id="@+id/nav_running_schedule_entry"
-        android:name="com.example.runningapp.ui.runningSchedule.RunningScheduleEntryFragment"
+        android:name="com.example.runningapp.ui.runningSchedule.runningScheduleEntry.RunningScheduleEntryFragment"
         tools:layout="@layout/fragment_running_schedule_entry" >
         <action
             android:id="@+id/action_nav_running_schedule_entry_to_nav_edit_running_schedule_entry"
@@ -54,11 +54,11 @@
 
     <fragment
         android:id="@+id/nav_add_running_schedule_entry"
-        android:name="com.example.runningapp.ui.runningSchedule.AddRunningScheduleEntryFragment"
+        android:name="com.example.runningapp.ui.runningSchedule.addRunningScheduleEntry.AddRunningScheduleEntryFragment"
         tools:layout="@layout/fragment_edit_running_schedule_entry" />
 
     <fragment
         android:id="@+id/nav_edit_running_schedule_entry"
-        android:name="com.example.runningapp.ui.runningSchedule.EditRunningScheduleEntryFragment"
+        android:name="com.example.runningapp.ui.runningSchedule.editRunningScheduleEntry.EditRunningScheduleEntryFragment"
         tools:layout="@layout/fragment_edit_running_schedule_entry" />
 </navigation>
