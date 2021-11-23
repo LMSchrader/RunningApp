@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.databinding.FragmentRecyclerViewBinding
 
-class HistoryRecyclerViewFragment() : Fragment() {
+class HistoryRecyclerViewFragment : Fragment() {
 
     private val historyViewModel: HistoryViewModel by activityViewModels()
     private var _binding: FragmentRecyclerViewBinding? = null

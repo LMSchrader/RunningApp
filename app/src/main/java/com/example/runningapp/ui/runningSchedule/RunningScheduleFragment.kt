@@ -5,7 +5,6 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleBinding
@@ -13,7 +12,6 @@ import com.example.runningapp.ui.runningSchedule.runningScheduleEntry.RunningSch
 
 class RunningScheduleFragment : Fragment() {
 //TODO: bug, menu items vom Fragment running schedule entry werden beim wechsel auf portrait weiterhin angezeigt
-    private lateinit var viewModel: RunningScheduleViewModel
     private var _binding: FragmentRunningScheduleBinding? = null
 
     // This property is only valid between onCreateView and
@@ -48,18 +46,14 @@ class RunningScheduleFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel =
-            ViewModelProvider(this)[RunningScheduleViewModel::class.java]
-
         _binding = FragmentRunningScheduleBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
         binding.addButton.setOnClickListener {
             view?.findNavController()
                 ?.navigate(R.id.action_nav_running_schedule_to_nav_add_running_schedule_entry)
         }
 
-        return root
+        return binding.root
     }
 
     override fun onDestroyView() {

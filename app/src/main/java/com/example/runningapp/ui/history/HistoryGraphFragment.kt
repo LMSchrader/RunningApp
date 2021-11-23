@@ -16,7 +16,6 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 
-
 class HistoryGraphFragment : Fragment() {
 
     private val historyViewModel: HistoryViewModel by activityViewModels()
@@ -25,12 +24,6 @@ class HistoryGraphFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var chart: LineChart
-
-    fun generateData(): LineData {
-        val dataList = mutableListOf(Entry(1F, 1F), Entry(2F, 2F), Entry(3F, 3F), Entry(4F, 4F))
-        val dataSet = LineDataSet(dataList, "test")
-        return LineData(dataSet)
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -49,7 +42,7 @@ class HistoryGraphFragment : Fragment() {
         chart.setDrawGridBackground(false)
 
         historyViewModel.currentRunHistoryEntry.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
-            historyViewModel.getRunHistoryEntries().removeObservers(viewLifecycleOwner)
+            historyViewModel.getRunHistoryEntries().removeObservers(viewLifecycleOwner) //TODO
             historyViewModel.getRunHistoryEntries()
                 .observe(viewLifecycleOwner) { runHistoryEntries ->
                     val timeList = runHistoryEntries[currentRunHistoryEntry].getTimeValues()

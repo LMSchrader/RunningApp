@@ -6,7 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.content.Intent
 
-class RunningScheduleEntryActivity : AppCompatActivity() { //TODO: delete
+class RunningScheduleEntryActivity : AppCompatActivity() { //TODO: remove later
  //   private lateinit var binding: ActivityRunningScheduleEntryBinding
 //
  //   override fun onCreate(savedInstanceState: Bundle?) {

@@ -25,7 +25,7 @@ class HistoryViewModel : ViewModel() {
         //TODO implement
         return loadDummyRunHistoryEntries()
 
-        // Do an asynchronous operation to fetch users.
+        // Do an asynchronous operation to fetch.
     }
 
     private fun loadDummyRunHistoryEntries(): List<RunHistoryEntry> {

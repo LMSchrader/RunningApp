@@ -18,7 +18,7 @@ class HistoryAdapter(runHistoryLiveData: LiveData<List<RunHistoryEntry>>, privat
     init {
         runHistoryLiveData.observe(lifecycleOwner) { runHistoryEntries ->
             data = runHistoryEntries
-            notifyDataSetChanged()  // TODO: use notifyItemRangeChanged() instead
+            notifyDataSetChanged()
         }
     }
 

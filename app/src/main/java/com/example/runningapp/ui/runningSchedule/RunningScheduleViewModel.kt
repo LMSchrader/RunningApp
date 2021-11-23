@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.runningapp.model.RunningScheduleEntry
+import com.example.runningapp.model.RunningScheduleEntry.StaticFunctions.getDummyData
 
 @RequiresApi(Build.VERSION_CODES.O)
 class RunningScheduleViewModel : ViewModel() {
@@ -30,10 +31,7 @@ class RunningScheduleViewModel : ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun loadDummyEntries(): List<RunningScheduleEntry> {
-        return RunningScheduleEntry.StaticFunctions.getDummyData()
+        return getDummyData()
     }
 
-    private fun setCurrentEntry(newIdx : Int) {
-        currentEntry.value = newIdx
-    }
 }

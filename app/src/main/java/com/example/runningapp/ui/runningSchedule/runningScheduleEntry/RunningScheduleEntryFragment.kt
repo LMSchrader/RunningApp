@@ -31,7 +31,7 @@ class RunningScheduleEntryFragment : Fragment() { //TODO: wechsel portrait auf l
         setHasOptionsMenu(true)
 
         viewModel.currentEntry.observe(viewLifecycleOwner) { currentEntry ->
-            viewModel.getEntries().removeObservers(viewLifecycleOwner)
+            viewModel.getEntries().removeObservers(viewLifecycleOwner) //Todo
             viewModel.getEntries().observe(viewLifecycleOwner) { entries ->
                 binding.title.text = entries[currentEntry].getTitle()
                 binding.weekdays.text = context?.let { entries[currentEntry].getWeekdayString(it) }
@@ -59,7 +59,6 @@ class RunningScheduleEntryFragment : Fragment() { //TODO: wechsel portrait auf l
         if (context?.let { isLandscapeMode(it) } == true) {
             return when (item.itemId) {
                 R.id.imageEdit -> {
-                    //TODO: entry mitgeben
                     //TODO: bug
                     view?.findNavController()
                         ?.navigate(R.id.action_nav_running_schedule_to_nav_edit_running_schedule_entry)

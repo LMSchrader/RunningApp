@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBinding
 import com.example.runningapp.ui.runningSchedule.RunningScheduleViewModel
@@ -15,7 +15,7 @@ import com.example.runningapp.util.DatePickerUtil.StaticFunctions.initDatePicker
 import java.time.LocalDate
 
 class AddRunningScheduleEntryFragment : Fragment() {
-    private lateinit var viewModel: RunningScheduleViewModel
+    private val viewModel: RunningScheduleViewModel by activityViewModels()
     private var _binding: FragmentEditRunningScheduleEntryBinding? = null
 
     private lateinit var datePickerDialogStartDate: DatePickerDialog
@@ -33,9 +33,6 @@ class AddRunningScheduleEntryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel =
-            ViewModelProvider(this)[RunningScheduleViewModel::class.java]
-
         _binding = FragmentEditRunningScheduleEntryBinding.inflate(inflater, container, false)
 
 

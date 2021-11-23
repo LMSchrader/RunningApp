@@ -26,14 +26,8 @@ class RecordRunFragment : Fragment() {
             ViewModelProvider(this)[RecordRunViewModel::class.java]
 
         _binding = FragmentRecordRunBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        //val textView: TextView = binding.textSlideshow
-        //recordRunViewModel.text.observe(viewLifecycleOwner, {
-        //    textView.text = it
-        //})
-
-        return root
+        return binding.root
     }
 
     override fun onDestroyView() {

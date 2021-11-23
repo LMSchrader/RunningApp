@@ -32,12 +32,11 @@ class EditRunningScheduleEntryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentEditRunningScheduleEntryBinding.inflate(inflater, container, false)
 
 
         viewModel.currentEntry.observe(viewLifecycleOwner) { currentEntry ->
-            viewModel.getEntries().removeObservers(viewLifecycleOwner)
+            viewModel.getEntries().removeObservers(viewLifecycleOwner) //TODO
             viewModel.getEntries().observe(viewLifecycleOwner) { entries ->
 
                 binding.editTitle.setText(entries[currentEntry].getTitle())

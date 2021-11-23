@@ -25,7 +25,7 @@ class RunningScheduleAdapter(
     init {
         liveData.observe(lifecycleOwner) { entries ->
             data = entries
-            notifyDataSetChanged() // TODO: use notifyItemRangeChanged() instead
+            notifyDataSetChanged()
         }
     }
 
