@@ -46,4 +46,8 @@
     <string name="cancel">Cancel</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+
+    <!-- permissions -->
+    <string name="ok">OK</string>
+    <string name="location_permission_required">Runs cannot be recorded without location permission</string>
 </resources>

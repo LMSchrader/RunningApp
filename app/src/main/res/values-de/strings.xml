@@ -46,4 +46,8 @@
     <string name="cancel">Abbrechen</string>
     <string name="edit">Bearbeiten</string>
     <string name="delete">Löschen</string>
+
+    <!-- permissions -->
+    <string name="ok">OK</string>
+    <string name="location_permission_required">Ohne Standortgenehmigung können keine Läufe aufgezeichnet werden</string>
 </resources>
