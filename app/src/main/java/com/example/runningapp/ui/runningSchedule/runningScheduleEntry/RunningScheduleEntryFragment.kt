@@ -10,7 +10,7 @@ import androidx.navigation.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleEntryBinding
 import com.example.runningapp.ui.runningSchedule.RunningScheduleViewModel
-import com.example.runningapp.util.Util
+import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
 
 class RunningScheduleEntryFragment : Fragment() { //TODO: wechsel portrait auf landscape: es soll wieder runningSCheduleFragment mit diesem Fragment als child angezeigt werden
     private val viewModel: RunningScheduleViewModel by activityViewModels()
@@ -56,7 +56,7 @@ class RunningScheduleEntryFragment : Fragment() { //TODO: wechsel portrait auf l
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (context?.let { Util.StaticFunctions.isLandscapeMode(it) } == true) {
+        if (context?.let { isLandscapeMode(it) } == true) {
             return when (item.itemId) {
                 R.id.imageEdit -> {
                     //TODO: entry mitgeben

@@ -3,7 +3,7 @@ package com.example.runningapp.util
 import android.content.Context
 import android.content.res.Configuration
 
-class Util {
+class OrientationUtil {
 
     object StaticFunctions {
         @JvmStatic

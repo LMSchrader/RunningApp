@@ -10,16 +10,18 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBinding
 import com.example.runningapp.ui.runningSchedule.RunningScheduleViewModel
+import com.example.runningapp.util.DatePickerUtil.StaticFunctions.getTodaysDate
+import com.example.runningapp.util.DatePickerUtil.StaticFunctions.initDatePicker
 import java.time.LocalDate
-import java.util.*
 
-class AddRunningScheduleEntryFragment : Fragment() { //TODO: datepicker auslagern
+class AddRunningScheduleEntryFragment : Fragment() {
     private lateinit var viewModel: RunningScheduleViewModel
     private var _binding: FragmentEditRunningScheduleEntryBinding? = null
 
     private lateinit var datePickerDialogFromDate: DatePickerDialog
     private lateinit var datePickerDialogToDate: DatePickerDialog
-    private lateinit var date: LocalDate
+    private lateinit var startDate: LocalDate
+    private lateinit var endDate: LocalDate
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -68,60 +70,25 @@ class AddRunningScheduleEntryFragment : Fragment() { //TODO: datepicker auslager
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getTodaysDate(): LocalDate {
-        val cal = Calendar.getInstance()
-        return LocalDate.of(cal[Calendar.YEAR], cal[Calendar.MONTH] + 1, cal[Calendar.DAY_OF_MONTH])
-    }
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
     fun initDatePickerFromDate() {
         val dateSetListener =
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
-                date = LocalDate.of(year, month + 1, day)
-                binding.editStartingDate.text = date.toString()
+                startDate = LocalDate.of(year, month + 1, day)
+                binding.editStartingDate.text = startDate.toString()
             }
 
-        val cal: Calendar = Calendar.getInstance()
-        val year: Int = cal.get(Calendar.YEAR)
-        val month: Int = cal.get(Calendar.MONTH)
-        val day: Int = cal.get(Calendar.DAY_OF_MONTH)
-
-        datePickerDialogFromDate = context?.let {
-            DatePickerDialog(
-                it,
-                android.R.style.Theme_DeviceDefault_Dialog,
-                dateSetListener,
-                year,
-                month,
-                day
-            )
-        }!!
+        datePickerDialogFromDate = context?.let { initDatePicker(it, dateSetListener) }!!
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun initDatePickerToDate() {
         val dateSetListener =
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
-                date = LocalDate.of(year, month + 1, day)
-                binding.editEndDate.text = date.toString()
+                endDate = LocalDate.of(year, month + 1, day)
+                binding.editEndDate.text = endDate.toString()
             }
 
-        val cal: Calendar = Calendar.getInstance()
-        val year: Int = cal.get(Calendar.YEAR)
-        val month: Int = cal.get(Calendar.MONTH)
-        val day: Int = cal.get(Calendar.DAY_OF_MONTH)
-
-        datePickerDialogToDate = context?.let {
-            DatePickerDialog(
-                it,
-                android.R.style.Theme_DeviceDefault_Dialog,
-                dateSetListener,
-                year,
-                month,
-                day
-            )
-        }!!
+        datePickerDialogToDate = context?.let { initDatePicker(it, dateSetListener) }!!
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

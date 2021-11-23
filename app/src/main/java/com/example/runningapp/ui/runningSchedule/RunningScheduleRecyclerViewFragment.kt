@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRecyclerViewBinding
-import com.example.runningapp.util.Util.StaticFunctions.isLandscapeMode
+import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
 
 class RunningScheduleRecyclerViewFragment : Fragment() {
     private val viewModel: RunningScheduleViewModel by activityViewModels()
