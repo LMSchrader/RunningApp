@@ -13,13 +13,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.R
 import com.example.runningapp.model.RunningScheduleEntry
 
-class RunningScheduleAdapter(private val context: Context, liveData: LiveData<List<RunningScheduleEntry>>, private val onClickListener: (position: Int?) -> Unit, lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>() {
-
-    // TODO: remove dummy data
-   // @RequiresApi(Build.VERSION_CODES.O)
-   // private val data = RunningScheduleEntry.StaticFunctions.getDummyData()
+class RunningScheduleAdapter(
+    private val context: Context,
+    liveData: LiveData<List<RunningScheduleEntry>>,
+    private val onClickListener: (position: Int?) -> Unit,
+    lifecycleOwner: LifecycleOwner
+) : RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>() {
 
     private var data: List<RunningScheduleEntry> = emptyList()
+
     init {
         liveData.observe(lifecycleOwner) { entries ->
             data = entries
@@ -31,11 +33,12 @@ class RunningScheduleAdapter(private val context: Context, liveData: LiveData<Li
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    class ViewHolder(view: View,  private val onClickListener: (position: Int?) -> Unit) : RecyclerView.ViewHolder(view) {
-        val title : TextView = view.findViewById(R.id.title)
-        val startDate : TextView = view.findViewById(R.id.startDate)
-        val endDate : TextView = view.findViewById(R.id.endDate)
-        val weekdays : TextView = view.findViewById(R.id.weekdays)
+    class ViewHolder(view: View, private val onClickListener: (position: Int?) -> Unit) :
+        RecyclerView.ViewHolder(view) {
+        val title: TextView = view.findViewById(R.id.title)
+        val startDate: TextView = view.findViewById(R.id.startDate)
+        val endDate: TextView = view.findViewById(R.id.endDate)
+        val weekdays: TextView = view.findViewById(R.id.weekdays)
 
         init {
             view.setOnClickListener {

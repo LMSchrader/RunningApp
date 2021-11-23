@@ -24,11 +24,11 @@ class HistoryGraphFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private lateinit var chart : LineChart
+    private lateinit var chart: LineChart
 
-    fun generateData() : LineData {
-        val dataList = mutableListOf(Entry(1F,1F), Entry(2F,2F), Entry(3F,3F), Entry(4F,4F))
-        val dataSet = LineDataSet(dataList,"test")
+    fun generateData(): LineData {
+        val dataList = mutableListOf(Entry(1F, 1F), Entry(2F, 2F), Entry(3F, 3F), Entry(4F, 4F))
+        val dataSet = LineDataSet(dataList, "test")
         return LineData(dataSet)
     }
 
@@ -49,21 +49,30 @@ class HistoryGraphFragment : Fragment() {
         chart.setDrawGridBackground(false)
 
         historyViewModel.currentRunHistoryEntry.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
-            val idx = currentRunHistoryEntry
             historyViewModel.getRunHistoryEntries().removeObservers(viewLifecycleOwner)
-            historyViewModel.getRunHistoryEntries().observe(viewLifecycleOwner) { runHistoryEntries ->
-                val timeList = runHistoryEntries[idx].getTimeValues()
-                val paceList = runHistoryEntries[idx].getPaceValues()
-                val altitudeList = runHistoryEntries[idx].getAltitudeValues()
-                val paceTimeSeries : MutableList<Entry> = mutableListOf<Entry>()
-                val altitudeTimeSeries : MutableList<Entry> = mutableListOf<Entry>()
-                for (i in timeList.indices) {
-                    paceTimeSeries.add(Entry(timeList[i],paceList[i]))
-                    altitudeTimeSeries.add(Entry(timeList[i],altitudeList[i]))
+            historyViewModel.getRunHistoryEntries()
+                .observe(viewLifecycleOwner) { runHistoryEntries ->
+                    val timeList = runHistoryEntries[currentRunHistoryEntry].getTimeValues()
+                    val paceList = runHistoryEntries[currentRunHistoryEntry].getPaceValues()
+                    val altitudeList = runHistoryEntries[currentRunHistoryEntry].getAltitudeValues()
+                    val paceTimeSeries: MutableList<Entry> = mutableListOf()
+                    val altitudeTimeSeries: MutableList<Entry> = mutableListOf()
+                    for (i in timeList.indices) {
+                        paceTimeSeries.add(Entry(timeList[i], paceList[i]))
+                        altitudeTimeSeries.add(Entry(timeList[i], altitudeList[i]))
+                    }
+                    chart.data = LineData(
+                        LineDataSet(
+                            paceTimeSeries,
+                            root.context.resources.getString(R.string.pace_label)
+                        ),
+                        LineDataSet(
+                            altitudeTimeSeries,
+                            root.context.resources.getString(R.string.altitude_label)
+                        )
+                    )
+                    chart.animateX(500)
                 }
-                chart.data = LineData(LineDataSet(paceTimeSeries, root.context.resources.getString(R.string.pace_label)),LineDataSet(altitudeTimeSeries, root.context.resources.getString(R.string.altitude_label)))
-                chart.animateX(500)
-            }
         }
 
         return root

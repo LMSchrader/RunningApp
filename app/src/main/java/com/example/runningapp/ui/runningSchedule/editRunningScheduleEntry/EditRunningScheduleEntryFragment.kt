@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBinding
 import com.example.runningapp.ui.runningSchedule.RunningScheduleViewModel
@@ -14,7 +14,7 @@ import com.example.runningapp.util.DatePickerUtil
 import java.time.LocalDate
 
 class EditRunningScheduleEntryFragment : Fragment() {
-    private lateinit var viewModel: RunningScheduleViewModel
+    private val viewModel: RunningScheduleViewModel by activityViewModels()
     private var _binding: FragmentEditRunningScheduleEntryBinding? = null
 
     private lateinit var datePickerDialogStartDate: DatePickerDialog
@@ -32,11 +32,30 @@ class EditRunningScheduleEntryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel =
-            ViewModelProvider(this)[RunningScheduleViewModel::class.java]
 
         _binding = FragmentEditRunningScheduleEntryBinding.inflate(inflater, container, false)
 
+
+        viewModel.currentEntry.observe(viewLifecycleOwner) { currentEntry ->
+            viewModel.getEntries().removeObservers(viewLifecycleOwner)
+            viewModel.getEntries().observe(viewLifecycleOwner) { entries ->
+
+                binding.editTitle.setText(entries[currentEntry].getTitle())
+
+                binding.checkBoxMonday.isChecked = entries[currentEntry].getMonday()
+                binding.checkBoxTuesday.isChecked = entries[currentEntry].getTuesday()
+                binding.checkBoxWednesday.isChecked = entries[currentEntry].getWednesday()
+                binding.checkBoxThursday.isChecked = entries[currentEntry].getThursday()
+                binding.checkBoxFriday.isChecked = entries[currentEntry].getFriday()
+                binding.checkBoxSaturday.isChecked = entries[currentEntry].getSaturday()
+                binding.checkBoxSunday.isChecked = entries[currentEntry].getSunday()
+
+                binding.editStartingDate.text = entries[currentEntry].getStartDate().toString()
+                binding.editEndDate.text = entries[currentEntry].getEndDate().toString()
+
+                binding.editDescription.setText(entries[currentEntry].getDescription())
+            }
+        }
 
         setHasOptionsMenu(true)
 

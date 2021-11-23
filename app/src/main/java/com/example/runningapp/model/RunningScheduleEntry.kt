@@ -10,7 +10,7 @@ class RunningScheduleEntry {
     private lateinit var title: String
     private lateinit var startDate: LocalDate
     private lateinit var endDate: LocalDate
-    private var description : String = ""
+    private var description: String = ""
     private var monday: Boolean = false
     private var tuesday: Boolean = false
     private var wednesday: Boolean = false
@@ -35,34 +35,62 @@ class RunningScheduleEntry {
         return description
     }
 
+    fun getMonday(): Boolean {
+        return monday
+    }
+
+    fun getTuesday(): Boolean {
+        return tuesday
+    }
+
+    fun getWednesday(): Boolean {
+        return wednesday
+    }
+
+    fun getThursday(): Boolean {
+        return thursday
+    }
+
+    fun getFriday(): Boolean {
+        return friday
+    }
+
+    fun getSaturday(): Boolean {
+        return saturday
+    }
+
+    fun getSunday(): Boolean {
+        return sunday
+    }
+
     fun getWeekdayString(context: Context): String {
         val sb = StringBuilder()
 
-        if(monday) {
+        if (monday) {
             sb.append(context.getString(R.string.monday))
             sb.append(" ")
         }
-        if(tuesday) {
+        if (tuesday) {
             sb.append(context.getString(R.string.tuesday))
             sb.append(" ")
         }
-        if(wednesday) {
+        if (wednesday) {
             sb.append(context.getString(R.string.wednesday))
             sb.append(" ")
         }
-        if(thursday) {
+        if (thursday) {
             sb.append(context.getString(R.string.thursday))
             sb.append(" ")
         }
-        if(friday) {
+        if (friday) {
             sb.append(context.getString(R.string.friday))
             sb.append(" ")
         }
-        if(saturday) {
+        if (saturday) {
             sb.append(context.getString(R.string.saturday))
             sb.append(" ")
         }
-        if(sunday) {
+        if (sunday) {
             sb.append(context.getString(R.string.sunday))
             sb.append(" ")
         }
