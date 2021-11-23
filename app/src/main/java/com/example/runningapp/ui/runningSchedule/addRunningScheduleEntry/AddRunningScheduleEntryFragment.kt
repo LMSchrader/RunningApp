@@ -18,8 +18,8 @@ class AddRunningScheduleEntryFragment : Fragment() {
     private lateinit var viewModel: RunningScheduleViewModel
     private var _binding: FragmentEditRunningScheduleEntryBinding? = null
 
-    private lateinit var datePickerDialogFromDate: DatePickerDialog
-    private lateinit var datePickerDialogToDate: DatePickerDialog
+    private lateinit var datePickerDialogStartDate: DatePickerDialog
+    private lateinit var datePickerDialogEndDate: DatePickerDialog
     private lateinit var startDate: LocalDate
     private lateinit var endDate: LocalDate
 
@@ -42,17 +42,17 @@ class AddRunningScheduleEntryFragment : Fragment() {
         setHasOptionsMenu(true)
 
         // initialize date picker
-        initDatePickerFromDate()
-        initDatePickerToDate()
+        initDatePickerStartDate()
+        initDatePickerEndDate()
         binding.editStartingDate.text = getTodaysDate().toString()
         binding.editEndDate.text = getTodaysDate().toString()
 
         binding.editStartingDate.setOnClickListener {
-            datePickerDialogFromDate.show()
+            datePickerDialogStartDate.show()
         }
 
         binding.editEndDate.setOnClickListener {
-            datePickerDialogToDate.show()
+            datePickerDialogEndDate.show()
         }
 
         return binding.root
@@ -70,25 +70,25 @@ class AddRunningScheduleEntryFragment : Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun initDatePickerFromDate() {
+    fun initDatePickerStartDate() {
         val dateSetListener =
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
                 startDate = LocalDate.of(year, month + 1, day)
                 binding.editStartingDate.text = startDate.toString()
             }
 
-        datePickerDialogFromDate = context?.let { initDatePicker(it, dateSetListener) }!!
+        datePickerDialogStartDate = context?.let { initDatePicker(it, dateSetListener) }!!
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun initDatePickerToDate() {
+    fun initDatePickerEndDate() {
         val dateSetListener =
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
                 endDate = LocalDate.of(year, month + 1, day)
                 binding.editEndDate.text = endDate.toString()
             }
 
-        datePickerDialogToDate = context?.let { initDatePicker(it, dateSetListener) }!!
+        datePickerDialogEndDate = context?.let { initDatePicker(it, dateSetListener) }!!
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
