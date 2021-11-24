@@ -12,12 +12,20 @@ import com.example.runningapp.databinding.FragmentRunningScheduleEntryBinding
 import com.example.runningapp.ui.runningSchedule.RunningScheduleViewModel
 import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
 
-class RunningScheduleEntryFragment : Fragment() { //TODO: wechsel portrait auf landscape: es soll wieder runningSCheduleFragment mit diesem Fragment als child angezeigt werden
+class RunningScheduleEntryFragment : Fragment() {
     private val viewModel: RunningScheduleViewModel by activityViewModels()
     private var _binding: FragmentRunningScheduleEntryBinding? = null
 
     private val binding get() = _binding!!
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // in landscape mode this fragment should not be displayed alone
+        if (context?.let { isLandscapeMode(it) } == true && parentFragmentManager.findFragmentById(R.id.leftFragment) == null) {
+            activity?.supportFragmentManager?.popBackStack()
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -80,7 +88,6 @@ class RunningScheduleEntryFragment : Fragment() { //TODO: wechsel portrait auf l
                 }
 
                 R.id.imageEdit -> {
-                    //TODO: entry mitgeben
                     view?.findNavController()
                         ?.navigate(R.id.action_nav_running_schedule_entry_to_nav_edit_running_schedule_entry)
                     true
