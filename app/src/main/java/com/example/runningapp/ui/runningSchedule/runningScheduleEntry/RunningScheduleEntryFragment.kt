@@ -23,7 +23,10 @@ class RunningScheduleEntryFragment : Fragment() {
 
         // in landscape mode this fragment should not be displayed alone
         if (context?.let { isLandscapeMode(it) } == true && parentFragmentManager.findFragmentById(R.id.leftFragment) == null) {
-            activity?.supportFragmentManager?.popBackStack()
+            //TODO: bug, es wir die falsche toolbar angezeigt (back Pfeil, statt navigation drawer)
+                // TODO: rightFragment wird nicht angezeigt, wenn noch nie geadded
+                    // TODO: app stürzt nach mehreren wechslen ab
+            parentFragmentManager.popBackStack()
         }
     }
 

@@ -11,7 +11,7 @@ import com.example.runningapp.databinding.FragmentRunningScheduleBinding
 import com.example.runningapp.ui.runningSchedule.runningScheduleEntry.RunningScheduleEntryFragment
 
 class RunningScheduleFragment : Fragment() {
-//TODO: bug, menu items vom Fragment running schedule entry werden beim wechsel auf portrait weiterhin angezeigt
+    //TODO: bug, menu items vom Fragment running schedule entry werden beim wechsel auf portrait weiterhin angezeigt
     private var _binding: FragmentRunningScheduleBinding? = null
 
     // This property is only valid between onCreateView and
