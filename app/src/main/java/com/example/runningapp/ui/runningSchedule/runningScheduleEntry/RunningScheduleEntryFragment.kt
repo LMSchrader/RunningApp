@@ -70,7 +70,6 @@ class RunningScheduleEntryFragment : Fragment() {
         if (context?.let { isLandscapeMode(it) } == true) {
             return when (item.itemId) {
                 R.id.imageEdit -> {
-                    //TODO: bug
                     view?.findNavController()
                         ?.navigate(R.id.action_nav_running_schedule_to_nav_edit_running_schedule_entry)
                     true
