@@ -17,7 +17,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:textAllCaps="false"
-            android:textColor="@color/black"
             android:textIsSelectable="false"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -31,6 +30,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/weekdays"
+            style="@style/Theme.RunningApp.FadedText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -40,7 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/weekdayTitle" />
 
@@ -51,6 +50,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/period"
+            style="@style/Theme.RunningApp.FadedText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/weekdays" />
 
@@ -60,7 +60,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/periodTitle" />
 
@@ -71,7 +70,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/to_short"
-            android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/startDate"
             app:layout_constraintTop_toBottomOf="@id/periodTitle" />
 
@@ -81,7 +79,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/dateSplitter"
             app:layout_constraintTop_toBottomOf="@id/periodTitle" />
 
@@ -92,6 +89,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/description"
+            style="@style/Theme.RunningApp.FadedText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/startDate" />
 
@@ -101,7 +99,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionTitle" />
 

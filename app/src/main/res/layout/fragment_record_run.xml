@@ -47,6 +47,7 @@
 
     <TextView
         android:id="@+id/time"
+        style="@style/Theme.RunningApp.FadedText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -69,6 +70,7 @@
 
     <TextView
         android:id="@+id/km"
+        style="@style/Theme.RunningApp.FadedText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/kilometer"
@@ -92,6 +94,7 @@
 
     <TextView
         android:id="@+id/current_pace_title"
+        style="@style/Theme.RunningApp.FadedText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/current_pace"
@@ -117,6 +120,7 @@
 
     <TextView
         android:id="@+id/avg_pace_title"
+        style="@style/Theme.RunningApp.FadedText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/avg_pace"
@@ -137,7 +141,7 @@
         android:src="@drawable/ic_outline_play_circle_outline_72"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
-        app:tint="@color/teal_200"
+        app:tint="@color/purple_200"
         android:contentDescription="@string/start" />
 
     <ImageButton
@@ -150,7 +154,7 @@
         android:src="@drawable/ic_outline_stop_circle_72"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline1"
-        app:tint="@color/teal_200"
+        app:tint="@color/purple_200"
         android:contentDescription="@string/stop" />
 
 

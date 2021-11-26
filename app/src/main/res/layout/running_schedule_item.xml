@@ -14,7 +14,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            style="@style/Theme.RunningApp.FadedText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -36,6 +36,7 @@
             android:layout_marginStart="1dp"
             android:layout_marginTop="8dp"
             android:text="@string/to_short"
+            style="@style/Theme.RunningApp.FadedText"
             app:layout_constraintStart_toEndOf="@id/startDate"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -45,6 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginTop="8dp"
+            style="@style/Theme.RunningApp.FadedText"
             app:layout_constraintStart_toEndOf="@id/to"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -54,6 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            style="@style/Theme.RunningApp.FadedText"
             android:layout_toEndOf="@id/endDate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />

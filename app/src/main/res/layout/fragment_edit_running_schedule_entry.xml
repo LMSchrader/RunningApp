@@ -12,6 +12,7 @@
 
         <TextView
             android:id="@+id/title"
+            style="@style/Theme.RunningApp.FadedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -33,6 +34,7 @@
 
         <TextView
             android:id="@+id/weekdays"
+            style="@style/Theme.RunningApp.FadedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -113,6 +115,7 @@
 
         <TextView
             android:id="@+id/fromDate"
+            style="@style/Theme.RunningApp.FadedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -133,6 +136,7 @@
 
         <TextView
             android:id="@+id/toDate"
+            style="@style/Theme.RunningApp.FadedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -153,6 +157,7 @@
 
         <TextView
             android:id="@+id/description"
+            style="@style/Theme.RunningApp.FadedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
