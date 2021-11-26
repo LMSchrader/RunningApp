@@ -42,7 +42,7 @@ class HistoryGraphFragment : Fragment() {
         chart.setDrawGridBackground(false)
 
         historyViewModel.currentRunHistoryEntry.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
-            historyViewModel.getRunHistoryEntries().removeObservers(viewLifecycleOwner) //TODO
+            //historyViewModel.getRunHistoryEntries().removeObservers(viewLifecycleOwner)
             historyViewModel.getRunHistoryEntries()
                 .observe(viewLifecycleOwner) { runHistoryEntries ->
                     val timeList = runHistoryEntries[currentRunHistoryEntry].getTimeValues()

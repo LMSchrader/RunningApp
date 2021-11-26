@@ -66,6 +66,7 @@ class RecordRunFragment : Fragment() {
         } else requestPermission()
     }
 
+    //TODO: request permission ACCESS_COARSE_LOCATION
     private fun requestPermission() {
         if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
             val snackBar =

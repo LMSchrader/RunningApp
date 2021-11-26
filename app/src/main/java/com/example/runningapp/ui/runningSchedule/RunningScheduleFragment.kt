@@ -9,6 +9,7 @@ import androidx.navigation.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleBinding
 import com.example.runningapp.ui.runningSchedule.runningScheduleEntry.RunningScheduleEntryFragment
+import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
 
 class RunningScheduleFragment : Fragment() {
     //TODO: bug, menu items vom Fragment running schedule entry werden beim wechsel auf portrait weiterhin angezeigt
@@ -39,6 +40,14 @@ class RunningScheduleFragment : Fragment() {
         //      add<RunningScheduleEntryFragment>(R.id.rightFragment)
         //  }
         //}
+
+        val rightFragment = childFragmentManager.findFragmentById(R.id.rightFragment)
+        if (context?.let { isLandscapeMode(it) } == false && rightFragment != null) {
+            childFragmentManager.commit {
+                setReorderingAllowed(true)
+                remove(rightFragment)
+            }
+        }
     }
 
     override fun onCreateView(

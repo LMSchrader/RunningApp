@@ -23,9 +23,8 @@ class RunningScheduleEntryFragment : Fragment() {
 
         // in landscape mode this fragment should not be displayed alone
         if (context?.let { isLandscapeMode(it) } == true && parentFragmentManager.findFragmentById(R.id.leftFragment) == null) {
-            //TODO: bug, es wir die falsche toolbar angezeigt (back Pfeil, statt navigation drawer)
-                // TODO: rightFragment wird nicht angezeigt, wenn noch nie geadded
-                    // TODO: app stürzt nach mehreren wechslen ab
+            // TODO: rightFragment wird nicht angezeigt, wenn noch nie geadded
+            // TODO: app stürzt nach mehreren wechseln zwischen portrait und landscape ab
             parentFragmentManager.popBackStack()
         }
     }
@@ -42,7 +41,7 @@ class RunningScheduleEntryFragment : Fragment() {
         setHasOptionsMenu(true)
 
         viewModel.currentEntry.observe(viewLifecycleOwner) { currentEntry ->
-            viewModel.getEntries().removeObservers(viewLifecycleOwner) //Todo
+            //viewModel.getEntries().removeObservers(viewLifecycleOwner)
             viewModel.getEntries().observe(viewLifecycleOwner) { entries ->
                 binding.title.text = entries[currentEntry].getTitle()
                 binding.weekdays.text = context?.let { entries[currentEntry].getWeekdayString(it) }
