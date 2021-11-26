@@ -12,6 +12,7 @@ import com.example.runningapp.ui.runningSchedule.runningScheduleEntry.RunningSch
 import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
 
 class RunningScheduleFragment : Fragment() {
+    //TODO Navigation: running schedule entry ist im portrait modus und es wird die Orientierung zweimal gewechselt -> es wird die recycler view statt des entries angezeigt
     private var _binding: FragmentRunningScheduleBinding? = null
 
     // This property is only valid between onCreateView and
@@ -31,7 +32,7 @@ class RunningScheduleFragment : Fragment() {
                 R.id.rightFragment
             ) == null) {
             // add right fragment in landscape mode if not present
-            //TODO: bedingung hinzufuegen, nur wenn entry schonmal angesehen wurde
+            //TODO: bedingung (nur wenn entry schonmal angesehen wurde) hinzufuegen
             addSecondFragment()
         } else if (context?.let { isLandscapeMode(it) } == false && childFragmentManager.findFragmentById(
                 R.id.rightFragment
