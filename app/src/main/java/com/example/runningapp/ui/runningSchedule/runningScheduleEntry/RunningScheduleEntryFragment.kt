@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleEntryBinding
 import com.example.runningapp.ui.runningSchedule.RunningScheduleViewModel
@@ -23,9 +24,7 @@ class RunningScheduleEntryFragment : Fragment() {
 
         // in landscape mode this fragment should not be displayed alone
         if (context?.let { isLandscapeMode(it) } == true && parentFragmentManager.findFragmentById(R.id.leftFragment) == null) {
-            // TODO: rightFragment wird nicht angezeigt, wenn noch nie geadded
-            // TODO: app stürzt nach mehreren wechseln zwischen portrait und landscape ab
-            parentFragmentManager.popBackStack()
+            findNavController().popBackStack()
         }
     }
 

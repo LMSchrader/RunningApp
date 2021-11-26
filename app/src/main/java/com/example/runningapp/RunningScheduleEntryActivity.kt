@@ -34,7 +34,6 @@ class RunningScheduleEntryActivity : AppCompatActivity() { //TODO: remove later
  //           }
 //
  //           R.id.imageEdit -> {
- //               //TODO: entry mitgeben
  //               val intent = Intent(this, EditRunningScheduleEntryActivity::class.java)
  //               startActivity(intent)
  //               true

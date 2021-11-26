@@ -12,7 +12,6 @@ import com.example.runningapp.ui.runningSchedule.runningScheduleEntry.RunningSch
 import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
 
 class RunningScheduleFragment : Fragment() {
-    //TODO: bug, menu items vom Fragment running schedule entry werden beim wechsel auf portrait weiterhin angezeigt
     private var _binding: FragmentRunningScheduleBinding? = null
 
     // This property is only valid between onCreateView and
@@ -27,25 +26,20 @@ class RunningScheduleFragment : Fragment() {
             childFragmentManager.commit {
                 setReorderingAllowed(true)
                 add<RunningScheduleRecyclerViewFragment>(R.id.leftFragment)
-
-                //if (context?.let { isLandscapeMode(it) } == true) {
-                //    add<RunningScheduleEntryFragment>(R.id.rightFragment)
-                //}
             }
-        } //else if (context?.let { isLandscapeMode(it) } == true && parentFragmentManager.findFragmentById(
-        //      R.id.rightFragment
-        //  ) == null) {
-        //  childFragmentManager.commit {
-        //      setReorderingAllowed(true)
-        //      add<RunningScheduleEntryFragment>(R.id.rightFragment)
-        //  }
-        //}
-
-        val rightFragment = childFragmentManager.findFragmentById(R.id.rightFragment)
-        if (context?.let { isLandscapeMode(it) } == false && rightFragment != null) {
+        } else if (context?.let { isLandscapeMode(it) } == true && parentFragmentManager.findFragmentById(
+                R.id.rightFragment
+            ) == null) {
+            // add right fragment in landscape mode if not present
+            //TODO: bedingung hinzufuegen, nur wenn entry schonmal angesehen wurde
+            addSecondFragment()
+        } else if (context?.let { isLandscapeMode(it) } == false && childFragmentManager.findFragmentById(
+                R.id.rightFragment
+            ) != null) {
+            // remove right fragment in portrait mode if present
             childFragmentManager.commit {
                 setReorderingAllowed(true)
-                remove(rightFragment)
+                remove(childFragmentManager.findFragmentById(R.id.rightFragment)!!)
             }
         }
     }
