@@ -49,5 +49,5 @@
 
     <!-- permissions -->
     <string name="ok">OK</string>
-    <string name="location_permission_required">Runs cannot be recorded without location permission</string>
+    <string name="location_permission_required">Runs cannot be recorded without precise location permission</string>
 </resources>

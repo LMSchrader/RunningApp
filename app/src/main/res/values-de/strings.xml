@@ -49,5 +49,5 @@
 
     <!-- permissions -->
     <string name="ok">OK</string>
-    <string name="location_permission_required">Ohne Berechtigung zum Zugriff auf den Standort können keine Läufe aufgezeichnet werden</string>
+    <string name="location_permission_required">Ohne Berechtigung zum Zugriff auf den genauen Standort können keine Läufe aufgezeichnet werden</string>
 </resources>

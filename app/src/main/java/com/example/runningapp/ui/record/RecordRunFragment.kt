@@ -2,17 +2,19 @@ package com.example.runningapp.ui.record
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRecordRunBinding
-import com.google.android.material.snackbar.Snackbar
+import android.app.Dialog
+import android.widget.Button
 
 class RecordRunFragment : Fragment() {
     private var _binding: FragmentRecordRunBinding? = null
@@ -22,18 +24,22 @@ class RecordRunFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                //TODO
-                Log.i("Permission: ", "Granted")
-            } else {
-                //TODO
-                Log.i("Permission: ", "Denied")
+    @RequiresApi(Build.VERSION_CODES.N)
+    val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                // Precise location access granted.
+            }
+            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                // Only approximate location access granted.
+            }
+            else -> {
+                // No location access granted.
             }
         }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,17 +72,35 @@ class RecordRunFragment : Fragment() {
         } else requestPermission()
     }
 
-    //TODO: request permission ACCESS_COARSE_LOCATION
     private fun requestPermission() {
         if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            val snackBar =
-                Snackbar.make(layout, R.string.location_permission_required, Snackbar.LENGTH_LONG)
-            snackBar.setAction(R.string.ok) {
-                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-            }
-            snackBar.show()
+            showDialog()
         } else {
-            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            locationPermissionRequest.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
         }
+    }
+
+    /**
+     * Opens a dialog, that explains why the permissions are needed and asks for the permissions afterwards.
+     */
+    private fun showDialog() {
+        val dialog = context?.let { Dialog(it) }
+        dialog?.setContentView(R.layout.permission_dialog)
+        val btn: Button? = dialog?.findViewById(R.id.button)
+        btn?.setOnClickListener {
+            dialog.dismiss()
+            locationPermissionRequest.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+        dialog?.show()
     }
 }
