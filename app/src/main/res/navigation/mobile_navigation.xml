@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.runningapp.ui.home.HomeFragment"
+        android:name="com.example.runningapp.fragments.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/nav_running_schedule"
-        android:name="com.example.runningapp.ui.runningSchedule.RunningScheduleFragment"
+        android:name="com.example.runningapp.fragments.runningSchedule.RunningScheduleFragment"
         android:label="@string/menu_running_schedule"
         tools:layout="@layout/fragment_running_schedule" >
         <action
@@ -33,19 +33,19 @@
 
     <fragment
         android:id="@+id/nav_history"
-        android:name="com.example.runningapp.ui.history.HistoryFragment"
+        android:name="com.example.runningapp.fragments.history.HistoryFragment"
         android:label="@string/menu_history"
         tools:layout="@layout/fragment_history" />
 
     <fragment
         android:id="@+id/nav_record_run"
-        android:name="com.example.runningapp.ui.record.RecordRunFragment"
+        android:name="com.example.runningapp.fragments.record.RecordRunFragment"
         android:label="@string/menu_record_run"
         tools:layout="@layout/fragment_record_run" />
 
     <fragment
         android:id="@+id/nav_running_schedule_entry"
-        android:name="com.example.runningapp.ui.runningSchedule.runningScheduleEntry.RunningScheduleEntryFragment"
+        android:name="com.example.runningapp.fragments.runningSchedule.RunningScheduleEntryFragment"
         tools:layout="@layout/fragment_running_schedule_entry" >
         <action
             android:id="@+id/action_nav_running_schedule_entry_to_nav_edit_running_schedule_entry"
@@ -54,11 +54,11 @@
 
     <fragment
         android:id="@+id/nav_add_running_schedule_entry"
-        android:name="com.example.runningapp.ui.runningSchedule.addRunningScheduleEntry.AddRunningScheduleEntryFragment"
+        android:name="com.example.runningapp.fragments.runningSchedule.AddRunningScheduleEntryFragment"
         tools:layout="@layout/fragment_edit_running_schedule_entry" />
 
     <fragment
         android:id="@+id/nav_edit_running_schedule_entry"
-        android:name="com.example.runningapp.ui.runningSchedule.editRunningScheduleEntry.EditRunningScheduleEntryFragment"
+        android:name="com.example.runningapp.fragments.runningSchedule.EditRunningScheduleEntryFragment"
         tools:layout="@layout/fragment_edit_running_schedule_entry" />
 </navigation>
