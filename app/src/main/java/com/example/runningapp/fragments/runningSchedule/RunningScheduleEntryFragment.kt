@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.runningapp.R
@@ -16,7 +16,7 @@ import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
 
 class RunningScheduleEntryFragment : Fragment() {
-    private val viewModel: RunningScheduleViewModel by viewModels {
+    private val viewModel: RunningScheduleViewModel by activityViewModels {
         RunningScheduleViewModelFactory((activity?.application as AppApplication).runningScheduleRepository)
     }
     private var _binding: FragmentRunningScheduleEntryBinding? = null

@@ -19,7 +19,7 @@ import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
 
 class RunningScheduleRecyclerViewFragment : Fragment() {
-    private val viewModel: RunningScheduleViewModel by viewModels {
+    private val viewModel: RunningScheduleViewModel by activityViewModels {
         RunningScheduleViewModelFactory((activity?.application as AppApplication).runningScheduleRepository)
     }
 

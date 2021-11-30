@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.example.runningapp.R
 import com.example.runningapp.AppApplication
 import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBinding
@@ -18,7 +18,7 @@ import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
 import java.time.LocalDate
 
 class AddRunningScheduleEntryFragment : Fragment() {
-    private val viewModel: RunningScheduleViewModel by viewModels {
+    private val viewModel: RunningScheduleViewModel by activityViewModels {
         RunningScheduleViewModelFactory((activity?.application as AppApplication).runningScheduleRepository)
     }
     private var _binding: FragmentEditRunningScheduleEntryBinding? = null
