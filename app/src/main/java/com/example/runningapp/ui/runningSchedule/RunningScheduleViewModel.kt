@@ -1,37 +1,34 @@
 package com.example.runningapp.ui.runningSchedule
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.example.runningapp.database.RunningScheduleRepository
 import com.example.runningapp.model.RunningScheduleEntry
-import com.example.runningapp.model.RunningScheduleEntry.StaticFunctions.getDummyData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-@RequiresApi(Build.VERSION_CODES.O)
-class RunningScheduleViewModel : ViewModel() {
+class RunningScheduleViewModel(private val repository: RunningScheduleRepository) : ViewModel() {
 
-    private val entries: MutableLiveData<List<RunningScheduleEntry>> by lazy {
-        MutableLiveData<List<RunningScheduleEntry>>(loadEntries())
-    }
+    val entries: LiveData<List<RunningScheduleEntry>> = repository.runningSchedule.asLiveData()
 
     var currentEntry : MutableLiveData<Int> = MutableLiveData<Int>(0)
 
-    fun getEntries(): LiveData<List<RunningScheduleEntry>> {
-        return entries
+    /**
+     * Launching a new coroutine to insert the data in a non-blocking way
+     */
+    fun insert(entry: RunningScheduleEntry) = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            repository.insert(entry)
+        }
     }
+}
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun loadEntries(): List<RunningScheduleEntry> {
-        //TODO implement
-        return loadDummyEntries()
-
-        // Do an asynchronous operation to fetch data.
+class RunningScheduleViewModelFactory(private val repository: RunningScheduleRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(RunningScheduleViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return RunningScheduleViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun loadDummyEntries(): List<RunningScheduleEntry> {
-        return getDummyData()
-    }
-
 }

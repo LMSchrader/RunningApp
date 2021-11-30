@@ -41,12 +41,12 @@ class RunningScheduleEntryFragment : Fragment() {
 
         viewModel.currentEntry.observe(viewLifecycleOwner) { currentEntry ->
             //viewModel.getEntries().removeObservers(viewLifecycleOwner)
-            viewModel.getEntries().observe(viewLifecycleOwner) { entries ->
-                binding.title.text = entries[currentEntry].getTitle()
+            viewModel.entries.observe(viewLifecycleOwner) { entries ->
+                binding.title.text = entries[currentEntry].title
                 binding.weekdays.text = context?.let { entries[currentEntry].getWeekdayString(it) }
-                binding.startDate.text = entries[currentEntry].getStartDate().toString()
-                binding.endDate.text = entries[currentEntry].getEndDate().toString()
-                binding.description.text = entries[currentEntry].getDescription()
+                binding.startDate.text = entries[currentEntry].startDate.toString()
+                binding.endDate.text = entries[currentEntry].endDate.toString()
+                binding.description.text = entries[currentEntry].description
             }
         }
 

@@ -37,22 +37,22 @@ class EditRunningScheduleEntryFragment : Fragment() {
 
         viewModel.currentEntry.observe(viewLifecycleOwner) { currentEntry ->
             //viewModel.getEntries().removeObservers(viewLifecycleOwner)
-            viewModel.getEntries().observe(viewLifecycleOwner) { entries ->
+            viewModel.entries.observe(viewLifecycleOwner) { entries ->
 
-                binding.editTitle.setText(entries[currentEntry].getTitle())
+                binding.editTitle.setText(entries[currentEntry].title)
 
-                binding.checkBoxMonday.isChecked = entries[currentEntry].getMonday()
-                binding.checkBoxTuesday.isChecked = entries[currentEntry].getTuesday()
-                binding.checkBoxWednesday.isChecked = entries[currentEntry].getWednesday()
-                binding.checkBoxThursday.isChecked = entries[currentEntry].getThursday()
-                binding.checkBoxFriday.isChecked = entries[currentEntry].getFriday()
-                binding.checkBoxSaturday.isChecked = entries[currentEntry].getSaturday()
-                binding.checkBoxSunday.isChecked = entries[currentEntry].getSunday()
+                binding.checkBoxMonday.isChecked = entries[currentEntry].monday
+                binding.checkBoxTuesday.isChecked = entries[currentEntry].tuesday
+                binding.checkBoxWednesday.isChecked = entries[currentEntry].wednesday
+                binding.checkBoxThursday.isChecked = entries[currentEntry].thursday
+                binding.checkBoxFriday.isChecked = entries[currentEntry].friday
+                binding.checkBoxSaturday.isChecked = entries[currentEntry].saturday
+                binding.checkBoxSunday.isChecked = entries[currentEntry].sunday
 
-                binding.editStartingDate.text = entries[currentEntry].getStartDate().toString()
-                binding.editEndDate.text = entries[currentEntry].getEndDate().toString()
+                binding.editStartingDate.text = entries[currentEntry].startDate.toString()
+                binding.editEndDate.text = entries[currentEntry].endDate.toString()
 
-                binding.editDescription.setText(entries[currentEntry].getDescription())
+                binding.editDescription.setText(entries[currentEntry].description)
             }
         }
 

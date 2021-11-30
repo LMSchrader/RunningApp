@@ -62,9 +62,9 @@ class RunningScheduleAdapter(
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.title.text = data[position].getTitle()
-        viewHolder.startDate.text = data[position].getStartDate().toString()
-        viewHolder.endDate.text = data[position].getEndDate().toString()
+        viewHolder.title.text = data[position].title
+        viewHolder.startDate.text = data[position].startDate.toString()
+        viewHolder.endDate.text = data[position].endDate.toString()
         viewHolder.weekdays.text = data[position].getWeekdayString(context)
     }
 

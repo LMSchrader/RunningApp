@@ -1,67 +1,26 @@
 package com.example.runningapp.model
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.example.runningapp.R
 import java.time.LocalDate
 
-class RunningScheduleEntry {
-    private lateinit var title: String
-    private lateinit var startDate: LocalDate
-    private lateinit var endDate: LocalDate
-    private var description: String = ""
-    private var monday: Boolean = false
-    private var tuesday: Boolean = false
-    private var wednesday: Boolean = false
-    private var thursday: Boolean = false
-    private var friday: Boolean = false
-    private var saturday: Boolean = false
-    private var sunday: Boolean = false
-
-    fun getTitle(): String {
-        return title
-    }
-
-    fun getStartDate(): LocalDate {
-        return startDate
-    }
-
-    fun getEndDate(): LocalDate {
-        return endDate
-    }
-
-    fun getDescription(): String {
-        return description
-    }
-
-    fun getMonday(): Boolean {
-        return monday
-    }
-
-    fun getTuesday(): Boolean {
-        return tuesday
-    }
-
-    fun getWednesday(): Boolean {
-        return wednesday
-    }
-
-    fun getThursday(): Boolean {
-        return thursday
-    }
-
-    fun getFriday(): Boolean {
-        return friday
-    }
-
-    fun getSaturday(): Boolean {
-        return saturday
-    }
-
-    fun getSunday(): Boolean {
-        return sunday
-    }
+@Entity(tableName = "running_schedule")
+data class RunningScheduleEntry(
+    @PrimaryKey(autoGenerate = true) private val id: Int,
+    var title: String,
+    var startDate: LocalDate,
+    var endDate: LocalDate
+) {
+    var description: String = ""
+    var monday: Boolean = false
+    var tuesday: Boolean = false
+    var wednesday: Boolean = false
+    var thursday: Boolean = false
+    var friday: Boolean = false
+    var saturday: Boolean = false
+    var sunday: Boolean = false
 
     fun getWeekdayString(context: Context): String {
         val sb = StringBuilder()
@@ -98,27 +57,26 @@ class RunningScheduleEntry {
         return sb.toString()
     }
 
-    object StaticFunctions {
-        @RequiresApi(Build.VERSION_CODES.O)
-        @JvmStatic
-        fun getDummyData(): List<RunningScheduleEntry> {
-            val dummy = RunningScheduleEntry()
-            dummy.title = "Test"
-            dummy.startDate = LocalDate.of(2021, 12, 12)
-            dummy.endDate = LocalDate.of(2021, 12, 31)
-            dummy.monday = true
-            dummy.friday = true
-
-            val dummy2 = RunningScheduleEntry()
-            dummy2.title = "Test2"
-            dummy2.startDate = LocalDate.of(2021, 11, 12)
-            dummy2.endDate = LocalDate.of(2022, 1, 31)
-            dummy2.tuesday = true
-            dummy2.thursday = true
-            dummy2.saturday = true
-
-            return arrayListOf(dummy, dummy2)
-        }
-    }
-
+    //object StaticFunctions {
+    //    @RequiresApi(Build.VERSION_CODES.O)
+    //    @JvmStatic
+    //    fun getDummyData(): List<RunningScheduleEntry> {
+    //        val dummy = RunningScheduleEntry()
+    //        dummy.title = "Test"
+    //        dummy.startDate = LocalDate.of(2021, 12, 12)
+    //        dummy.endDate = LocalDate.of(2021, 12, 31)
+    //        dummy.monday = true
+    //        dummy.friday = true
+//
+    //        val dummy2 = RunningScheduleEntry()
+    //        dummy2.title = "Test2"
+    //        dummy2.startDate = LocalDate.of(2021, 11, 12)
+    //        dummy2.endDate = LocalDate.of(2022, 1, 31)
+    //        dummy2.tuesday = true
+    //        dummy2.thursday = true
+    //        dummy2.saturday = true
+//
+    //        return arrayListOf(dummy, dummy2)
+    //    }
+    //}
 }
