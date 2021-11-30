@@ -11,14 +11,23 @@ class RunningScheduleViewModel(private val repository: RunningScheduleRepository
 
     val entries: LiveData<List<RunningScheduleEntry>> = repository.runningSchedule.asLiveData()
 
-    var currentEntry : MutableLiveData<Int> = MutableLiveData<Int>(0)
+    var currentEntry : MutableLiveData<Int> = MutableLiveData<Int>(0) // TODO: nicht index sondern id verenden, falls sich reihenfolge aendert
 
-    /**
-     * Launching a new coroutine to insert the data in a non-blocking way
-     */
     fun insert(entry: RunningScheduleEntry) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             repository.insert(entry)
+        }
+    }
+
+    fun update(entry: RunningScheduleEntry) = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            repository.update(entry)
+        }
+    }
+
+    fun delete(entry: RunningScheduleEntry) = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            repository.delete(entry)
         }
     }
 }

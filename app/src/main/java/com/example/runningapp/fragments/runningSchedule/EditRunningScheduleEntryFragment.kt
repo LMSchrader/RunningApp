@@ -9,11 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.runningapp.R
 import com.example.runningapp.AppApplication
+import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBinding
 import com.example.runningapp.util.DatePickerUtil
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
 import java.time.LocalDate
+import java.time.format.DateTimeParseException
 
 class EditRunningScheduleEntryFragment : Fragment() {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
@@ -28,6 +30,8 @@ class EditRunningScheduleEntryFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var entry: RunningScheduleEntry
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,20 +45,22 @@ class EditRunningScheduleEntryFragment : Fragment() {
             //viewModel.getEntries().removeObservers(viewLifecycleOwner)
             viewModel.entries.observe(viewLifecycleOwner) { entries ->
 
-                binding.editTitle.setText(entries[currentEntry].title)
+                entry = entries[currentEntry]
 
-                binding.checkBoxMonday.isChecked = entries[currentEntry].monday
-                binding.checkBoxTuesday.isChecked = entries[currentEntry].tuesday
-                binding.checkBoxWednesday.isChecked = entries[currentEntry].wednesday
-                binding.checkBoxThursday.isChecked = entries[currentEntry].thursday
-                binding.checkBoxFriday.isChecked = entries[currentEntry].friday
-                binding.checkBoxSaturday.isChecked = entries[currentEntry].saturday
-                binding.checkBoxSunday.isChecked = entries[currentEntry].sunday
+                binding.editTitle.setText(entry.title)
 
-                binding.editStartingDate.text = entries[currentEntry].startDate.toString()
-                binding.editEndDate.text = entries[currentEntry].endDate.toString()
+                binding.checkBoxMonday.isChecked = entry.monday
+                binding.checkBoxTuesday.isChecked = entry.tuesday
+                binding.checkBoxWednesday.isChecked = entry.wednesday
+                binding.checkBoxThursday.isChecked = entry.thursday
+                binding.checkBoxFriday.isChecked = entry.friday
+                binding.checkBoxSaturday.isChecked = entry.saturday
+                binding.checkBoxSunday.isChecked = entry.sunday
 
-                binding.editDescription.setText(entries[currentEntry].description)
+                binding.editStartingDate.text = entry.startDate.toString()
+                binding.editEndDate.text = entry.endDate.toString()
+
+                binding.editDescription.setText(entry.description)
             }
         }
 
@@ -118,6 +124,7 @@ class EditRunningScheduleEntryFragment : Fragment() {
         }!!
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -126,8 +133,35 @@ class EditRunningScheduleEntryFragment : Fragment() {
             }
 
             R.id.imageSave -> {
-                //TODO: save entry
-                activity?.onBackPressed()
+                val startDate: LocalDate
+                val endDate: LocalDate
+                try {
+                    startDate = LocalDate.parse(binding.editStartingDate.text)
+                    endDate = LocalDate.parse(binding.editEndDate.text)
+                }catch (e: DateTimeParseException) {
+                    //TOdo: Mitteilung, fehlerhafte Eingabe
+                    return true
+                }
+
+                entry.title =  binding.editTitle.text.toString()
+                entry.startDate =  startDate
+                entry.endDate =  endDate
+                entry.description = binding.editDescription.text.toString()
+                entry.monday = binding.checkBoxMonday.isChecked
+                entry.tuesday = binding.checkBoxTuesday.isChecked
+                entry.wednesday = binding.checkBoxWednesday.isChecked
+                entry.thursday = binding.checkBoxThursday.isChecked
+                entry.friday = binding.checkBoxFriday.isChecked
+                entry.saturday = binding.checkBoxSaturday.isChecked
+                entry.sunday = binding.checkBoxSunday.isChecked
+
+                if (entry.isCorrectlyDefined()) {
+                    viewModel.update(entry)
+
+                    activity?.onBackPressed()
+                } else {
+                    //TODO: Mitteilung, fehlerhafte Eingabe
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -14,7 +14,7 @@ class HistoryViewModel : ViewModel() {
         MutableLiveData<List<RunHistoryEntry>>(loadRunHistoryEntries())
     }
 
-    val currentRunHistoryEntry : MutableLiveData<Int> = MutableLiveData<Int>(0)
+    val currentRunHistoryEntry : MutableLiveData<Int> = MutableLiveData<Int>(0) // TODO: nicht index sondern id verenden, falls sich reihenfolge aendert
     var isInSplitScreenMode : Boolean = false
 
     fun getRunHistoryEntries(): LiveData<List<RunHistoryEntry>> {

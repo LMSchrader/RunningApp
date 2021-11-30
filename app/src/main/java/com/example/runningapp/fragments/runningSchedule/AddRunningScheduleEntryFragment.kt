@@ -16,6 +16,7 @@ import com.example.runningapp.util.DatePickerUtil.StaticFunctions.initDatePicker
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
 import java.time.LocalDate
+import java.time.format.DateTimeParseException
 
 class AddRunningScheduleEntryFragment : Fragment() {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
@@ -95,31 +96,41 @@ class AddRunningScheduleEntryFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
+                //TODO: Meldung, Daten gehen verloren
                 activity?.onBackPressed()
                 true
             }
 
             R.id.imageSave -> {
                 val title = binding.editTitle.text.toString()
-                val startDate = LocalDate.parse(binding.editStartingDate.text)
-                val endDate = LocalDate.parse(binding.editEndDate.text)
-
-                if (title != "" && startDate != null && !startDate.equals("") && endDate != null && !endDate.equals("")) {
-                    val entry =
-                        RunningScheduleEntry(title, startDate, endDate)
-                    entry.description = binding.editDescription.text.toString()
-                    entry.monday = binding.checkBoxMonday.isChecked
-                    entry.tuesday = binding.checkBoxTuesday.isChecked
-                    entry.wednesday = binding.checkBoxWednesday.isChecked
-                    entry.thursday = binding.checkBoxThursday.isChecked
-                    entry.friday = binding.checkBoxFriday.isChecked
-                    entry.saturday = binding.checkBoxSaturday.isChecked
-                    entry.sunday = binding.checkBoxSunday.isChecked
-                    viewModel.insert(entry)
-                } else {
-                    //TODO: Mitteilung
+                val startDate: LocalDate
+                val endDate: LocalDate
+                try {
+                    startDate = LocalDate.parse(binding.editStartingDate.text)
+                    endDate = LocalDate.parse(binding.editEndDate.text)
+                }catch (e: DateTimeParseException) {
+                    //TOdo: Mitteilung, fehlerhafte Eingabe
+                    return true
                 }
-                activity?.onBackPressed()
+
+                val entry =
+                    RunningScheduleEntry(title, startDate, endDate)
+                entry.description = binding.editDescription.text.toString()
+                entry.monday = binding.checkBoxMonday.isChecked
+                entry.tuesday = binding.checkBoxTuesday.isChecked
+                entry.wednesday = binding.checkBoxWednesday.isChecked
+                entry.thursday = binding.checkBoxThursday.isChecked
+                entry.friday = binding.checkBoxFriday.isChecked
+                entry.saturday = binding.checkBoxSaturday.isChecked
+                entry.sunday = binding.checkBoxSunday.isChecked
+
+                if (entry.isCorrectlyDefined()) {
+                    viewModel.insert(entry)
+
+                    activity?.onBackPressed()
+                } else {
+                    //TODO: Mitteilung, fehlerhafte Eingabe
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

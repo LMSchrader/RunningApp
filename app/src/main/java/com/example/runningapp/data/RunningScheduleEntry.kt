@@ -1,6 +1,8 @@
 package com.example.runningapp.data
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.runningapp.R
@@ -63,6 +65,11 @@ data class RunningScheduleEntry(
         }
 
         return sb.toString()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun isCorrectlyDefined(): Boolean {
+        return title != "" && (startDate.isBefore(endDate) || startDate == endDate)
     }
 
     //object StaticFunctions {

@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.AppApplication
+import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.databinding.FragmentRunningScheduleEntryBinding
 import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
@@ -22,6 +23,8 @@ class RunningScheduleEntryFragment : Fragment() {
     private var _binding: FragmentRunningScheduleEntryBinding? = null
 
     private val binding get() = _binding!!
+
+    private lateinit var entry: RunningScheduleEntry
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,11 +49,14 @@ class RunningScheduleEntryFragment : Fragment() {
         viewModel.currentEntry.observe(viewLifecycleOwner) { currentEntry ->
             //viewModel.getEntries().removeObservers(viewLifecycleOwner)
             viewModel.entries.observe(viewLifecycleOwner) { entries ->
-                binding.title.text = entries[currentEntry].title
-                binding.weekdays.text = context?.let { entries[currentEntry].getWeekdayString(it) }
-                binding.startDate.text = entries[currentEntry].startDate.toString()
-                binding.endDate.text = entries[currentEntry].endDate.toString()
-                binding.description.text = entries[currentEntry].description
+
+                entry =  entries[currentEntry]
+
+                binding.title.text = entry.title
+                binding.weekdays.text = context?.let { entry.getWeekdayString(it) }
+                binding.startDate.text = entry.startDate.toString()
+                binding.endDate.text = entry.endDate.toString()
+                binding.description.text = entry.description
             }
         }
 
@@ -98,7 +104,7 @@ class RunningScheduleEntryFragment : Fragment() {
                 }
 
                 R.id.imageDelete -> {
-                    //TODO: entry loeschen
+                    viewModel.delete(entry)
                     activity?.onBackPressed()
                     true
                 }

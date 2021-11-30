@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RunningScheduleDao {
-    @Query("SELECT * FROM running_schedule")
+    @Query("SELECT * FROM running_schedule ORDER by startDate")
     fun getAll(): Flow<List<RunningScheduleEntry>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
