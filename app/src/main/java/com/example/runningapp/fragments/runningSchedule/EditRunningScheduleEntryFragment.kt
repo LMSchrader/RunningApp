@@ -45,8 +45,6 @@ class EditRunningScheduleEntryFragment : Fragment() {
 
 
         viewModel.currentEntry.observe(viewLifecycleOwner) { entry ->
-            //viewModel.getEntries().removeObservers(viewLifecycleOwner)
-            //viewModel.entries.observe(viewLifecycleOwner) { entries ->
             if (entry != null) {
                 binding.editTitle.setText(entry.title)
 
