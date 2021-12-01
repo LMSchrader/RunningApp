@@ -11,7 +11,8 @@ class RunningScheduleViewModel(private val repository: RunningScheduleRepository
 
     val entries: LiveData<List<RunningScheduleEntry>> = repository.runningSchedule.asLiveData()
 
-    var currentEntry : MutableLiveData<Int> = MutableLiveData<Int>(0) // TODO: nicht index sondern id verenden, falls sich reihenfolge aendert
+    var currentEntry: MutableLiveData<RunningScheduleEntry?> =
+        MutableLiveData(null)
 
     fun insert(entry: RunningScheduleEntry) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
@@ -23,16 +24,27 @@ class RunningScheduleViewModel(private val repository: RunningScheduleRepository
         withContext(Dispatchers.IO) {
             repository.update(entry)
         }
+
+        // update current entry
+        if (currentEntry.value?.getId()?.equals(entry.getId()) == true) {
+            currentEntry.value = entry
+        }
     }
 
     fun delete(entry: RunningScheduleEntry) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             repository.delete(entry)
         }
+
+        // update current entry
+        if (currentEntry.value?.getId()?.equals(entry.getId()) == true) {
+            currentEntry.value = null
+        }
     }
 }
 
-class RunningScheduleViewModelFactory(private val repository: RunningScheduleRepository) : ViewModelProvider.Factory {
+class RunningScheduleViewModelFactory(private val repository: RunningScheduleRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RunningScheduleViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

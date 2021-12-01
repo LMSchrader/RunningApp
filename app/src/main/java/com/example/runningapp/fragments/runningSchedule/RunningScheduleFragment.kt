@@ -37,10 +37,7 @@ class RunningScheduleFragment : Fragment() {
                 R.id.rightFragment
             ) != null) {
             // remove right fragment in portrait mode if present
-            childFragmentManager.commit {
-                setReorderingAllowed(true)
-                remove(childFragmentManager.findFragmentById(R.id.rightFragment)!!)
-            }
+            removeSecondFragment()
         }
     }
 
@@ -68,6 +65,13 @@ class RunningScheduleFragment : Fragment() {
         childFragmentManager.commit {
             setReorderingAllowed(true)
             add<RunningScheduleEntryFragment>(R.id.rightFragment)
+        }
+    }
+
+    fun removeSecondFragment() {
+        childFragmentManager.commit {
+            setReorderingAllowed(true)
+            remove(childFragmentManager.findFragmentById(R.id.rightFragment)!!)
         }
     }
 }

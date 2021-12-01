@@ -46,19 +46,19 @@ class RunningScheduleEntryFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        viewModel.currentEntry.observe(viewLifecycleOwner) { currentEntry ->
+        viewModel.currentEntry.observe(viewLifecycleOwner) { entry ->
             //viewModel.getEntries().removeObservers(viewLifecycleOwner)
-            viewModel.entries.observe(viewLifecycleOwner) { entries ->
-
-                entry =  entries[currentEntry]
-
-                binding.title.text = entry.title
-                binding.weekdays.text = context?.let { entry.getWeekdayString(it) }
-                binding.startDate.text = entry.startDate.toString()
-                binding.endDate.text = entry.endDate.toString()
-                binding.description.text = entry.description
+            //viewModel.entries.observe(viewLifecycleOwner) { entries ->
+                if (entry != null) {
+                    binding.title.text = entry.title
+                    binding.weekdays.text = context?.let { entry.getWeekdayString(it) }
+                    binding.startDate.text = entry.startDate.toString()
+                    binding.endDate.text = entry.endDate.toString()
+                    binding.description.text = entry.description
+                } else if (parentFragmentManager.findFragmentById(R.id.rightFragment) != null) {
+                    (parentFragment as RunningScheduleFragment).removeSecondFragment()
+                }
             }
-        }
 
         return binding.root
     }
@@ -84,7 +84,7 @@ class RunningScheduleEntryFragment : Fragment() {
                 }
 
                 R.id.imageDelete -> {
-                    //TODO: entry loeschen
+                    viewModel.delete(entry)
                     true
                 }
 

@@ -11,9 +11,12 @@ import com.example.runningapp.R
 import com.example.runningapp.AppApplication
 import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBinding
-import com.example.runningapp.util.DatePickerUtil
+import com.example.runningapp.util.DatePickerUtil.StaticFunctions.initDatePicker
+import com.example.runningapp.util.DialogUtil.StaticFunctions.showDialog
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
+import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
@@ -41,12 +44,10 @@ class EditRunningScheduleEntryFragment : Fragment() {
         _binding = FragmentEditRunningScheduleEntryBinding.inflate(inflater, container, false)
 
 
-        viewModel.currentEntry.observe(viewLifecycleOwner) { currentEntry ->
+        viewModel.currentEntry.observe(viewLifecycleOwner) { entry ->
             //viewModel.getEntries().removeObservers(viewLifecycleOwner)
-            viewModel.entries.observe(viewLifecycleOwner) { entries ->
-
-                entry = entries[currentEntry]
-
+            //viewModel.entries.observe(viewLifecycleOwner) { entries ->
+            if (entry != null) {
                 binding.editTitle.setText(entry.title)
 
                 binding.checkBoxMonday.isChecked = entry.monday
@@ -101,7 +102,7 @@ class EditRunningScheduleEntryFragment : Fragment() {
             }
 
         datePickerDialogStartDate = context?.let {
-            DatePickerUtil.StaticFunctions.initDatePicker(
+            initDatePicker(
                 it,
                 dateSetListener
             )
@@ -117,7 +118,7 @@ class EditRunningScheduleEntryFragment : Fragment() {
             }
 
         datePickerDialogEndDate = context?.let {
-            DatePickerUtil.StaticFunctions.initDatePicker(
+            initDatePicker(
                 it,
                 dateSetListener
             )
@@ -128,7 +129,15 @@ class EditRunningScheduleEntryFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                activity?.onBackPressed()
+                //TODO nur wenn daten geändert wurden
+                context?.let {
+                    activity?.let { it1 ->
+                        showDialog(
+                            getString(R.string.data_loss), it,
+                            it1
+                        )
+                    }
+                }
                 true
             }
 
@@ -138,14 +147,15 @@ class EditRunningScheduleEntryFragment : Fragment() {
                 try {
                     startDate = LocalDate.parse(binding.editStartingDate.text)
                     endDate = LocalDate.parse(binding.editEndDate.text)
-                }catch (e: DateTimeParseException) {
-                    //TOdo: Mitteilung, fehlerhafte Eingabe
+                } catch (e: DateTimeParseException) {
+                    //TOdo: Mitteilung, fehlerhafte Eingabe konkretisieren
+                    view?.let { Snackbar.make(it, R.string.incorrect_input, LENGTH_LONG).show() }
                     return true
                 }
 
-                entry.title =  binding.editTitle.text.toString()
-                entry.startDate =  startDate
-                entry.endDate =  endDate
+                entry.title = binding.editTitle.text.toString()
+                entry.startDate = startDate
+                entry.endDate = endDate
                 entry.description = binding.editDescription.text.toString()
                 entry.monday = binding.checkBoxMonday.isChecked
                 entry.tuesday = binding.checkBoxTuesday.isChecked
@@ -160,7 +170,8 @@ class EditRunningScheduleEntryFragment : Fragment() {
 
                     activity?.onBackPressed()
                 } else {
-                    //TODO: Mitteilung, fehlerhafte Eingabe
+                    view?.let { Snackbar.make(it, R.string.incorrect_input, LENGTH_LONG).show() }
+                    //TODO: Mitteilung, fehlerhafte Eingabe konkretisieren
                 }
                 true
             }

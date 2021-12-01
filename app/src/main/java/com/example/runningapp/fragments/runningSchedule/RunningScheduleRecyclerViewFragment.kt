@@ -45,7 +45,11 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
 
         adapter = context?.let {
             RunningScheduleAdapter(it, viewModel.entries, { position ->
-                viewModel.currentEntry.value = position
+                viewModel.currentEntry.value = position?.let { it1 ->
+                    viewModel.entries.value?.get(
+                        it1
+                    )
+                }
                 if (!context?.let { isLandscapeMode(it) }!!) {
                     view?.findNavController()
                         ?.navigate(R.id.action_nav_running_schedule_to_nav_running_schedule_entry)
