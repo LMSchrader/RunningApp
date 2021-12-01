@@ -52,5 +52,6 @@
     <!-- alert -->
     <string name="location_permission_required">Ohne Berechtigung zum Zugriff auf den genauen Standort können keine Läufe aufgezeichnet werden</string>
     <string name="data_loss">Änderungen werden beim Verlassen nicht gespeichert. Wollen Sie fortfahren?</string>
-    <string name="incorrect_input">Fehlerhafte Eingabe</string>
+    <string name="incorrect_date">Start Datum muss vor dem Enddatum liegen</string>
+    <string name="incorrect_title">Titel muss gesetzt werden</string>
 </resources>

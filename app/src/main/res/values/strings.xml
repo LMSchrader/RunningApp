@@ -52,5 +52,6 @@
     <!-- alert -->
     <string name="location_permission_required">Runs cannot be recorded without precise location permission</string>
     <string name="data_loss">Changes will not be saved when exiting. Do you want to continue?</string>
-    <string name="incorrect_input">Incorrect input</string>
+    <string name="incorrect_date">Start date must be before the end date</string>
+    <string name="incorrect_title">Title must be set</string>
 </resources>
