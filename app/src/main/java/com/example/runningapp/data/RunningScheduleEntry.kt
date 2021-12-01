@@ -14,7 +14,8 @@ data class RunningScheduleEntry(
     var startDate: LocalDate,
     var endDate: LocalDate
 ) {
-    @PrimaryKey(autoGenerate = true) private var id: Int? = null
+    @PrimaryKey(autoGenerate = true)
+    private var id: Int? = null
     var description: String = ""
     var monday: Boolean = false
     var tuesday: Boolean = false
@@ -67,9 +68,13 @@ data class RunningScheduleEntry(
         return sb.toString()
     }
 
+    fun isTitleSet(): Boolean {
+        return title != ""
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    fun isCorrectlyDefined(): Boolean {
-        return title != "" && (startDate.isBefore(endDate) || startDate == endDate)
+    fun isStartAndEndDateCorrectlyDefined(): Boolean {
+        return startDate.isBefore(endDate) || startDate == endDate
     }
 
     //object StaticFunctions {

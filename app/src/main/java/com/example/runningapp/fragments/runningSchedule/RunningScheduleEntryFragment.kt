@@ -10,7 +10,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.AppApplication
-import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.databinding.FragmentRunningScheduleEntryBinding
 import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
@@ -24,7 +23,6 @@ class RunningScheduleEntryFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private lateinit var entry: RunningScheduleEntry
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,13 +46,11 @@ class RunningScheduleEntryFragment : Fragment() {
 
         viewModel.currentEntry.observe(viewLifecycleOwner) { currentEntry ->
                 if (currentEntry != null) {
-                    this.entry = currentEntry
-
-                    binding.title.text = entry.title
-                    binding.weekdays.text = context?.let { entry.getWeekdayString(it) }
-                    binding.startDate.text = entry.startDate.toString()
-                    binding.endDate.text = entry.endDate.toString()
-                    binding.description.text = entry.description
+                    binding.title.text = currentEntry.title
+                    binding.weekdays.text = context?.let { currentEntry.getWeekdayString(it) }
+                    binding.startDate.text = currentEntry.startDate.toString()
+                    binding.endDate.text = currentEntry.endDate.toString()
+                    binding.description.text = currentEntry.description
                 } else if (parentFragmentManager.findFragmentById(R.id.rightFragment) != null) {
                     (parentFragment as RunningScheduleFragment).removeSecondFragment()
                 }
@@ -84,7 +80,7 @@ class RunningScheduleEntryFragment : Fragment() {
                 }
 
                 R.id.imageDelete -> {
-                    viewModel.delete(entry)
+                    viewModel.currentEntry.value?.let { viewModel.delete(it) }
                     true
                 }
 
@@ -104,7 +100,7 @@ class RunningScheduleEntryFragment : Fragment() {
                 }
 
                 R.id.imageDelete -> {
-                    viewModel.delete(entry)
+                    viewModel.currentEntry.value?.let { viewModel.delete(it) }
                     activity?.onBackPressed()
                     true
                 }

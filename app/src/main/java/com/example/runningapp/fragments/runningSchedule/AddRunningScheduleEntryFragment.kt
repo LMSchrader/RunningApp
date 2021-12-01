@@ -16,10 +16,9 @@ import com.example.runningapp.util.DatePickerUtil.StaticFunctions.initDatePicker
 import com.example.runningapp.util.DialogUtil.StaticFunctions.showDialog
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
-import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDate
-import java.time.format.DateTimeParseException
 
 class AddRunningScheduleEntryFragment : Fragment() {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
@@ -100,34 +99,26 @@ class AddRunningScheduleEntryFragment : Fragment() {
         return when (item.itemId) {
             android.R.id.home -> {
                 //TODO: Meldung, Daten gehen verloren (nur wenn daten eingegeben wurden)
-                context?.let { activity?.let { it1 ->
-                    showDialog(
-                        getString(R.string.data_loss), it,
-                        it1
-                    )
-                } }
-                activity?.onBackPressed()
+                context?.let {
+                    activity?.let { it1 ->
+                        showDialog(
+                            getString(R.string.data_loss), it,
+                            it1
+                        )
+                    }
+                }
                 true
             }
 
             R.id.imageSave -> {
                 val title = binding.editTitle.text.toString()
-                val startDate: LocalDate
-                val endDate: LocalDate
-                try {
-                    startDate = LocalDate.parse(binding.editStartingDate.text)
-                    endDate = LocalDate.parse(binding.editEndDate.text)
-                }catch (e: DateTimeParseException) {
-                    //TOdo: Mitteilung, fehlerhafte Eingabe konkretisieren
-                    view?.let { Snackbar.make(it, R.string.incorrect_input,
-                        BaseTransientBottomBar.LENGTH_LONG
-                    ).show() }
-                    return true
-                }
+                val startDate = LocalDate.parse(binding.editStartingDate.text)
+                val endDate = LocalDate.parse(binding.editEndDate.text)
 
-                val entry =
-                    RunningScheduleEntry(title, startDate, endDate)
+                val entry = RunningScheduleEntry(title, startDate, endDate)
+
                 entry.description = binding.editDescription.text.toString()
+
                 entry.monday = binding.checkBoxMonday.isChecked
                 entry.tuesday = binding.checkBoxTuesday.isChecked
                 entry.wednesday = binding.checkBoxWednesday.isChecked
@@ -136,15 +127,23 @@ class AddRunningScheduleEntryFragment : Fragment() {
                 entry.saturday = binding.checkBoxSaturday.isChecked
                 entry.sunday = binding.checkBoxSunday.isChecked
 
-                if (entry.isCorrectlyDefined()) {
-                    viewModel.insert(entry)
-
-                    activity?.onBackPressed()
-                } else {
-                    view?.let { Snackbar.make(it, R.string.incorrect_input,
-                        BaseTransientBottomBar.LENGTH_LONG
-                    ).show() }
-                    //TODO: Mitteilung, fehlerhafte Eingabe konkretisieren
+                when {
+                    !entry.isTitleSet() -> {
+                        view?.let {
+                            Snackbar.make(it, R.string.incorrect_title, LENGTH_LONG)
+                                .show()
+                        }
+                    }
+                    !entry.isStartAndEndDateCorrectlyDefined() -> {
+                        view?.let {
+                            Snackbar.make(it, R.string.incorrect_date, LENGTH_LONG)
+                                .show()
+                        }
+                    }
+                    else -> {
+                        viewModel.insert(entry)
+                        activity?.onBackPressed()
+                    }
                 }
                 true
             }
