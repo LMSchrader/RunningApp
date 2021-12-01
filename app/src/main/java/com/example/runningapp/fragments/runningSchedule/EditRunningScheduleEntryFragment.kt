@@ -44,8 +44,10 @@ class EditRunningScheduleEntryFragment : Fragment() {
         _binding = FragmentEditRunningScheduleEntryBinding.inflate(inflater, container, false)
 
 
-        viewModel.currentEntry.observe(viewLifecycleOwner) { entry ->
-            if (entry != null) {
+        viewModel.currentEntry.observe(viewLifecycleOwner) { currentEntry ->
+            if (currentEntry != null) {
+                this.entry = currentEntry
+
                 binding.editTitle.setText(entry.title)
 
                 binding.checkBoxMonday.isChecked = entry.monday

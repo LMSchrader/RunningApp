@@ -46,8 +46,10 @@ class RunningScheduleEntryFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        viewModel.currentEntry.observe(viewLifecycleOwner) { entry ->
-                if (entry != null) {
+        viewModel.currentEntry.observe(viewLifecycleOwner) { currentEntry ->
+                if (currentEntry != null) {
+                    this.entry = currentEntry
+
                     binding.title.text = entry.title
                     binding.weekdays.text = context?.let { entry.getWeekdayString(it) }
                     binding.startDate.text = entry.startDate.toString()
