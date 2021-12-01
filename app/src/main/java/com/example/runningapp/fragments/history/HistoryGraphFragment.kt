@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.runningapp.AppApplication
 import com.example.runningapp.R
 
 import com.example.runningapp.databinding.FragmentHistoryGraphBinding
 import com.example.runningapp.viewmodels.HistoryViewModel
+import com.example.runningapp.viewmodels.HistoryViewModelFactory
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -19,7 +21,9 @@ import com.github.mikephil.charting.data.LineDataSet
 
 class HistoryGraphFragment : Fragment() {
 
-    private val historyViewModel: HistoryViewModel by activityViewModels()
+    private val historyViewModel: HistoryViewModel by activityViewModels{
+        HistoryViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
+    }
     private var _binding: FragmentHistoryGraphBinding? = null
 
     private val binding get() = _binding!!
@@ -43,18 +47,21 @@ class HistoryGraphFragment : Fragment() {
         chart.setDrawGridBackground(false)
 
         historyViewModel.currentRunHistoryEntry.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
-            //historyViewModel.getRunHistoryEntries().removeObservers(viewLifecycleOwner)
-            historyViewModel.getRunHistoryEntries()
-                .observe(viewLifecycleOwner) { runHistoryEntries ->
-                    val timeList = runHistoryEntries[currentRunHistoryEntry].getTimeValues()
-                    val paceList = runHistoryEntries[currentRunHistoryEntry].getPaceValues()
-                    val altitudeList = runHistoryEntries[currentRunHistoryEntry].getAltitudeValues()
+                    val timeList = currentRunHistoryEntry?.timeValues
+                    val paceList = currentRunHistoryEntry?.paceValues
+                    val altitudeList = currentRunHistoryEntry?.altitudeValues
                     val paceTimeSeries: MutableList<Entry> = mutableListOf()
                     val altitudeTimeSeries: MutableList<Entry> = mutableListOf()
-                    for (i in timeList.indices) {
-                        paceTimeSeries.add(Entry(timeList[i], paceList[i]))
-                        altitudeTimeSeries.add(Entry(timeList[i], altitudeList[i]))
+            if (timeList != null) {
+                for (i in timeList.indices) {
+                    paceList?.get(i)?.let { Entry(timeList[i], it) }?.let { paceTimeSeries.add(it) }
+                    altitudeList?.get(i)?.let { Entry(timeList[i], it) }?.let {
+                        altitudeTimeSeries.add(
+                            it
+                        )
                     }
+                }
+            }
                     chart.data = LineData(
                         LineDataSet(
                             paceTimeSeries,
@@ -66,7 +73,6 @@ class HistoryGraphFragment : Fragment() {
                         )
                     )
                     chart.animateX(500)
-                }
         }
 
         return root

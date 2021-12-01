@@ -13,7 +13,10 @@ import com.example.runningapp.R
 import com.example.runningapp.data.RunHistoryEntry
 import java.time.format.DateTimeFormatter
 
-class HistoryAdapter(runHistoryLiveData: LiveData<List<RunHistoryEntry>>, private val onClickListener: (position: Int?) -> Unit, lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
+class HistoryAdapter(
+    runHistoryLiveData: LiveData<List<RunHistoryEntry>>,
+    private val onClickListener: (position: Int?) -> Unit, lifecycleOwner: LifecycleOwner
+): RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     private var data: List<RunHistoryEntry> = emptyList()
     init {
         runHistoryLiveData.observe(lifecycleOwner) { runHistoryEntries ->
@@ -57,7 +60,7 @@ class HistoryAdapter(runHistoryLiveData: LiveData<List<RunHistoryEntry>>, privat
         val TS_DATE_PATTERN = "yyyy-MM-dd' 'HH:mm:ss"
         val formatter = DateTimeFormatter.ofPattern(TS_DATE_PATTERN)
 
-        viewHolder.dateTime.text = data[position].getDate().format(formatter).toString()
+        viewHolder.dateTime.text = data[position].date.format(formatter).toString()
 
     }
 

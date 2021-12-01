@@ -9,7 +9,7 @@ interface RunningScheduleDao {
     fun getAll(): Flow<List<RunningScheduleEntry>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(entry: RunningScheduleEntry):Long
+    fun insert(entry: RunningScheduleEntry)
 
     @Delete
     fun delete(entry: RunningScheduleEntry)

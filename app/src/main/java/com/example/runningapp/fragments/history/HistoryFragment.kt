@@ -11,13 +11,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import com.example.runningapp.AppApplication
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentHistoryBinding
 import com.example.runningapp.viewmodels.HistoryViewModel
+import com.example.runningapp.viewmodels.HistoryViewModelFactory
+import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
 
 class HistoryFragment : Fragment() {
 
-    private val historyViewModel: HistoryViewModel by activityViewModels()
+    private val historyViewModel: HistoryViewModel by activityViewModels {
+        HistoryViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
+    }
     private var _binding: FragmentHistoryBinding? = null
     private lateinit var forwardScene: Scene
     private lateinit var backwardScene: Scene

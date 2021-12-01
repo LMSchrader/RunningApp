@@ -10,13 +10,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.runningapp.AppApplication
 import com.example.runningapp.adapters.HistoryAdapter
 import com.example.runningapp.databinding.FragmentRecyclerViewBinding
 import com.example.runningapp.viewmodels.HistoryViewModel
+import com.example.runningapp.viewmodels.HistoryViewModelFactory
 
 class HistoryRecyclerViewFragment : Fragment() {
 
-    private val historyViewModel: HistoryViewModel by activityViewModels()
+    private val historyViewModel: HistoryViewModel by activityViewModels{
+        HistoryViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
+    }
     private var _binding: FragmentRecyclerViewBinding? = null
 
     private var layoutManager: RecyclerView.LayoutManager? = null
@@ -37,9 +41,12 @@ class HistoryRecyclerViewFragment : Fragment() {
         layoutManager = LinearLayoutManager(context)
         binding.recyclerView.layoutManager = layoutManager
 
-        adapter = HistoryAdapter(historyViewModel.getRunHistoryEntries(),
-            {
-                position ->  historyViewModel.currentRunHistoryEntry.value = position
+        adapter = HistoryAdapter(historyViewModel.runHistoryEntries,
+            {position ->  historyViewModel.currentRunHistoryEntry.value = position?.let { it ->
+                historyViewModel.runHistoryEntries.value?.get(
+                    it
+                )
+            }
                 if(!historyViewModel.isInSplitScreenMode) {
                     (parentFragment as HistoryFragment).doForwardTransition()
                 }

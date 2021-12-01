@@ -2,33 +2,50 @@ package com.example.runningapp.viewmodels
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.runningapp.data.RunHistoryEntry
+import com.example.runningapp.data.RunHistoryRepository
+import com.example.runningapp.data.RunningScheduleEntry
+import com.example.runningapp.data.RunningScheduleRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @RequiresApi(Build.VERSION_CODES.O)
-class HistoryViewModel : ViewModel() {
+class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel() {
 
-    private val runHistoryEntries: MutableLiveData<List<RunHistoryEntry>> by lazy {
-        MutableLiveData<List<RunHistoryEntry>>(loadRunHistoryEntries())
-    }
+    val runHistoryEntries: LiveData<List<RunHistoryEntry>> = repository.runHistory.asLiveData()
 
-    val currentRunHistoryEntry : MutableLiveData<Int> = MutableLiveData<Int>(0) // TODO: nicht index sondern id verenden, falls sich reihenfolge aendert
+    val currentRunHistoryEntry : MutableLiveData<RunHistoryEntry?> =
+        MutableLiveData(null)
     var isInSplitScreenMode : Boolean = false
 
-    fun getRunHistoryEntries(): LiveData<List<RunHistoryEntry>> {
-        return runHistoryEntries
+    fun insert(entry: RunHistoryEntry) = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            repository.insert(entry)
+        }
     }
 
-    private fun loadRunHistoryEntries(): List<RunHistoryEntry> {
-        //TODO implement
-        return loadDummyRunHistoryEntries()
+    fun delete(entry: RunHistoryEntry) = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            repository.delete(entry)
+        }
 
-        // Do an asynchronous operation to fetch.
+        // update current entry
+        if (currentRunHistoryEntry.value?.getId()?.equals(entry.getId()) == true) {
+            currentRunHistoryEntry.value = null
+        }
     }
+}
 
-    private fun loadDummyRunHistoryEntries(): List<RunHistoryEntry> {
-        return RunHistoryEntry.StaticFunctions.getDummyData()
+class HistoryViewModelFactory(private val repository: RunHistoryRepository) :
+    ViewModelProvider.Factory {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(HistoryViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return HistoryViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
