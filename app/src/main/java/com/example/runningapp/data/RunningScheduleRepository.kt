@@ -2,9 +2,12 @@ package com.example.runningapp.data
 
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 
 class RunningScheduleRepository(private val runningScheduleDao: RunningScheduleDao) {
     val runningSchedule: Flow<List<RunningScheduleEntry>> = runningScheduleDao.getAll()
+
+    val nextRunningDay: Flow<LocalDate> = runningScheduleDao.getNextRunningDay()
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread

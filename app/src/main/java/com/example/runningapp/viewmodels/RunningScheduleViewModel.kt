@@ -6,13 +6,15 @@ import com.example.runningapp.data.RunningScheduleEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 class RunningScheduleViewModel(private val repository: RunningScheduleRepository) : ViewModel() {
 
     val entries: LiveData<List<RunningScheduleEntry>> = repository.runningSchedule.asLiveData()
+    val nextRunningDay: LiveData<LocalDate> = repository.nextRunningDay.asLiveData()
 
-    var currentEntry: MutableLiveData<RunningScheduleEntry?> =
-        MutableLiveData(null)
+    var currentEntry: MutableLiveData<RunningScheduleEntry?> = MutableLiveData(null)
+
 
     fun insert(entry: RunningScheduleEntry) = viewModelScope.launch {
         withContext(Dispatchers.IO) {

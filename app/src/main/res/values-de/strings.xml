@@ -11,6 +11,9 @@
     <string name="menu_history">Historie</string>
     <string name="menu_record_run">Lauf aufnehmen</string>
 
+    <!--home-->
+    <string name="nextRunningDay">Nächster Lauftag</string>
+
     <!-- running schedule-->
     <string name="addRunningSchedule">Laufplaneintrag hinzufügen</string>
     <string name="title">Title</string>

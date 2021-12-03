@@ -5,8 +5,6 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.data.RunHistoryRepository
-import com.example.runningapp.data.RunningScheduleEntry
-import com.example.runningapp.data.RunningScheduleRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

@@ -16,7 +16,6 @@ import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentHistoryBinding
 import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
-import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
 
 class HistoryFragment : Fragment() {
 

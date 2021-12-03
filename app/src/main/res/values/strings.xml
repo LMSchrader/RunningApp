@@ -10,6 +10,9 @@
     <string name="menu_history">History</string>
     <string name="menu_record_run">Record run</string>
 
+    <!--home-->
+    <string name="nextRunningDay">Next running day</string>
+
     <!-- running schedule-->
     <string name="addRunningSchedule">Add running schedule entry</string>
     <string name="title">Title</string>
