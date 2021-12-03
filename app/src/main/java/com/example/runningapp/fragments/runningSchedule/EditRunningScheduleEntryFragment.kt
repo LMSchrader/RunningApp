@@ -140,7 +140,7 @@ class EditRunningScheduleEntryFragment : Fragment() {
 
         return when (item.itemId) {
             android.R.id.home -> {
-                if (viewModel.currentEntry.value?.equals(editedEntry) == true) {
+                if (viewModel.currentEntry.value?.equals(editedEntry) == false) {
                     context?.let {
                         activity?.let { it1 ->
                             showDialog(
