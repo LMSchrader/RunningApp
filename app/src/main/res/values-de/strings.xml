@@ -13,6 +13,8 @@
 
     <!--home-->
     <string name="nextRunningDay">Nächster Lauftag</string>
+    <string name="kilometers_run">Bisher %1$s! Kilometer gelaufen</string>
+    <string name="running_days_kept">Du hast %1$s! infolge deinen Laufplan eingehalten!</string>
 
     <!-- running schedule-->
     <string name="addRunningSchedule">Laufplaneintrag hinzufügen</string>
