@@ -18,7 +18,6 @@ import android.widget.Button
 
 class RecordRunFragment : Fragment() {
     private var _binding: FragmentRecordRunBinding? = null
-    private lateinit var layout: View
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -47,12 +46,11 @@ class RecordRunFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRecordRunBinding.inflate(inflater, container, false)
-        layout = binding.root
 
 
         binding.startButton.setOnClickListener { startRun() }
 
-        return layout
+        return binding.root
     }
 
     override fun onDestroyView() {

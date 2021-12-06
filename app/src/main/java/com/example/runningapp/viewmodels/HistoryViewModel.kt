@@ -30,7 +30,7 @@ class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel
         }
 
         // update current entry
-        if (currentRunHistoryEntry.value?.getId()?.equals(entry.getId()) == true) {
+        if (currentRunHistoryEntry.value?.date?.equals(entry.date) == true) {
             currentRunHistoryEntry.value = null
         }
     }

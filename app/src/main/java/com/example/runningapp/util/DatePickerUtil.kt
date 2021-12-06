@@ -10,7 +10,7 @@ import java.util.*
 class DatePickerUtil {
 
     object StaticFunctions {
-        private var datePickerStyle: Int = android.R.style.Theme_DeviceDefault_Dialog
+        private const val datePickerStyle: Int = android.R.style.Theme_DeviceDefault_Dialog
 
         @JvmStatic
         @RequiresApi(Build.VERSION_CODES.O)
