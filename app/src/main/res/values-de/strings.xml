@@ -59,4 +59,7 @@
     <string name="data_loss">Änderungen werden beim Verlassen nicht gespeichert. Wollen Sie fortfahren?</string>
     <string name="incorrect_date">Start Datum muss vor dem Enddatum liegen</string>
     <string name="incorrect_title">Titel muss gesetzt werden</string>
+
+    <!-- service -->
+    <string name="service_description">Dieser Service nimmt einen Lauf auf.</string>
 </resources>

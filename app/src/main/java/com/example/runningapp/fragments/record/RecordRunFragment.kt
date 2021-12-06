@@ -14,7 +14,9 @@ import androidx.fragment.app.Fragment
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRecordRunBinding
 import android.app.Dialog
+import android.content.Intent
 import android.widget.Button
+import com.example.runningapp.services.RecordRunService
 
 class RecordRunFragment : Fragment() {
     private var _binding: FragmentRecordRunBinding? = null
@@ -40,6 +42,7 @@ class RecordRunFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,6 +52,7 @@ class RecordRunFragment : Fragment() {
 
 
         binding.startButton.setOnClickListener { startRun() }
+        binding.stopButton.setOnClickListener { stopRun() }
 
         return binding.root
     }
@@ -58,6 +62,7 @@ class RecordRunFragment : Fragment() {
         _binding = null
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun startRun() {
         if (context?.let {
                 ContextCompat.checkSelfPermission(
@@ -66,8 +71,13 @@ class RecordRunFragment : Fragment() {
                 )
             }
             == PackageManager.PERMISSION_GRANTED) {
-            //TODO("Not yet implemented")
+            //TODO
+            context?.startForegroundService(Intent(context, RecordRunService::class.java))
         } else requestPermission()
+    }
+
+    private fun stopRun() {
+        context?.stopService(Intent(context, RecordRunService::class.java))
     }
 
     private fun requestPermission() {
