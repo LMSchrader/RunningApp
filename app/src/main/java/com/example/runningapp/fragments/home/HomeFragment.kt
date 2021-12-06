@@ -1,9 +1,11 @@
 package com.example.runningapp.fragments.home
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
@@ -23,6 +25,7 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,7 +34,11 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         viewModel.nextRunningDay.observe(viewLifecycleOwner) { runningDay ->
+            if (runningDay != null) {
                 binding.nextRunningDayDate.text = runningDay.toString()
+            } else {
+                binding.nextRunningDayDate.text = getString(R.string.to_short)
+            }
         }
 
         binding.recordRunButton.setOnClickListener {
