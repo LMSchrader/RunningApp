@@ -35,14 +35,14 @@ class Converters {
         return date?.toString()
     }
 
-    var gson: Gson = Gson()
+    private val gson: Gson = Gson()
 
     @TypeConverter
     fun stringToFloatList(data: String?): List<Float?>? {
         if (data == null) {
             return Collections.emptyList()
         }
-        val listType: Type = object : TypeToken<List<Float?>?>() {}.getType()
+        val listType: Type = object : TypeToken<List<Float?>?>() {}.type
         return gson.fromJson(data, listType)
     }
 
