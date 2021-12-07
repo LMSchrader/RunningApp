@@ -1,20 +1,21 @@
 package com.example.runningapp.data
 
-import androidx.annotation.WorkerThread
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 class RunHistoryRepository(private val runHistoryDao: RunHistoryDao) {
     val runHistory: Flow<List<RunHistoryEntry>> = runHistoryDao.getAll()
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
     suspend fun insert(entry: RunHistoryEntry) {
-        runHistoryDao.insert(entry)
+        withContext(Dispatchers.IO) {
+            runHistoryDao.insert(entry)
+        }
     }
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
     suspend fun delete(entry: RunHistoryEntry) {
-        runHistoryDao.delete(entry)
+        withContext(Dispatchers.IO) {
+            runHistoryDao.delete(entry)
+        }
     }
 }

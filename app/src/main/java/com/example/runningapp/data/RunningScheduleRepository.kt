@@ -1,7 +1,8 @@
 package com.example.runningapp.data
 
-import androidx.annotation.WorkerThread
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class RunningScheduleRepository(private val runningScheduleDao: RunningScheduleDao) {
@@ -9,21 +10,21 @@ class RunningScheduleRepository(private val runningScheduleDao: RunningScheduleD
 
     val nextRunningDay: Flow<LocalDate> = runningScheduleDao.getNextRunningDay()
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
     suspend fun insert(entry: RunningScheduleEntry) {
-        runningScheduleDao.insert(entry)
+        withContext(Dispatchers.IO) {
+            runningScheduleDao.insert(entry)
+        }
     }
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
     suspend fun update(entry: RunningScheduleEntry) {
-        runningScheduleDao.update(entry)
+        withContext(Dispatchers.IO) {
+            runningScheduleDao.update(entry)
+        }
     }
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
     suspend fun delete(entry: RunningScheduleEntry) {
-        runningScheduleDao.delete(entry)
+        withContext(Dispatchers.IO) {
+            runningScheduleDao.delete(entry)
+        }
     }
 }

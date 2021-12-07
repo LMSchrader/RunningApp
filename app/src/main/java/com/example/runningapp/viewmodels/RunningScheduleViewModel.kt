@@ -3,9 +3,7 @@ package com.example.runningapp.viewmodels
 import androidx.lifecycle.*
 import com.example.runningapp.data.RunningScheduleRepository
 import com.example.runningapp.data.RunningScheduleEntry
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class RunningScheduleViewModel(private val repository: RunningScheduleRepository) : ViewModel() {
@@ -17,15 +15,11 @@ class RunningScheduleViewModel(private val repository: RunningScheduleRepository
 
 
     fun insert(entry: RunningScheduleEntry) = viewModelScope.launch {
-        withContext(Dispatchers.IO) {
-            repository.insert(entry)
-        }
+        repository.insert(entry)
     }
 
     fun update(entry: RunningScheduleEntry) = viewModelScope.launch {
-        withContext(Dispatchers.IO) {
-            repository.update(entry)
-        }
+        repository.update(entry)
 
         // update current entry
         if (currentEntry.value?.getId()?.equals(entry.getId()) == true) {
@@ -34,9 +28,7 @@ class RunningScheduleViewModel(private val repository: RunningScheduleRepository
     }
 
     fun delete(entry: RunningScheduleEntry) = viewModelScope.launch {
-        withContext(Dispatchers.IO) {
-            repository.delete(entry)
-        }
+        repository.delete(entry)
 
         // update current entry
         if (currentEntry.value?.getId()?.equals(entry.getId()) == true) {

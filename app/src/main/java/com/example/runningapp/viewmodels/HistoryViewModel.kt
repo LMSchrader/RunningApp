@@ -5,9 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.data.RunHistoryRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @RequiresApi(Build.VERSION_CODES.O)
 class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel() {
@@ -19,15 +17,11 @@ class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel
     var isInSplitScreenMode : Boolean = false
 
     fun insert(entry: RunHistoryEntry) = viewModelScope.launch {
-        withContext(Dispatchers.IO) {
             repository.insert(entry)
-        }
     }
 
     fun delete(entry: RunHistoryEntry) = viewModelScope.launch {
-        withContext(Dispatchers.IO) {
             repository.delete(entry)
-        }
 
         // update current entry
         if (currentRunHistoryEntry.value?.date?.equals(entry.date) == true) {
