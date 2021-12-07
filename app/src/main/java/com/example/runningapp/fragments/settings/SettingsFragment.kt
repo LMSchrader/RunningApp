@@ -1,9 +1,7 @@
-package com.example.runningapp.fragments
+package com.example.runningapp.fragments.settings
 
-import android.content.Context
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceManager
 import com.example.runningapp.R
 
 class SettingsFragment : PreferenceFragmentCompat() {

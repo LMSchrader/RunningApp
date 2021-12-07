@@ -45,7 +45,7 @@
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.example.runningapp.fragments.SettingsFragment"
+        android:name="com.example.runningapp.fragments.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@xml/settings" />
 
