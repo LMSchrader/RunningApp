@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        app:key="notifications"
+        app:title="@string/notification"
+        app:defaultValue="true"
+        app:summary="@string/notification_summary"/>
+
+</PreferenceScreen>

@@ -44,6 +44,12 @@
         tools:layout="@layout/fragment_record_run" />
 
     <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.runningapp.fragments.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@xml/settings" />
+
+    <fragment
         android:id="@+id/nav_running_schedule_entry"
         android:name="com.example.runningapp.fragments.runningSchedule.RunningScheduleEntryFragment"
         tools:layout="@layout/fragment_running_schedule_entry" >

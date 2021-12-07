@@ -10,6 +10,7 @@
     <string name="menu_running_schedule">Laufplan</string>
     <string name="menu_history">Historie</string>
     <string name="menu_record_run">Lauf aufnehmen</string>
+    <string name="menu_settings">Einstellungen</string>
 
     <!--home-->
     <string name="nextRunningDay">Nächster Lauftag</string>
@@ -62,4 +63,8 @@
 
     <!-- service -->
     <string name="service_description">Dieser Service nimmt einen Lauf auf.</string>
+
+    <!-- settings -->
+    <string name="notification">Benachrichtigungen aktivieren</string>
+    <string name="notification_summary">Du wirst über anstehende Laufeinheiten benachricht</string>
 </resources>

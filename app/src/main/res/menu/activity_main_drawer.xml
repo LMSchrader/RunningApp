@@ -3,18 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:title="@string/menu_home" />
-        <item
-            android:id="@+id/nav_running_schedule"
-            android:title="@string/menu_running_schedule" />
-        <item
-            android:id="@+id/nav_history"
-            android:title="@string/menu_history" />
-        <item
-            android:id="@+id/nav_record_run"
-            android:title="@string/menu_record_run" />
-    </group>
+    <item
+        android:id="@+id/nav_home"
+        android:title="@string/menu_home" />
+    <item
+        android:id="@+id/nav_running_schedule"
+        android:title="@string/menu_running_schedule" />
+    <item
+        android:id="@+id/nav_history"
+        android:title="@string/menu_history" />
+    <item
+        android:id="@+id/nav_record_run"
+        android:title="@string/menu_record_run" />
+
+    <item
+        android:id="@+id/nav_settings"
+        android:title="@string/menu_settings" />
+
 </menu>

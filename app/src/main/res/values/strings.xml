@@ -9,6 +9,7 @@
     <string name="menu_running_schedule">Running schedule</string>
     <string name="menu_history">History</string>
     <string name="menu_record_run">Record run</string>
+    <string name="menu_settings">Settings</string>
 
     <!--home-->
     <string name="nextRunningDay">Next running day</string>
@@ -62,4 +63,8 @@
 
     <!-- service -->
     <string name="service_description">This service records a run.</string>
+
+    <!-- settings -->
+    <string name="notification">Enable message notifications</string>
+    <string name="notification_summary">You will be notified about upcoming running sessions</string>
 </resources>
