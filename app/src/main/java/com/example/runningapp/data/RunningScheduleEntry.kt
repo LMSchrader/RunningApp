@@ -77,26 +77,36 @@ data class RunningScheduleEntry(
         return startDate.isBefore(endDate) || startDate == endDate
     }
 
-    //object StaticFunctions {
-    //    @RequiresApi(Build.VERSION_CODES.O)
-    //    @JvmStatic
-    //    fun getDummyData(): List<RunningScheduleEntry> {
-    //        val dummy = RunningScheduleEntry()
-    //        dummy.title = "Test"
-    //        dummy.startDate = LocalDate.of(2021, 12, 12)
-    //        dummy.endDate = LocalDate.of(2021, 12, 31)
-    //        dummy.monday = true
-    //        dummy.friday = true
-//
-    //        val dummy2 = RunningScheduleEntry()
-    //        dummy2.title = "Test2"
-    //        dummy2.startDate = LocalDate.of(2021, 11, 12)
-    //        dummy2.endDate = LocalDate.of(2022, 1, 31)
-    //        dummy2.tuesday = true
-    //        dummy2.thursday = true
-    //        dummy2.saturday = true
-//
-    //        return arrayListOf(dummy, dummy2)
-    //    }
-    //}
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun equals(other: Any?): Boolean {
+        return other is RunningScheduleEntry
+                && this.id == other.id
+                && this.title == other.title
+                && this.startDate == other.startDate
+                && this.endDate == other.endDate
+                && this.description == other.description
+                && this.monday == other.monday
+                && this.tuesday == other.tuesday
+                && this.wednesday == other.wednesday
+                && this.thursday == other.thursday
+                && this.friday == other.friday
+                && this.saturday == other.saturday
+                && this.sunday == other.sunday
+    }
+
+    override fun hashCode(): Int {
+        var result = title.hashCode()
+        result = 31 * result + startDate.hashCode()
+        result = 31 * result + endDate.hashCode()
+        result = 31 * result + (id ?: 0)
+        result = 31 * result + description.hashCode()
+        result = 31 * result + monday.hashCode()
+        result = 31 * result + tuesday.hashCode()
+        result = 31 * result + wednesday.hashCode()
+        result = 31 * result + thursday.hashCode()
+        result = 31 * result + friday.hashCode()
+        result = 31 * result + saturday.hashCode()
+        result = 31 * result + sunday.hashCode()
+        return result
+    }
 }
