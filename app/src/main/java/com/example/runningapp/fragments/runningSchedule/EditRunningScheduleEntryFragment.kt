@@ -13,6 +13,7 @@ import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBinding
 import com.example.runningapp.util.DatePickerUtil.StaticFunctions.initDatePicker
 import com.example.runningapp.util.DialogUtil.StaticFunctions.showDialog
+import com.example.runningapp.util.KeyboardUtil
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
@@ -137,6 +138,8 @@ class EditRunningScheduleEntryFragment : Fragment() {
         editedEntry.friday = binding.checkBoxFriday.isChecked
         editedEntry.saturday = binding.checkBoxSaturday.isChecked
         editedEntry.sunday = binding.checkBoxSunday.isChecked
+
+        activity?.let { KeyboardUtil.StaticFunctions.hideKeyboard(it) }
 
         return when (item.itemId) {
             android.R.id.home -> {

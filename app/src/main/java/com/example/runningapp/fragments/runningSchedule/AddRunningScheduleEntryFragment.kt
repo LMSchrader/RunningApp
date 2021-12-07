@@ -14,6 +14,7 @@ import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.util.DatePickerUtil.StaticFunctions.getTodaysDate
 import com.example.runningapp.util.DatePickerUtil.StaticFunctions.initDatePicker
 import com.example.runningapp.util.DialogUtil.StaticFunctions.showDialog
+import com.example.runningapp.util.KeyboardUtil
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
@@ -96,6 +97,9 @@ class AddRunningScheduleEntryFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        activity?.let { KeyboardUtil.StaticFunctions.hideKeyboard(it) }
+
         return when (item.itemId) {
             android.R.id.home -> {
                 //TODO: Meldung, Daten gehen verloren (nur wenn daten eingegeben wurden)
