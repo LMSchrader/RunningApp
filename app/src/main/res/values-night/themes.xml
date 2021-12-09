@@ -16,4 +16,8 @@
     <style name="Theme.RunningApp.FadedText">
         <item name="android:textColor">"#80FFFFFF"</item>
     </style>
+
+    <style name="Theme.RunningApp.ColoredText">
+        <item name="android:textColor">@color/purple_200</item>
+    </style>
 </resources>
