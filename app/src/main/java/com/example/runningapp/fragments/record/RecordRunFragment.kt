@@ -15,7 +15,7 @@ import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRecordRunBinding
 import android.app.Dialog
 import android.content.Intent
-import android.widget.Button
+import android.widget.TextView
 import com.example.runningapp.services.RecordRunService
 
 class RecordRunFragment : Fragment() {
@@ -99,7 +99,7 @@ class RecordRunFragment : Fragment() {
     private fun showDialog() {
         val dialog = context?.let { Dialog(it) }
         dialog?.setContentView(R.layout.permission_dialog)
-        val btn: Button? = dialog?.findViewById(R.id.button)
+        val btn: TextView? = dialog?.findViewById(R.id.button)
         btn?.setOnClickListener {
             dialog.dismiss()
             locationPermissionRequest.launch(

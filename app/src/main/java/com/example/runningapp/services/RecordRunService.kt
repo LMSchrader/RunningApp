@@ -5,10 +5,14 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import androidx.annotation.RequiresApi
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors.newSingleThreadExecutor
 
 class RecordRunService : Service() {
-    //TODO: Notification
-    //TODO: in anderem thred ausfuehren
+    //TODO: Notification ueberarbeiten
+
+    private val executor: Executor = newSingleThreadExecutor()
+
     companion object {
         const val CHANNEL_ID = "Job progress"
         const val TAG = "ForegroundWorker"
@@ -22,10 +26,40 @@ class RecordRunService : Service() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         createNotificationChannel()
-
         generateForegroundNotification()
 
+        executor.execute {
+            recordRun()
+        }
+
         return START_STICKY
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopRecordingRun()
+    }
+
+    private fun recordRun() {
+        // TODO: implement
+    }
+
+    private fun stopRecordingRun() {
+        // TODO: implement
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+            var notificationChannel = notificationManager.getNotificationChannel(CHANNEL_ID)
+            if (notificationChannel == null) {
+                notificationChannel = NotificationChannel(
+                    CHANNEL_ID, TAG, NotificationManager.IMPORTANCE_LOW
+                )
+                notificationManager.createNotificationChannel(notificationChannel)
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -42,19 +76,5 @@ class RecordRunService : Service() {
             .build()
 
         startForeground(155555, notification)
-    }
-
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-
-            var notificationChannel = notificationManager.getNotificationChannel(CHANNEL_ID)
-            if (notificationChannel == null) {
-                notificationChannel = NotificationChannel(
-                    CHANNEL_ID, TAG, NotificationManager.IMPORTANCE_LOW
-                )
-                notificationManager.createNotificationChannel(notificationChannel)
-            }
-        }
     }
 }
