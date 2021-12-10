@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.runningapp.R
+import com.example.runningapp.util.DatePickerUtil.StaticFunctions.getTodaysDate
 import java.time.LocalDate
 
 @Entity(tableName = "running_schedule")
@@ -75,6 +76,24 @@ data class RunningScheduleEntry(
     @RequiresApi(Build.VERSION_CODES.O)
     fun isStartAndEndDateCorrectlyDefined(): Boolean {
         return startDate.isBefore(endDate) || startDate == endDate
+    }
+
+    /**
+     * Returns true if at least one the object's default values has been changed.
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun notDefault(): Boolean {
+        return title != "" ||
+                startDate != getTodaysDate() ||
+                endDate != getTodaysDate() ||
+                description != "" ||
+                monday ||
+                tuesday ||
+                wednesday ||
+                thursday ||
+                friday ||
+                saturday ||
+                sunday
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

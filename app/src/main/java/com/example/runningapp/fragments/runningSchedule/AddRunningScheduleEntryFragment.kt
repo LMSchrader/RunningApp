@@ -97,40 +97,28 @@ class AddRunningScheduleEntryFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         activity?.let { KeyboardUtil.StaticFunctions.hideKeyboard(it) }
+
+        val entry = buildRunningScheduleEntryObject()
 
         return when (item.itemId) {
             android.R.id.home -> {
-                //TODO: Meldung, Daten gehen verloren (nur wenn daten eingegeben wurden)
-                context?.let {
-                    activity?.let { it1 ->
-                        showDialog(
-                            getString(R.string.data_loss), it,
-                            it1
-                        )
+                if (entry.notDefault()) {
+                    context?.let {
+                        activity?.let { it1 ->
+                            showDialog(
+                                getString(R.string.data_loss), it,
+                                it1
+                            )
+                        }
                     }
+                } else {
+                    activity?.onBackPressed()
                 }
                 true
             }
 
             R.id.imageSave -> {
-                val title = binding.editTitle.text.toString()
-                val startDate = LocalDate.parse(binding.editStartingDate.text)
-                val endDate = LocalDate.parse(binding.editEndDate.text)
-
-                val entry = RunningScheduleEntry(title, startDate, endDate)
-
-                entry.description = binding.editDescription.text.toString()
-
-                entry.monday = binding.checkBoxMonday.isChecked
-                entry.tuesday = binding.checkBoxTuesday.isChecked
-                entry.wednesday = binding.checkBoxWednesday.isChecked
-                entry.thursday = binding.checkBoxThursday.isChecked
-                entry.friday = binding.checkBoxFriday.isChecked
-                entry.saturday = binding.checkBoxSaturday.isChecked
-                entry.sunday = binding.checkBoxSunday.isChecked
-
                 when {
                     !entry.isTitleSet() -> {
                         view?.let {
@@ -153,5 +141,26 @@ class AddRunningScheduleEntryFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun buildRunningScheduleEntryObject(): RunningScheduleEntry {
+        val title = binding.editTitle.text.toString()
+        val startDate = LocalDate.parse(binding.editStartingDate.text)
+        val endDate = LocalDate.parse(binding.editEndDate.text)
+
+        val entry = RunningScheduleEntry(title, startDate, endDate)
+
+        entry.description = binding.editDescription.text.toString()
+
+        entry.monday = binding.checkBoxMonday.isChecked
+        entry.tuesday = binding.checkBoxTuesday.isChecked
+        entry.wednesday = binding.checkBoxWednesday.isChecked
+        entry.thursday = binding.checkBoxThursday.isChecked
+        entry.friday = binding.checkBoxFriday.isChecked
+        entry.saturday = binding.checkBoxSaturday.isChecked
+        entry.sunday = binding.checkBoxSunday.isChecked
+
+        return entry
     }
 }

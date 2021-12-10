@@ -123,23 +123,9 @@ class EditRunningScheduleEntryFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val startDate = LocalDate.parse(binding.editStartingDate.text)
-        val endDate = LocalDate.parse(binding.editEndDate.text)
-
-        val editedEntry =
-            RunningScheduleEntry(binding.editTitle.text.toString(), startDate, endDate)
-
-        viewModel.currentEntry.value?.getId()?.let { editedEntry.setId(it) }
-        editedEntry.description = binding.editDescription.text.toString()
-        editedEntry.monday = binding.checkBoxMonday.isChecked
-        editedEntry.tuesday = binding.checkBoxTuesday.isChecked
-        editedEntry.wednesday = binding.checkBoxWednesday.isChecked
-        editedEntry.thursday = binding.checkBoxThursday.isChecked
-        editedEntry.friday = binding.checkBoxFriday.isChecked
-        editedEntry.saturday = binding.checkBoxSaturday.isChecked
-        editedEntry.sunday = binding.checkBoxSunday.isChecked
-
         activity?.let { KeyboardUtil.StaticFunctions.hideKeyboard(it) }
+
+        val editedEntry = buildRunningScheduleEntryObject()
 
         return when (item.itemId) {
             android.R.id.home -> {
@@ -181,5 +167,25 @@ class EditRunningScheduleEntryFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun buildRunningScheduleEntryObject(): RunningScheduleEntry {
+        val startDate = LocalDate.parse(binding.editStartingDate.text)
+        val endDate = LocalDate.parse(binding.editEndDate.text)
+
+        val editedEntry = RunningScheduleEntry(binding.editTitle.text.toString(), startDate, endDate)
+
+        viewModel.currentEntry.value?.getId()?.let { editedEntry.setId(it) }
+        editedEntry.description = binding.editDescription.text.toString()
+        editedEntry.monday = binding.checkBoxMonday.isChecked
+        editedEntry.tuesday = binding.checkBoxTuesday.isChecked
+        editedEntry.wednesday = binding.checkBoxWednesday.isChecked
+        editedEntry.thursday = binding.checkBoxThursday.isChecked
+        editedEntry.friday = binding.checkBoxFriday.isChecked
+        editedEntry.saturday = binding.checkBoxSaturday.isChecked
+        editedEntry.sunday = binding.checkBoxSunday.isChecked
+
+        return editedEntry
     }
 }
