@@ -17,6 +17,7 @@ import com.example.runningapp.databinding.FragmentRecyclerViewBinding
 import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class RunningScheduleRecyclerViewFragment : Fragment() {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
@@ -61,6 +62,32 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
             }, viewLifecycleOwner)
         }
         binding.recyclerView.adapter = adapter
+
+
+        // floating action button animation
+        if (!context?.let { isLandscapeMode(it) }!!) {
+            val recyclerView: RecyclerView = binding.recyclerView
+            val fab: FloatingActionButton = (parentFragment as RunningScheduleFragment).getAddButton()
+
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    if (dy > 10 && fab.isShown) {
+                        fab.hide()
+                    }
+
+                    if (dy < -10 && !fab.isShown) {
+                        fab.show()
+                    }
+
+                    if (!recyclerView.canScrollVertically(-1)) {
+                        fab.show()
+                    }
+                }
+            })
+        }
+
 
         return root
     }

@@ -9,6 +9,7 @@ import androidx.navigation.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleBinding
 import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class RunningScheduleFragment : Fragment() {
     //TODO Navigation: running schedule entry ist im portrait modus und es wird die Orientierung zweimal gewechselt -> es wird die recycler view statt des entries angezeigt
@@ -74,5 +75,9 @@ class RunningScheduleFragment : Fragment() {
             setReorderingAllowed(true)
             remove(childFragmentManager.findFragmentById(R.id.rightFragment)!!)
         }
+    }
+
+    fun getAddButton(): FloatingActionButton {
+        return binding.addButton
     }
 }
