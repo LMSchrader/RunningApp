@@ -27,18 +27,13 @@
             android:id="@+id/date_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/intro_text"
+            android:layout_below="@id/intro_text"
             android:textSize="16sp"
             android:textStyle="bold">
 
         </TextView>
 
     </RelativeLayout>
-
-
-
-
-
 
 
 </androidx.cardview.widget.CardView>
