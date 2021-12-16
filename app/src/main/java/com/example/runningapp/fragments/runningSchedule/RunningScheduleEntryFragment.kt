@@ -17,26 +17,16 @@ import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMo
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
 import com.google.android.gms.nearby.Nearby
-import com.google.android.gms.nearby.connection.AdvertisingOptions
 import com.google.android.gms.nearby.connection.Strategy.P2P_POINT_TO_POINT
-import com.google.android.gms.nearby.connection.DiscoveryOptions
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo
-import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback
-import com.google.android.gms.nearby.connection.ConnectionsStatusCodes
-import com.google.android.gms.nearby.connection.ConnectionResolution
-import com.google.android.gms.nearby.connection.ConnectionInfo
-import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import com.google.android.gms.nearby.connection.PayloadTransferUpdate
-import com.google.android.gms.nearby.connection.Payload
-import com.google.android.gms.nearby.connection.PayloadCallback
+import com.google.android.gms.nearby.connection.*
 
 class RunningScheduleEntryFragment : Fragment() {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
@@ -46,7 +36,10 @@ class RunningScheduleEntryFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private var REQUIRED_PERMISSIONS : Array<String>
+    private var connectionsClient: ConnectionsClient? = null
+
+    private var REQUIRED_PERMISSIONS: Array<String>
+
     init {
         if (Build.VERSION.SDK_INT >= 29) {
             REQUIRED_PERMISSIONS = arrayOf(
@@ -168,6 +161,13 @@ class RunningScheduleEntryFragment : Fragment() {
         }
     }
 
+    private fun getConnection(): ConnectionsClient? {
+        if (connectionsClient == null) {
+            connectionsClient = context?.let { Nearby.getConnectionsClient(it) }
+        }
+        return connectionsClient
+    }
+
     private fun hasPermissions(): Boolean {
         for (permission in REQUIRED_PERMISSIONS) {
             if (context?.let { ContextCompat.checkSelfPermission(it, permission) }
@@ -200,11 +200,11 @@ class RunningScheduleEntryFragment : Fragment() {
     /**
      * Opens a dialog, that explains why the permissions are needed and asks for the permissions afterwards.
      */
-
     private fun showDialog() {
         val dialog = context?.let { Dialog(it) }
         dialog?.setContentView(R.layout.permission_dialog)
-        dialog?.findViewById<TextView>(R.id.description)?.text = getString(R.string.location_permission_required_google_nearby)
+        dialog?.findViewById<TextView>(R.id.description)?.text =
+            getString(R.string.location_permission_required_google_nearby)
         val btn: TextView? = dialog?.findViewById(R.id.button)
         btn?.setOnClickListener {
             dialog.dismiss()
@@ -217,25 +217,25 @@ class RunningScheduleEntryFragment : Fragment() {
         val advertisingOptions: AdvertisingOptions =
             AdvertisingOptions.Builder().setStrategy(P2P_POINT_TO_POINT).build()
         context?.let {
-            Nearby.getConnectionsClient(it)
-                .startAdvertising(
+            getConnection()
+                ?.startAdvertising(
                     Settings.Global.getString(it.contentResolver, "device_name"),
                     it.packageName,
                     connectionLifecycleCallback,
                     advertisingOptions
                 )
-                .addOnSuccessListener { unused: Void? -> }
-                .addOnFailureListener { e: Exception? -> }
+                ?.addOnSuccessListener { unused: Void? -> }
+                ?.addOnFailureListener { e: Exception? -> }
         }
     }
 
     private fun startDiscovery() {
         val discoveryOptions = DiscoveryOptions.Builder().setStrategy(P2P_POINT_TO_POINT).build()
         context?.let {
-            Nearby.getConnectionsClient(it)
-                .startDiscovery(it.packageName, endpointDiscoveryCallback, discoveryOptions)
-                .addOnSuccessListener { unused: Void? -> }
-                .addOnFailureListener { e: java.lang.Exception? -> }
+            getConnection()
+                ?.startDiscovery(it.packageName, endpointDiscoveryCallback, discoveryOptions)
+                ?.addOnSuccessListener { unused: Void? -> }
+                ?.addOnFailureListener { e: java.lang.Exception? -> }
         }
     }
 
@@ -244,16 +244,16 @@ class RunningScheduleEntryFragment : Fragment() {
             override fun onEndpointFound(endpointId: String, info: DiscoveredEndpointInfo) {
                 // An endpoint was found. We request a connection to it.
                 context?.let {
-                    Nearby.getConnectionsClient(it)
-                        .requestConnection(
+                    getConnection()
+                        ?.requestConnection(
                             Settings.Global.getString(
                                 it.contentResolver,
                                 "device_name"
                             ), endpointId, connectionLifecycleCallback
                         )
-                        .addOnSuccessListener(
+                        ?.addOnSuccessListener(
                             OnSuccessListener { unused: Void? -> })
-                        .addOnFailureListener(
+                        ?.addOnFailureListener(
                             OnFailureListener { e: java.lang.Exception? -> })
                 }
             }
@@ -268,18 +268,18 @@ class RunningScheduleEntryFragment : Fragment() {
             override fun onConnectionInitiated(endpointId: String, connectionInfo: ConnectionInfo) {
                 context?.let {
                     AlertDialog.Builder(it)
-                        .setTitle("Accept connection to " + connectionInfo.getEndpointName())
-                        .setMessage("Confirm the code matches on both devices: " + connectionInfo.getAuthenticationDigits())
+                        .setTitle("Accept connection to " + connectionInfo.endpointName)
+                        .setMessage("Confirm the code matches on both devices: " + connectionInfo.authenticationDigits)
                         .setPositiveButton(
                             "Accept"
                         ) { dialog: DialogInterface?, which: Int ->  // The user confirmed, so we can accept the connection.
-                            Nearby.getConnectionsClient(context!!)
-                                .acceptConnection(endpointId, ReceiveBytesPayloadListener())
+                            getConnection()
+                                ?.acceptConnection(endpointId, ReceiveBytesPayloadListener())
                         }
                         .setNegativeButton(
                             android.R.string.cancel
                         ) { dialog: DialogInterface?, which: Int ->  // The user canceled, so we should reject the connection.
-                            Nearby.getConnectionsClient(context!!).rejectConnection(endpointId)
+                            getConnection()?.rejectConnection(endpointId)
                         }
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show()
@@ -290,8 +290,7 @@ class RunningScheduleEntryFragment : Fragment() {
                 when (result.status.statusCode) {
                     ConnectionsStatusCodes.STATUS_OK -> {
                         val bytesPayload = Payload.fromBytes(byteArrayOf(0xa, 0xb, 0xc, 0xd))
-                        Nearby.getConnectionsClient(context!!)
-                            .sendPayload(endpointId, bytesPayload)
+                        getConnection()?.sendPayload(endpointId, bytesPayload)
                     }
                     ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED -> {
                     }
