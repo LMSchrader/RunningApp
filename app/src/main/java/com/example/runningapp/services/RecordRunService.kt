@@ -2,7 +2,6 @@ package com.example.runningapp.services
 
 import android.app.*
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors.newSingleThreadExecutor
