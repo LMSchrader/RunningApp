@@ -54,6 +54,7 @@
     <string name="delete">Löschen</string>
     <string name="ok">OK</string>
     <string name="continue_text">Fortfahren</string>
+    <string name="share">Teilen</string>
 
     <!-- alert -->
     <string name="location_permission_required">Ohne Berechtigung zum Zugriff auf den genauen Standort können keine Läufe aufgezeichnet werden</string>
