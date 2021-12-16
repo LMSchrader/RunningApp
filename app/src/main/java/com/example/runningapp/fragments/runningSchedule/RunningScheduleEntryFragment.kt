@@ -1,5 +1,7 @@
 package com.example.runningapp.fragments.runningSchedule
 
+import android.Manifest
+import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -28,7 +30,11 @@ import com.google.android.gms.nearby.connection.ConnectionResolution
 import com.google.android.gms.nearby.connection.ConnectionInfo
 import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback
 import android.content.DialogInterface
+import android.content.pm.PackageManager
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate
 import com.google.android.gms.nearby.connection.Payload
 import com.google.android.gms.nearby.connection.PayloadCallback
@@ -41,6 +47,32 @@ class RunningScheduleEntryFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    private var REQUIRED_PERMISSIONS : Array<String>
+    init {
+        if (Build.VERSION.SDK_INT >= 29) {
+            REQUIRED_PERMISSIONS = arrayOf(
+                Manifest.permission.BLUETOOTH,
+                Manifest.permission.BLUETOOTH_ADMIN,
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.CHANGE_WIFI_STATE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        } else {
+            REQUIRED_PERMISSIONS = arrayOf(
+                Manifest.permission.BLUETOOTH,
+                Manifest.permission.BLUETOOTH_ADMIN,
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.CHANGE_WIFI_STATE,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        }
+    }
+
+    private val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) {}
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +82,7 @@ class RunningScheduleEntryFragment : Fragment() {
             findNavController().popBackStack()
         }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -90,9 +123,13 @@ class RunningScheduleEntryFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.imageShare) {
+            if (hasPermissions()) {
                 startAdvertising()
                 startDiscovery()
-                return true
+            } else {
+                requestPermissions()
+            }
+            return true
         }
 
         if (context?.let { isLandscapeMode(it) } == true) {
@@ -132,6 +169,51 @@ class RunningScheduleEntryFragment : Fragment() {
                 else -> super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    private fun hasPermissions(): Boolean {
+        for (permission in REQUIRED_PERMISSIONS) {
+            if (context?.let { ContextCompat.checkSelfPermission(it, permission) }
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun shouldShowRequestPermissionRationale(): Boolean {
+        for (permission in REQUIRED_PERMISSIONS) {
+            if (shouldShowRequestPermissionRationale(permission)) {
+                return true
+            }
+        }
+        return false
+    }
+
+
+    private fun requestPermissions() {
+        if (shouldShowRequestPermissionRationale()) {
+            showDialog()
+        } else {
+            locationPermissionRequest.launch(REQUIRED_PERMISSIONS)
+        }
+    }
+
+    /**
+     * Opens a dialog, that explains why the permissions are needed and asks for the permissions afterwards.
+     */
+
+    private fun showDialog() {
+        val dialog = context?.let { Dialog(it) }
+        dialog?.setContentView(R.layout.permission_dialog)
+        dialog?.findViewById<TextView>(R.id.description)?.text = getString(R.string.location_permission_required_google_nearby)
+        val btn: TextView? = dialog?.findViewById(R.id.button)
+        btn?.setOnClickListener {
+            dialog.dismiss()
+            locationPermissionRequest.launch(REQUIRED_PERMISSIONS)
+        }
+        dialog?.show()
     }
 
     private fun startAdvertising() {

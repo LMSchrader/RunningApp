@@ -34,7 +34,7 @@
             android:name="com.example.runningapp.services.RecordRunService"
             android:description="@string/service_description"
             android:exported="false"
-            android:foregroundServiceType="location"/>
+            android:foregroundServiceType="location" />
     </application>
 
 </manifest>

@@ -2,7 +2,6 @@ package com.example.runningapp.fragments.record
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +14,7 @@ import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRecordRunBinding
 import android.app.Dialog
 import android.content.Intent
+import android.os.Build
 import android.widget.TextView
 import com.example.runningapp.services.RecordRunService
 
@@ -25,21 +25,20 @@ class RecordRunFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    val locationPermissionRequest = registerForActivityResult(
+    private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        when {
-            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                // Precise location access granted.
-            }
-            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                // Only approximate location access granted.
-            }
-            else -> {
-                // No location access granted.
-            }
-        }
+    ) { //permissions ->
+        //when {
+        //    permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+        //        // Precise location access granted.
+        //    }
+        //    permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+        //        // Only approximate location access granted.
+        //    }
+        //    else -> {
+        //        // No location access granted.
+        //    }
+        //}
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -99,6 +98,7 @@ class RecordRunFragment : Fragment() {
     private fun showDialog() {
         val dialog = context?.let { Dialog(it) }
         dialog?.setContentView(R.layout.permission_dialog)
+        dialog?.findViewById<TextView>(R.id.description)?.text = getString(R.string.location_permission_required)
         val btn: TextView? = dialog?.findViewById(R.id.button)
         btn?.setOnClickListener {
             dialog.dismiss()
