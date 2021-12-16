@@ -1,8 +1,6 @@
 package com.example.runningapp.data
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +14,6 @@ abstract class AppDatabase : RoomDatabase() {
 
     private class RunHistoryDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
 
-        @RequiresApi(Build.VERSION_CODES.O)
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
             INSTANCE?.let { database ->

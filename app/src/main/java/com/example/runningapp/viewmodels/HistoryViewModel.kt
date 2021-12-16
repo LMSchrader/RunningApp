@@ -1,13 +1,10 @@
 package com.example.runningapp.viewmodels
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.data.RunHistoryRepository
 import kotlinx.coroutines.launch
 
-@RequiresApi(Build.VERSION_CODES.O)
 class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel() {
 
     val runHistoryEntries: LiveData<List<RunHistoryEntry>> = repository.runHistory.asLiveData()
@@ -32,7 +29,6 @@ class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel
 
 class HistoryViewModelFactory(private val repository: RunHistoryRepository) :
     ViewModelProvider.Factory {
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HistoryViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

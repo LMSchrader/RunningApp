@@ -1,8 +1,6 @@
 package com.example.runningapp.data
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.runningapp.R
@@ -73,7 +71,6 @@ data class RunningScheduleEntry(
         return title != ""
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun isStartAndEndDateCorrectlyDefined(): Boolean {
         return startDate.isBefore(endDate) || startDate == endDate
     }
@@ -81,7 +78,6 @@ data class RunningScheduleEntry(
     /**
      * Returns true if at least one the object's default values has been changed.
      */
-    @RequiresApi(Build.VERSION_CODES.O)
     fun notDefault(): Boolean {
         return title != "" ||
                 startDate != getTodaysDate() ||
@@ -96,7 +92,6 @@ data class RunningScheduleEntry(
                 sunday
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun equals(other: Any?): Boolean {
         return other is RunningScheduleEntry
                 && this.id == other.id

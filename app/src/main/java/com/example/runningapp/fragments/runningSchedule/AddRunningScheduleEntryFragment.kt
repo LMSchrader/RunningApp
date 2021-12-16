@@ -1,10 +1,8 @@
 package com.example.runningapp.fragments.runningSchedule
 
 import android.app.DatePickerDialog
-import android.os.Build
 import android.os.Bundle
 import android.view.*
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.runningapp.R
@@ -34,7 +32,6 @@ class AddRunningScheduleEntryFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -73,7 +70,6 @@ class AddRunningScheduleEntryFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun initDatePickerStartDate() {
         val dateSetListener =
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
@@ -84,7 +80,6 @@ class AddRunningScheduleEntryFragment : Fragment() {
         datePickerDialogStartDate = context?.let { initDatePicker(it, dateSetListener) }!!
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun initDatePickerEndDate() {
         val dateSetListener =
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
@@ -95,7 +90,6 @@ class AddRunningScheduleEntryFragment : Fragment() {
         datePickerDialogEndDate = context?.let { initDatePicker(it, dateSetListener) }!!
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         activity?.let { KeyboardUtil.StaticFunctions.hideKeyboard(it) }
 
@@ -143,7 +137,6 @@ class AddRunningScheduleEntryFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun buildRunningScheduleEntryObject(): RunningScheduleEntry {
         val title = binding.editTitle.text.toString()
         val startDate = LocalDate.parse(binding.editStartingDate.text)

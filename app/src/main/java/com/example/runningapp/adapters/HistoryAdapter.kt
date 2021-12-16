@@ -1,11 +1,9 @@
 package com.example.runningapp.adapters
 
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -52,7 +50,6 @@ class HistoryAdapter(
     }
 
     // Replace the contents of a view (invoked by the layout manager)
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
         // Get element from your dataset at this position and replace the
@@ -65,6 +62,5 @@ class HistoryAdapter(
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun getItemCount() = data.size
 }

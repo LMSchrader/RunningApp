@@ -1,7 +1,5 @@
 package com.example.runningapp.data
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDateTime
@@ -17,7 +15,6 @@ class RunHistoryEntry(
 
 
     object StaticFunctions {
-        @RequiresApi(Build.VERSION_CODES.O)
         @JvmStatic
         fun getDummyData(): List<RunHistoryEntry> {
             val dummy = RunHistoryEntry(LocalDateTime.of(2021, 12, 12, 12, 30, 51))

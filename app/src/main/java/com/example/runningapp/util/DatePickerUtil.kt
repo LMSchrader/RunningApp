@@ -2,8 +2,6 @@ package com.example.runningapp.util
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.time.LocalDate
 import java.util.*
 
@@ -13,7 +11,6 @@ class DatePickerUtil {
         private const val datePickerStyle: Int = android.R.style.Theme_DeviceDefault_Dialog
 
         @JvmStatic
-        @RequiresApi(Build.VERSION_CODES.O)
         fun getTodaysDate(): LocalDate {
             val cal = Calendar.getInstance()
             return LocalDate.of(
@@ -24,7 +21,6 @@ class DatePickerUtil {
         }
 
         @JvmStatic
-        @RequiresApi(Build.VERSION_CODES.O)
         fun initDatePicker(
             context: Context,
             dateSetListener: DatePickerDialog.OnDateSetListener
