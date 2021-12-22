@@ -1,16 +1,15 @@
 package com.example.runningapp.fragments.home
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.example.runningapp.AppApplication
 import com.example.runningapp.R
+import com.example.runningapp.adapters.HomeAdapter
 import com.example.runningapp.databinding.FragmentHomeBinding
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
@@ -25,7 +24,6 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,6 +42,8 @@ class HomeFragment : Fragment() {
         binding.recordRunButton.setOnClickListener {
             view?.findNavController()?.navigate(R.id.action_nav_home_to_nav_record_run)
         }
+
+        binding.pager.adapter = HomeAdapter(viewModel.entries, viewLifecycleOwner)
 
         return binding.root
     }

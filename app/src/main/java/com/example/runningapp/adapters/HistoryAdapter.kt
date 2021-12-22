@@ -13,9 +13,11 @@ import java.time.format.DateTimeFormatter
 
 class HistoryAdapter(
     runHistoryLiveData: LiveData<List<RunHistoryEntry>>,
-    private val onClickListener: (position: Int?) -> Unit, lifecycleOwner: LifecycleOwner
-): RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
+    private val onClickListener: (position: Int?) -> Unit,
+    lifecycleOwner: LifecycleOwner
+) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     private var data: List<RunHistoryEntry> = emptyList()
+
     init {
         runHistoryLiveData.observe(lifecycleOwner) { runHistoryEntries ->
             data = runHistoryEntries
@@ -27,9 +29,10 @@ class HistoryAdapter(
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    class ViewHolder(view: View, private val onClickListener: (position: Int?) -> Unit) : RecyclerView.ViewHolder(view) {
-        val introText : TextView = view.findViewById(R.id.intro_text)
-        val dateTime : TextView = view.findViewById(R.id.date_time)
+    class ViewHolder(view: View, private val onClickListener: (position: Int?) -> Unit) :
+        RecyclerView.ViewHolder(view) {
+        private val introText: TextView = view.findViewById(R.id.intro_text)
+        val dateTime: TextView = view.findViewById(R.id.date_time)
 
         init {
             introText.text = view.context.resources.getString(R.string.intro_text)
