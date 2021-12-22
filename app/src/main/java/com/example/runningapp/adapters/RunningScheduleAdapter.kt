@@ -12,7 +12,6 @@ import com.example.runningapp.R
 import com.example.runningapp.data.RunningScheduleEntry
 
 class RunningScheduleAdapter(
-    private val context: Context,
     liveData: LiveData<List<RunningScheduleEntry>>,
     private val onClickListener: (position: Int?) -> Unit,
     lifecycleOwner: LifecycleOwner
@@ -33,6 +32,8 @@ class RunningScheduleAdapter(
      */
     class ViewHolder(view: View, private val onClickListener: (position: Int?) -> Unit) :
         RecyclerView.ViewHolder(view) {
+        val context: Context = view.context
+
         val title: TextView = view.findViewById(R.id.title)
         val startDate: TextView = view.findViewById(R.id.startDate)
         val endDate: TextView = view.findViewById(R.id.endDate)
@@ -62,7 +63,7 @@ class RunningScheduleAdapter(
         viewHolder.title.text = data[position].title
         viewHolder.startDate.text = data[position].startDate.toString()
         viewHolder.endDate.text = data[position].endDate.toString()
-        viewHolder.weekdays.text = data[position].getWeekdayString(context)
+        viewHolder.weekdays.text = data[position].getWeekdayString(viewHolder.context)
     }
 
     // Return the size of your dataset (invoked by the layout manager)

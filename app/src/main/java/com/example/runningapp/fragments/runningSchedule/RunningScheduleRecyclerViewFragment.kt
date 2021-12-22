@@ -41,7 +41,7 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
         binding.recyclerView.layoutManager = layoutManager
 
         adapter = context?.let {
-            RunningScheduleAdapter(it, viewModel.entries, { position ->
+            RunningScheduleAdapter(viewModel.entries, { position ->
                 viewModel.currentEntry.value = position?.let { it1 ->
                     viewModel.entries.value?.get(
                         it1
@@ -63,7 +63,8 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
         // floating action button animation
         if (!context?.let { isLandscapeMode(it) }!!) {
             val recyclerView: RecyclerView = binding.recyclerView
-            val fab: FloatingActionButton = (parentFragment as RunningScheduleFragment).getAddButton()
+            val fab: FloatingActionButton =
+                (parentFragment as RunningScheduleFragment).getAddButton()
 
             recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

@@ -1,15 +1,18 @@
 package com.example.runningapp.adapters
 
+import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import com.example.runningapp.R
 import com.example.runningapp.data.RunningScheduleEntry
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 
 class HomeAdapter(
     runHistoryLiveData: LiveData<List<RunningScheduleEntry>>,
@@ -36,8 +39,34 @@ class HomeAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        //TODO: bilder einfügen mit Daten aus Datenbank
-       holder.test.text = "Hier finden sich später Abbildungen"
+        //TODO: Daten aus Datenbank einbinden
+        holder.chart.description.isEnabled = true
+
+        holder.chart.setDrawGridBackground(false)
+
+        val timeList = emptyList<Float>()
+        val paceList = emptyList<Float>()
+        val altitudeList = emptyList<Float>()
+        val paceTimeSeries: MutableList<Entry> = mutableListOf()
+        val altitudeTimeSeries: MutableList<Entry> = mutableListOf()
+        if (timeList != null) {
+            for (i in timeList.indices) {
+                paceTimeSeries.add(Entry(timeList[i], paceList[i]))
+                altitudeTimeSeries.add(Entry(timeList[i], altitudeList[i]))
+            }
+        }
+
+        holder.chart.data = LineData(
+            LineDataSet(
+                paceTimeSeries,
+                holder.context.resources.getString(R.string.pace_label)
+            ),
+            LineDataSet(
+                altitudeTimeSeries,
+                holder.context.resources.getString(R.string.altitude_label)
+            )
+        )
+        holder.chart.animateX(500)
     }
 
     override fun getItemCount(): Int {
@@ -46,8 +75,8 @@ class HomeAdapter(
 
     class ViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
-            //TODO
-            val test: TextView = itemView.findViewById(R.id.test)
-        }
+        val context: Context = view.context
+        val chart: LineChart = itemView.findViewById(R.id.lineChart)
+    }
 
 }
