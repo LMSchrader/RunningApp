@@ -49,24 +49,22 @@
         app:layout_constraintTop_toBottomOf="@id/nextRunningDay" />
 
     <TextView
-        android:id="@+id/running_days_kept"
+        android:id="@+id/runningDaysKept"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="@string/running_days_kept"
         app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nextRunningDayDate" />
 
     <TextView
-        android:id="@+id/kilometers_run"
+        android:id="@+id/kilometersRun"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/kilometers_run"
         app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/running_days_kept" />
+        app:layout_constraintTop_toBottomOf="@id/runningDaysKept" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"

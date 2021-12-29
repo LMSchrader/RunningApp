@@ -1,5 +1,6 @@
 package com.example.runningapp.fragments.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +40,8 @@ class HomeFragment : Fragment() {
             }
         }
 
+        initKeyValuePairs()
+
         binding.recordRunButton.setOnClickListener {
             view?.findNavController()?.navigate(R.id.action_nav_home_to_nav_record_run)
         }
@@ -51,5 +54,22 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initKeyValuePairs() {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+
+        val defaultValue = 0
+        val runningDaysKept = sharedPref.getInt(getString(R.string.running_days_kept), defaultValue)
+        val kilometersRun = sharedPref.getInt(getString(R.string.kilometers_run), defaultValue)
+
+        binding.runningDaysKept.text = resources.getString(R.string.running_days_kept, runningDaysKept.toString())
+        binding.kilometersRun.text = resources.getString(R.string.kilometers_run, kilometersRun.toString())
+        // write
+        //with (sharedPref.edit()) {
+        //    putInt(getString(R.string.running_days_kept), newHighScore)
+        //    apply()
+        //}
+
     }
 }
