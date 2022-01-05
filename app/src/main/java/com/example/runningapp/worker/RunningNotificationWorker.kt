@@ -16,7 +16,7 @@ class RunningNotificationWorker(appContext: Context, workerParams: WorkerParamet
 
     companion object {
         private const val WORKER_NAME = "RunningNotification"
-        private const val hour = 6
+        private const val hour = 0
         private const val minute = 0
 
         const val CHANNEL_ID = "RunningNotification"
@@ -68,12 +68,9 @@ class RunningNotificationWorker(appContext: Context, workerParams: WorkerParamet
     //TODO: notification
     // wird momentan nicht angezeigt
     private fun createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
         val name = TAG //TODO
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel(CHANNEL_ID, name, importance)
-        // Register the channel with the system
         val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
@@ -86,7 +83,6 @@ class RunningNotificationWorker(appContext: Context, workerParams: WorkerParamet
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         with(NotificationManagerCompat.from(applicationContext)) {
-            // notificationId is a unique int for each notification that you must define
             notify(1, builder.build())
         }
     }
