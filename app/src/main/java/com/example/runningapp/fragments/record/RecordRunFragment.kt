@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRecordRunBinding
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.widget.TextView
 import com.example.runningapp.services.RecordRunService
@@ -66,13 +67,32 @@ class RecordRunFragment : Fragment() {
                 )
             }
             == PackageManager.PERMISSION_GRANTED) {
-            //TODO
+            //TODO: Forground service kann mehrmals gestatrtet werden (dann wird onStartCommand erneut aufgerufen)
             context?.startForegroundService(Intent(context, RecordRunService::class.java))
         } else requestPermission()
     }
 
     private fun stopRun() {
         context?.stopService(Intent(context, RecordRunService::class.java))
+
+        //TODO
+        // nur einmal ausführen
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            putInt(getString(R.string.kilometers_run), sharedPref.getInt(getString(R.string.kilometers_run), 0) + 10)
+            apply()
+        }
+
+        val runningDay = true
+        if (runningDay) {
+            with(sharedPref.edit()) {
+                putInt(
+                    getString(R.string.running_days_kept),
+                    sharedPref.getInt(getString(R.string.running_days_kept), 0) + 1
+                )
+                apply()
+            }
+        }
     }
 
     private fun requestPermission() {
