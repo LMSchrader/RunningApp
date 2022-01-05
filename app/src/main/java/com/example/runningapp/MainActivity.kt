@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.runningapp.databinding.ActivityMainBinding
+import com.example.runningapp.worker.RunningNotificationWorker
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,6 +37,9 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        //TODO
+        RunningNotificationWorker.runAt(applicationContext)
     }
 
     override fun onSupportNavigateUp(): Boolean {
