@@ -8,7 +8,6 @@ import java.util.*
 class DatePickerUtil {
 
     object StaticFunctions {
-        private const val datePickerStyle: Int = android.R.style.Theme_DeviceDefault_Dialog
 
         @JvmStatic
         fun getTodaysDate(): LocalDate {
@@ -32,7 +31,6 @@ class DatePickerUtil {
 
             return DatePickerDialog(
                 context,
-                datePickerStyle,
                 dateSetListener,
                 year,
                 month,
