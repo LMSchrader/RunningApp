@@ -43,7 +43,8 @@ class RunningNotificationWorker(appContext: Context, workerParams: WorkerParamet
                 .setInitialDelay(duration.seconds, TimeUnit.SECONDS)
                 .build()
 
-            workManager.enqueueUniqueWork(WORKER_NAME, ExistingWorkPolicy.REPLACE, workRequest)
+            //TODO maybe replace
+            workManager.enqueueUniqueWork(WORKER_NAME, ExistingWorkPolicy.KEEP, workRequest)
         }
 
         fun cancel(context: Context) {
@@ -68,22 +69,26 @@ class RunningNotificationWorker(appContext: Context, workerParams: WorkerParamet
     //TODO: notification
     // wird momentan nicht angezeigt
     private fun createNotificationChannel() {
-        val name = TAG //TODO
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(CHANNEL_ID, name, importance)
         val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
+
+        var notificationChannel = notificationManager.getNotificationChannel(CHANNEL_ID)
+        if (notificationChannel == null) {
+            notificationChannel = NotificationChannel(
+                CHANNEL_ID, TAG, NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
     }
 
     private fun showNotification() {
         val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-            .setContentTitle("My notification")
-            .setContentText("Much longer text that cannot fit one line...")
+            .setContentTitle("Test")
+            .setContentText("Test")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         with(NotificationManagerCompat.from(applicationContext)) {
-            notify(1, builder.build())
+            notify(155556, builder.build())
         }
     }
 }
