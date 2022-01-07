@@ -32,11 +32,11 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        viewModel.nextRunningDay.observe(viewLifecycleOwner) { runningDay ->
-            if (runningDay != null) {
-                binding.nextRunningDayDate.text = runningDay.toString()
+        viewModel.isTodayARunningDay.observe(viewLifecycleOwner) { runningDay ->
+            if (runningDay) {
+                binding.runningDay.text = getString(R.string.runningDay)
             } else {
-                binding.nextRunningDayDate.text = getString(R.string.to_short)
+                binding.nextRunningDayDate.text = getString(R.string.restDay)
             }
         }
 

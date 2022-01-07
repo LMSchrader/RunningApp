@@ -4,12 +4,12 @@ import androidx.lifecycle.*
 import com.example.runningapp.data.RunningScheduleRepository
 import com.example.runningapp.data.RunningScheduleEntry
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 
 class RunningScheduleViewModel(private val repository: RunningScheduleRepository) : ViewModel() {
 
     val entries: LiveData<List<RunningScheduleEntry>> = repository.runningSchedule.asLiveData()
-    val nextRunningDay: LiveData<LocalDate> = repository.nextRunningDay.asLiveData()
+    //val nextRunningDay: LiveData<LocalDate> = repository.nextRunningDay.asLiveData()
+    val isTodayARunningDay: LiveData<Boolean> = repository.isTodayARunningDay.asLiveData()
 
     var currentEntry: MutableLiveData<RunningScheduleEntry?> = MutableLiveData(null)
 

@@ -13,7 +13,8 @@
     <string name="menu_settings">Einstellungen</string>
 
     <!--home-->
-    <string name="nextRunningDay">Nächster Lauftag</string>
+    <string name="restDay">Heute ist ein Ruhetag!</string>
+    <string name="runningDay">Heute ist ein Lauftag!</string>
     <string name="kilometers_run">Bisher %1$s Kilometer gelaufen</string>
     <string name="running_days_kept">Du hast %1$s mal infolge deinen Laufplan eingehalten!</string>
 
