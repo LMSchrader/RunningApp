@@ -20,7 +20,7 @@ class RunningNotificationWorker(appContext: Context, workerParams: WorkerParamet
         private const val minute = 0
 
         const val CHANNEL_ID = "RunningNotification"
-        const val TAG = "Worker" //TODO
+        const val TAG = "Worker"
 
 
         fun runAt(context: Context) {
@@ -43,7 +43,6 @@ class RunningNotificationWorker(appContext: Context, workerParams: WorkerParamet
                 .setInitialDelay(duration.seconds, TimeUnit.SECONDS)
                 .build()
 
-            //TODO maybe replace
             workManager.enqueueUniqueWork(WORKER_NAME, ExistingWorkPolicy.KEEP, workRequest)
         }
 

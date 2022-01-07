@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
             if (runningDay) {
                 binding.runningDay.text = getString(R.string.runningDay)
             } else {
-                binding.nextRunningDayDate.text = getString(R.string.restDay)
+                binding.runningDay.text = getString(R.string.restDay)
             }
         }
 
@@ -63,13 +63,9 @@ class HomeFragment : Fragment() {
         val runningDaysKept = sharedPref.getInt(getString(R.string.running_days_kept), defaultValue)
         val kilometersRun = sharedPref.getInt(getString(R.string.kilometers_run), defaultValue)
 
-        binding.runningDaysKept.text = resources.getString(R.string.running_days_kept, runningDaysKept.toString())
-        binding.kilometersRun.text = resources.getString(R.string.kilometers_run, kilometersRun.toString())
-        // write
-        //with (sharedPref.edit()) {
-        //    putInt(getString(R.string.running_days_kept), newHighScore)
-        //    apply()
-        //}
-
+        binding.runningDaysKept.text =
+            resources.getString(R.string.running_days_kept, runningDaysKept.toString())
+        binding.kilometersRun.text =
+            resources.getString(R.string.kilometers_run, kilometersRun.toString())
     }
 }
