@@ -14,8 +14,12 @@ import com.example.runningapp.databinding.FragmentRecordRunBinding
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.widget.TextView
 import com.example.runningapp.services.RecordRunService
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.android.gms.tasks.Task
 
 class RecordRunFragment : Fragment() {
     private var _binding: FragmentRecordRunBinding? = null
@@ -67,9 +71,10 @@ class RecordRunFragment : Fragment() {
                 )
             }
             == PackageManager.PERMISSION_GRANTED) {
-            //TODO: Forground service kann mehrmals gestatrtet werden (dann wird onStartCommand erneut aufgerufen)
-            context?.startForegroundService(Intent(context, RecordRunService::class.java))
-        } else requestPermission()
+
+            checkLocationSettingsAndStartService(createLocationRequest())
+
+        } else requestPermissions()
     }
 
     private fun stopRun() {
@@ -78,11 +83,15 @@ class RecordRunFragment : Fragment() {
         //TODO
         // nur einmal ausführen
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        with (sharedPref.edit()) {
-            putInt(getString(R.string.kilometers_run), sharedPref.getInt(getString(R.string.kilometers_run), 0) + 10)
+        with(sharedPref.edit()) {
+            putInt(
+                getString(R.string.kilometers_run),
+                sharedPref.getInt(getString(R.string.kilometers_run), 0) + 10
+            )
             apply()
         }
 
+        //TODO
         val runningDay = true
         if (runningDay) {
             with(sharedPref.edit()) {
@@ -95,9 +104,9 @@ class RecordRunFragment : Fragment() {
         }
     }
 
-    private fun requestPermission() {
+    private fun requestPermissions() {
         if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            showDialog()
+            showPermissionDialog()
         } else {
             locationPermissionRequest.launch(
                 arrayOf(
@@ -111,10 +120,11 @@ class RecordRunFragment : Fragment() {
     /**
      * Opens a dialog, that explains why the permissions are needed and asks for the permissions afterwards.
      */
-    private fun showDialog() {
+    private fun showPermissionDialog() {
         val dialog = context?.let { Dialog(it) }
         dialog?.setContentView(R.layout.permission_dialog)
-        dialog?.findViewById<TextView>(R.id.description)?.text = getString(R.string.location_permission_required)
+        dialog?.findViewById<TextView>(R.id.description)?.text =
+            getString(R.string.location_permission_required)
         val btn: TextView? = dialog?.findViewById(R.id.button)
         btn?.setOnClickListener {
             dialog.dismiss()
@@ -126,5 +136,47 @@ class RecordRunFragment : Fragment() {
             )
         }
         dialog?.show()
+    }
+
+    private fun createLocationRequest(): LocationRequest {
+        return LocationRequest.create().apply {
+            interval = 10000
+            fastestInterval = 5000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+    }
+
+    private fun checkLocationSettingsAndStartService(locationRequest: LocationRequest) {
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+
+        val client: SettingsClient? = context?.let { LocationServices.getSettingsClient(it) }
+        val task: Task<LocationSettingsResponse>? = client?.checkLocationSettings(builder.build())
+
+        task?.addOnSuccessListener {
+            // All location settings are satisfied. The client can initialize
+            // location requests here.
+            //TODO: Forground service kann mehrmals gestatrtet werden (dann wird onStartCommand erneut aufgerufen)
+            context?.startForegroundService(Intent(context, RecordRunService::class.java))
+        }
+
+        task?.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException) {
+                // Location settings are not satisfied, but this can be fixed
+                // by showing the user a dialog.
+                try {
+                    // Show the dialog by calling startResolutionForResult(),
+                    // and check the result in onActivityResult().
+                    activity?.let {
+                        exception.startResolutionForResult(
+                            it,
+                            100 // 100: GPS setting // TODO
+                        )
+                    }
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    // Ignore the error.
+                }
+            }
+        }
     }
 }
