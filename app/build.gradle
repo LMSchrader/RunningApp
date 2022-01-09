@@ -87,6 +87,6 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.7.1")
 
     // Location
-    implementation 'com.google.android.gms:play-services-location:19.0.0'
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
 
 }

@@ -17,6 +17,8 @@ import android.content.Intent
 import android.content.IntentSender
 import android.widget.TextView
 import com.example.runningapp.services.RecordRunService
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
@@ -64,6 +66,15 @@ class RecordRunFragment : Fragment() {
     }
 
     private fun startRun() {
+        // check availability of Google Play Services
+        if (context?.let {
+                GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(it)
+            } != ConnectionResult.SUCCESS) {
+            showMissingGooglePlayServicesDialog()
+            return
+        }
+
+        // check permissions
         if (context?.let {
                 ContextCompat.checkSelfPermission(
                     it,
@@ -72,6 +83,7 @@ class RecordRunFragment : Fragment() {
             }
             == PackageManager.PERMISSION_GRANTED) {
 
+            // check location settings
             checkLocationSettingsAndStartService(createLocationRequest())
 
         } else requestPermissions()
@@ -138,6 +150,22 @@ class RecordRunFragment : Fragment() {
         dialog?.show()
     }
 
+    private fun showMissingGooglePlayServicesDialog() {
+        val dialog = context?.let { Dialog(it) }
+        dialog?.setContentView(R.layout.permission_dialog)
+        dialog?.findViewById<TextView>(R.id.description)?.text =
+            getString(R.string.google_play_services_missing)
+
+        val btn: TextView? = dialog?.findViewById(R.id.button)
+
+        btn?.text = getString(R.string.ok)
+
+        btn?.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog?.show()
+    }
+
     private fun createLocationRequest(): LocationRequest {
         return LocationRequest.create().apply {
             interval = 10000
@@ -170,7 +198,7 @@ class RecordRunFragment : Fragment() {
                     activity?.let {
                         exception.startResolutionForResult(
                             it,
-                            100 // 100: GPS setting // TODO
+                            100 // 100: GPS setting // TODO, anscheinend random wert
                         )
                     }
                 } catch (sendEx: IntentSender.SendIntentException) {

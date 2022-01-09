@@ -54,11 +54,13 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="continue_text">continue</string>
+    <string name="ok">OK</string>
     <string name="share">Share</string>
 
     <!-- alert -->
     <string name="location_permission_required">Runs cannot be recorded without precise location permission</string>
     <string name="location_permission_required_google_nearby">Running schedules can not be shared without location permission</string>
+    <string name="google_play_services_missing">Google Play Services are not installed on your device. Without them, runs cannot be recorded.</string>
     <string name="data_loss">Changes will not be saved when exiting. Do you want to continue?</string>
     <string name="incorrect_date">Start date must be before the end date</string>
     <string name="incorrect_title">Title must be set</string>
