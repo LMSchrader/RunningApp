@@ -4,21 +4,30 @@ import androidx.lifecycle.*
 import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.data.RunHistoryRepository
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel() {
 
     val runHistoryEntries: LiveData<List<RunHistoryEntry>> = repository.runHistory.asLiveData()
 
-    val currentRunHistoryEntry : MutableLiveData<RunHistoryEntry?> =
+    val currentRunHistoryEntry: MutableLiveData<RunHistoryEntry?> =
         MutableLiveData(null)
-    var isInSplitScreenMode : Boolean = false
+    var isInSplitScreenMode: Boolean = false
+
+    fun get(entry: LocalDateTime) = viewModelScope.launch {
+        repository.get(entry)
+    }
 
     fun insert(entry: RunHistoryEntry) = viewModelScope.launch {
-            repository.insert(entry)
+        repository.insert(entry)
+    }
+
+    fun update(entry: RunHistoryEntry) = viewModelScope.launch {
+        repository.update(entry)
     }
 
     fun delete(entry: RunHistoryEntry) = viewModelScope.launch {
-            repository.delete(entry)
+        repository.delete(entry)
 
         // update current entry
         if (currentRunHistoryEntry.value?.date?.equals(entry.date) == true) {

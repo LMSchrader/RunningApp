@@ -56,8 +56,10 @@ class RunningNotificationWorker(appContext: Context, workerParams: WorkerParamet
     override fun doWork(): Result {
         try {
             // TODO
-            createNotificationChannel()
-            showNotification()
+            if (true) {
+                createNotificationChannel()
+                showNotification()
+            }
 
             return Result.success()
         } finally {
