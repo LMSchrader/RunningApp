@@ -5,6 +5,8 @@ import android.content.Intent
 import android.location.Location
 import android.os.IBinder
 import android.os.Looper
+import com.example.runningapp.AppApplication
+import com.example.runningapp.data.RunHistoryRepository
 import com.google.android.gms.location.*
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors.newSingleThreadExecutor
@@ -22,6 +24,7 @@ class RecordRunService : Service() {
     // database, but because this is a simplified sample without a full database, we only need the
     // last location to create a Notification if the user navigates away from the app.
     private var currentLocation: Location? = null //TODO
+    private lateinit var runHistoryRepository: RunHistoryRepository
 
     companion object {
         const val CHANNEL_ID = "Job progress"
@@ -39,6 +42,8 @@ class RecordRunService : Service() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         locationRequest = createLocationRequest()
+
+        runHistoryRepository = (application as AppApplication).runHistoryRepository
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -64,12 +69,16 @@ class RecordRunService : Service() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
 
+                //runHistoryRepository.get() // todo: hier aktuelle daten lesen
+
                 // Normally, you want to save a new location to a database. We are simplifying
                 // things a bit and just saving it as a local variable, as we only need it again
                 // if a Notification is created (when the user navigates away from app).
                 for (location in locationResult.locations){
-                    currentLocation = location //TODO: write to database
+                    currentLocation = location //TODO: sammeln der neuen daten?
+
                 }
+                //runHistoryRepository.update() // todo: hier wegspeichern
 
             }
         }

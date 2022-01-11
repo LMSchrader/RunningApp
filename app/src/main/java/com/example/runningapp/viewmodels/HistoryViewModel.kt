@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.data.RunHistoryRepository
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 
 class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel() {
 
@@ -13,10 +12,6 @@ class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel
     val currentRunHistoryEntry: MutableLiveData<RunHistoryEntry?> =
         MutableLiveData(null)
     var isInSplitScreenMode: Boolean = false
-
-    fun get(entry: LocalDateTime) = viewModelScope.launch {
-        repository.get(entry)
-    }
 
     fun insert(entry: RunHistoryEntry) = viewModelScope.launch {
         repository.insert(entry)
