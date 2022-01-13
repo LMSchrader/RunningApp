@@ -32,7 +32,6 @@ import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 class RecordRunFragment : Fragment() {
-    //TODO: nach verlassen des fragments wird nur noch -- angezeigt
     private val recordRunViewModel: RecordRunViewModel by activityViewModels {
         RecordRunViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
@@ -91,10 +90,7 @@ class RecordRunFragment : Fragment() {
     ): View {
         _binding = FragmentRecordRunBinding.inflate(inflater, container, false)
 
-        binding.currentTime.text = getString(R.string.time_empty)
-        binding.currentKm.text = getString(R.string.value_empty)
-        binding.avgPace.text = getString(R.string.value_empty)
-        binding.currentPace.text = getString(R.string.value_empty)
+        recordRunViewModel.currentRun.observe(viewLifecycleOwner,observerListener)
 
         binding.startButton.setOnClickListener { startRun() }
         binding.stopButton.setOnClickListener { stopRun() }
@@ -228,6 +224,7 @@ class RecordRunFragment : Fragment() {
         task?.addOnSuccessListener {
             // All location settings are satisfied. The client can initialize
             // location requests here.
+            recordRunViewModel.currentRun.removeObservers(viewLifecycleOwner)
             val currentTime = LocalDateTime.now()
             recordRunViewModel.insertAndObserve(
                 RunHistoryEntry(currentTime),
