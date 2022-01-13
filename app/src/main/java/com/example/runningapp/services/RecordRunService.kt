@@ -5,13 +5,19 @@ import android.content.Intent
 import android.location.Location
 import android.os.IBinder
 import android.os.Looper
+import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.lifecycleScope
 import com.example.runningapp.AppApplication
+import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.data.RunHistoryRepository
 import com.google.android.gms.location.*
+import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors.newSingleThreadExecutor
+import kotlin.math.pow
 
-class RecordRunService : Service() {
+class RecordRunService() : LifecycleService() {
     //TODO: Notification ueberarbeiten
 
     private val executor: Executor = newSingleThreadExecutor()
@@ -20,11 +26,11 @@ class RecordRunService : Service() {
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
 
-    // Used only for local storage of the last known location. Usually, this would be saved to your
-    // database, but because this is a simplified sample without a full database, we only need the
-    // last location to create a Notification if the user navigates away from the app.
-    private var currentLocation: Location? = null //TODO
+    private var lastLocation: Location? = null
+    private var startTime: Long? = null
+
     private lateinit var runHistoryRepository: RunHistoryRepository
+    private lateinit var run : RunHistoryEntry
 
     companion object {
         const val CHANNEL_ID = "Job progress"
@@ -32,7 +38,8 @@ class RecordRunService : Service() {
     }
 
 
-    override fun onBind(intent: Intent?): IBinder? {
+    override fun onBind(intent: Intent): IBinder? {
+        super.onBind(intent)
         return null
     }
 
@@ -47,11 +54,17 @@ class RecordRunService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
         createNotificationChannel()
         generateForegroundNotification()
 
         executor.execute {
-            recordRun()
+            if (intent != null) {
+                lifecycleScope.launch {
+                    run = runHistoryRepository.get(LocalDateTime.parse(intent.extras?.get("id") as CharSequence?))
+                    recordRun()
+                }
+            }
         }
 
         return START_STICKY
@@ -68,18 +81,27 @@ class RecordRunService : Service() {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
-
-                //runHistoryRepository.get() // todo: hier aktuelle daten lesen
-
-                // Normally, you want to save a new location to a database. We are simplifying
-                // things a bit and just saving it as a local variable, as we only need it again
-                // if a Notification is created (when the user navigates away from app).
-                for (location in locationResult.locations){
-                    currentLocation = location //TODO: sammeln der neuen daten?
-
+                    for (location in locationResult.locations) {
+                        if (lastLocation != null) {
+                            run.kmRun += location.distanceTo(lastLocation)/1000
+                            run.timeValues.add((location.elapsedRealtimeNanos- startTime!!).toFloat())
+                            run.altitudeValues.add(location.altitude.toFloat())
+                            if (location.speed == 0.0F) {
+                                run.paceValues.add(null)
+                            } else {
+                                run.paceValues.add(
+                                    (location.speed * 0.06F).toDouble().pow((-1).toDouble())
+                                        .toFloat()
+                                )
+                            }
+                        } else {
+                            startTime = location.elapsedRealtimeNanos
+                        }
+                        lastLocation = location
+                    }
+                lifecycleScope.launch {
+                    runHistoryRepository.update(run)
                 }
-                //runHistoryRepository.update() // todo: hier wegspeichern
-
             }
         }
 

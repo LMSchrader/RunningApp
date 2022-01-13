@@ -16,14 +16,27 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
+import com.example.runningapp.AppApplication
+import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.services.RecordRunService
+import com.example.runningapp.viewmodels.RecordRunViewModel
+import com.example.runningapp.viewmodels.RecordRunViewModelFactory
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
+import java.time.LocalDateTime
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 class RecordRunFragment : Fragment() {
+
+    private val recordRunViewModel: RecordRunViewModel by activityViewModels {
+        RecordRunViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
+    }
+
     private var _binding: FragmentRecordRunBinding? = null
 
     // This property is only valid between onCreateView and
@@ -46,6 +59,23 @@ class RecordRunFragment : Fragment() {
         }
     }
 
+    private val observerListener: (run: RunHistoryEntry?) -> Unit = { run ->
+        if (run == null || run.timeValues.isEmpty()) {
+            binding.currentTime.text = getString(R.string.time_empty)
+            binding.currentKm.text = getString(R.string.value_empty)
+            binding.avgPace.text = getString(R.string.value_empty)
+            binding.currentPace.text = getString(R.string.value_empty)
+        } else {
+            binding.currentTime.text = run.timeValues[run.timeValues.lastIndex].toLong().toDuration(DurationUnit.NANOSECONDS).toString(DurationUnit.MINUTES, 2)
+            binding.currentKm.text = "%.2f".format(run.kmRun)
+            run.paceValues.removeAll(listOf(null))
+            if (run.paceValues.isNotEmpty()) {
+                binding.avgPace.text = "%.2f".format((run.paceValues as List<Float>).average())
+                binding.currentPace.text = "%.2f".format(run.paceValues[run.paceValues.lastIndex])
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,6 +83,10 @@ class RecordRunFragment : Fragment() {
     ): View {
         _binding = FragmentRecordRunBinding.inflate(inflater, container, false)
 
+        binding.currentTime.text = getString(R.string.time_empty)
+        binding.currentKm.text = getString(R.string.value_empty)
+        binding.avgPace.text = getString(R.string.value_empty)
+        binding.currentPace.text = getString(R.string.value_empty)
 
         binding.startButton.setOnClickListener { startRun() }
         binding.stopButton.setOnClickListener { stopRun() }
@@ -91,6 +125,8 @@ class RecordRunFragment : Fragment() {
 
     private fun stopRun() {
         context?.stopService(Intent(context, RecordRunService::class.java))
+
+        recordRunViewModel.currentRun.removeObservers(viewLifecycleOwner)
 
         //TODO
         // nur einmal ausführen
@@ -184,8 +220,11 @@ class RecordRunFragment : Fragment() {
         task?.addOnSuccessListener {
             // All location settings are satisfied. The client can initialize
             // location requests here.
+            val currentTime = LocalDateTime.now()
+            recordRunViewModel.insertAndObserve(RunHistoryEntry(currentTime),viewLifecycleOwner, observerListener)
+
             //TODO: Forground service kann mehrmals gestatrtet werden (dann wird onStartCommand erneut aufgerufen)
-            context?.startForegroundService(Intent(context, RecordRunService::class.java))
+            context?.startForegroundService(Intent(context, RecordRunService()::class.java).putExtra("id",currentTime.toString()))
         }
 
         task?.addOnFailureListener { exception ->

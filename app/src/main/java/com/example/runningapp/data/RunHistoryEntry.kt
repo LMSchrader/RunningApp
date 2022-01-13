@@ -8,9 +8,9 @@ import java.time.LocalDateTime
 class RunHistoryEntry(
     @PrimaryKey val date: LocalDateTime
 ) {
-    var timeValues: List<Float> = emptyList() //in minutes
-    var paceValues: List<Float> = emptyList()
-    var altitudeValues: List<Float> = emptyList()
+    var timeValues: MutableList<Float> = mutableListOf() //in nanosecods
+    var paceValues: MutableList<Float?> = mutableListOf()
+    var altitudeValues: MutableList<Float> = mutableListOf()
     var kmRun: Float = 0.0f
 
 

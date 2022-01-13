@@ -42,6 +42,7 @@
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="pause">Pause</string>
+    <string name="value_empty">--,--</string>
 
     <!-- run history-->
     <string name="intro_text">Lauf vom</string>

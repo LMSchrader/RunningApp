@@ -15,6 +15,12 @@ class RunHistoryRepository(private val runHistoryDao: RunHistoryDao) {
         }
     }
 
+    suspend fun getAsFlow(entry: LocalDateTime): Flow<RunHistoryEntry> {
+        return withContext(Dispatchers.IO) {
+            runHistoryDao.getAsFlow(entry)
+        }
+    }
+
     // TODO: klappt das mit return?
     suspend fun insert(entry: RunHistoryEntry): Long {
         return withContext(Dispatchers.IO) {
