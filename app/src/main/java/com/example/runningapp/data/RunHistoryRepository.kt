@@ -8,9 +8,8 @@ import java.time.LocalDateTime
 class RunHistoryRepository(private val runHistoryDao: RunHistoryDao) {
     val runHistory: Flow<List<RunHistoryEntry>> = runHistoryDao.getAll()
 
-    // TODO: klappt das mit return?
     suspend fun get(entry: LocalDateTime): RunHistoryEntry {
-       return withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             runHistoryDao.get(entry)
         }
     }
@@ -21,9 +20,8 @@ class RunHistoryRepository(private val runHistoryDao: RunHistoryDao) {
         }
     }
 
-    // TODO: klappt das mit return?
-    suspend fun insert(entry: RunHistoryEntry): Long {
-        return withContext(Dispatchers.IO) {
+    suspend fun insert(entry: RunHistoryEntry) {
+        withContext(Dispatchers.IO) {
             runHistoryDao.insert(entry)
         }
     }

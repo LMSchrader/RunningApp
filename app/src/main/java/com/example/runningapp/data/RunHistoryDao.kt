@@ -16,7 +16,7 @@ interface RunHistoryDao {
     fun getAsFlow(id: LocalDateTime): Flow<RunHistoryEntry>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(entry: RunHistoryEntry): Long
+    fun insert(entry: RunHistoryEntry)
 
     @Update
     fun update(entry: RunHistoryEntry)

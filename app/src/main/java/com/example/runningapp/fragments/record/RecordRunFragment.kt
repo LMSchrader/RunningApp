@@ -32,7 +32,7 @@ import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 class RecordRunFragment : Fragment() {
-
+    //TODO: nach verlassen des fragments wird nur noch -- angezeigt
     private val recordRunViewModel: RecordRunViewModel by activityViewModels {
         RecordRunViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
@@ -66,12 +66,20 @@ class RecordRunFragment : Fragment() {
             binding.avgPace.text = getString(R.string.value_empty)
             binding.currentPace.text = getString(R.string.value_empty)
         } else {
-            binding.currentTime.text = run.timeValues[run.timeValues.lastIndex].toLong().toDuration(DurationUnit.NANOSECONDS).toString(DurationUnit.MINUTES, 2)
+            binding.currentTime.text = run.timeValues[run.timeValues.lastIndex].toLong()
+                .toDuration(DurationUnit.NANOSECONDS).toString(DurationUnit.MINUTES, 2)
             binding.currentKm.text = "%.2f".format(run.kmRun)
+
+            val pace = run.paceValues[run.paceValues.lastIndex]
+            if (pace != null) {
+                binding.currentPace.text = "%.2f".format(pace)
+            } else {
+                binding.currentPace.text = getString(R.string.value_empty)
+            }
+
             run.paceValues.removeAll(listOf(null))
             if (run.paceValues.isNotEmpty()) {
                 binding.avgPace.text = "%.2f".format((run.paceValues as List<Float>).average())
-                binding.currentPace.text = "%.2f".format(run.paceValues[run.paceValues.lastIndex])
             }
         }
     }
@@ -221,10 +229,19 @@ class RecordRunFragment : Fragment() {
             // All location settings are satisfied. The client can initialize
             // location requests here.
             val currentTime = LocalDateTime.now()
-            recordRunViewModel.insertAndObserve(RunHistoryEntry(currentTime),viewLifecycleOwner, observerListener)
+            recordRunViewModel.insertAndObserve(
+                RunHistoryEntry(currentTime),
+                viewLifecycleOwner,
+                observerListener
+            )
 
             //TODO: Forground service kann mehrmals gestatrtet werden (dann wird onStartCommand erneut aufgerufen)
-            context?.startForegroundService(Intent(context, RecordRunService()::class.java).putExtra("id",currentTime.toString()))
+            context?.startForegroundService(
+                Intent(
+                    context,
+                    RecordRunService()::class.java
+                ).putExtra("id", currentTime.toString())
+            )
         }
 
         task?.addOnFailureListener { exception ->
