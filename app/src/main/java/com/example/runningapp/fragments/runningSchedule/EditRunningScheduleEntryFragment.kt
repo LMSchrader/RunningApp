@@ -86,7 +86,7 @@ class EditRunningScheduleEntryFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    fun initDatePickerStartDate() {
+    private fun initDatePickerStartDate() {
         val dateSetListener =
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
                 val startDate = LocalDate.of(year, month + 1, day)
@@ -101,7 +101,7 @@ class EditRunningScheduleEntryFragment : Fragment() {
         }!!
     }
 
-    fun initDatePickerEndDate() {
+    private fun initDatePickerEndDate() {
         val dateSetListener =
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
                 val endDate = LocalDate.of(year, month + 1, day)

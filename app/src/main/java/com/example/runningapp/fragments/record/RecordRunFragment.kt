@@ -90,7 +90,7 @@ class RecordRunFragment : Fragment() {
     ): View {
         _binding = FragmentRecordRunBinding.inflate(inflater, container, false)
 
-        recordRunViewModel.currentRun.observe(viewLifecycleOwner,observerListener)
+        recordRunViewModel.currentRun.observe(viewLifecycleOwner, observerListener)
 
         binding.startButton.setOnClickListener { startRun() }
         binding.stopButton.setOnClickListener { stopRun() }
@@ -119,18 +119,19 @@ class RecordRunFragment : Fragment() {
                     Manifest.permission.ACCESS_FINE_LOCATION
                 )
             }
-            == PackageManager.PERMISSION_GRANTED) {
+            != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions()
+            return
+        }
 
-            // check location settings
-            checkLocationSettingsAndStartService(createLocationRequest())
-
-        } else requestPermissions()
+        // check location settings
+        checkLocationSettingsAndStartService(createLocationRequest())
     }
 
     private fun stopRun() {
         context?.stopService(Intent(context, RecordRunService::class.java))
 
-        recordRunViewModel.currentRun.removeObservers(viewLifecycleOwner)
+        recordRunViewModel.removeObserver(viewLifecycleOwner)
 
         //TODO
         // nur einmal ausführen
@@ -224,7 +225,6 @@ class RecordRunFragment : Fragment() {
         task?.addOnSuccessListener {
             // All location settings are satisfied. The client can initialize
             // location requests here.
-            recordRunViewModel.currentRun.removeObservers(viewLifecycleOwner)
             val currentTime = LocalDateTime.now()
             recordRunViewModel.insertAndObserve(
                 RunHistoryEntry(currentTime),

@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 class RunningScheduleViewModel(private val repository: RunningScheduleRepository) : ViewModel() {
 
     val entries: LiveData<List<RunningScheduleEntry>> = repository.runningSchedule.asLiveData()
-    //val nextRunningDay: LiveData<LocalDate> = repository.nextRunningDay.asLiveData()
+
     val isTodayARunningDay: LiveData<Boolean> = repository.isTodayARunningDay.asLiveData()
 
     var currentEntry: MutableLiveData<RunningScheduleEntry?> = MutableLiveData(null)

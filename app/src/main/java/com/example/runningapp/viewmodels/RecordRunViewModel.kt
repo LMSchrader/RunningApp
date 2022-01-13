@@ -20,9 +20,15 @@ class RecordRunViewModel(private val repository: RunHistoryRepository) : ViewMod
     fun insertAndObserve(entry: RunHistoryEntry, lifecycleOwner: LifecycleOwner, observerListener : (run: RunHistoryEntry?) -> Unit) =
         viewModelScope.launch {
             repository.insert(entry)
+            currentRun.removeObservers(lifecycleOwner)
             currentRun = repository.getAsFlow(entry.date).asLiveData()
             currentRun.observe(lifecycleOwner, observerListener)
         }
+
+    fun removeObserver(lifecycleOwner: LifecycleOwner) {
+        currentRun.removeObservers(lifecycleOwner)
+        currentRun = MutableLiveData(null)
+    }
 }
 
 class RecordRunViewModelFactory(private val repository: RunHistoryRepository) :
