@@ -43,6 +43,7 @@
     <string name="stop">Stop</string>
     <string name="pause">Pause</string>
     <string name="value_empty">--,--</string>
+    <string name="service_active">Service aktiv</string>
 
     <!-- run history-->
     <string name="intro_text">Lauf vom</string>

@@ -44,6 +44,7 @@
     <string name="pause">Pause</string>
     <string name="time_empty" translatable="false">--:--</string>
     <string name="value_empty">--.--</string>
+    <string name="service_active">service active</string>
 
 
     <!-- run history-->

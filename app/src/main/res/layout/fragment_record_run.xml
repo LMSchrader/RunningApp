@@ -131,27 +131,28 @@
         android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/circle"
+        android:contentDescription="@string/start"
         android:src="@drawable/ic_outline_play_circle_outline_72"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guideline1"
-        app:tint="@color/purple_200"
-        android:contentDescription="@string/start" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/purple_200" />
 
     <ImageButton
         android:id="@+id/stopButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/circle"
+        android:contentDescription="@string/stop"
         android:src="@drawable/ic_outline_stop_circle_72"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline1"
-        app:tint="@color/purple_200"
-        android:contentDescription="@string/stop" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/purple_200" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

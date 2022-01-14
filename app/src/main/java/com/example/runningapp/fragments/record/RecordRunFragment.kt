@@ -15,6 +15,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import android.content.SharedPreferences
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import com.example.runningapp.AppApplication
@@ -42,6 +43,8 @@ class RecordRunFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private lateinit var sharedPref: SharedPreferences
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -96,6 +99,13 @@ class RecordRunFragment : Fragment() {
         binding.startButton.setOnClickListener { startRun() }
         binding.stopButton.setOnClickListener { stopRun() }
 
+        sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)!!
+        if (sharedPref.getBoolean(getString(R.string.service_active), false)) {
+            // switch buttons
+            binding.startButton.visibility = View.GONE
+            binding.stopButton.visibility = View.VISIBLE
+        }
+
         return binding.root
     }
 
@@ -134,9 +144,19 @@ class RecordRunFragment : Fragment() {
 
         recordRunViewModel.removeObserver(viewLifecycleOwner)
 
-        //TODO
-        // nur einmal ausführen
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        // switch buttons
+        binding.startButton.visibility = View.VISIBLE
+        binding.stopButton.visibility = View.GONE
+        //TODO: auslagern in service
+        with(sharedPref.edit()) {
+            putBoolean(
+                getString(R.string.service_active),
+                false
+            )
+            apply()
+        }
+
+
         with(sharedPref.edit()) {
             putInt(
                 getString(R.string.kilometers_run),
@@ -216,8 +236,7 @@ class RecordRunFragment : Fragment() {
         val task: Task<LocationSettingsResponse>? = client?.checkLocationSettings(builder.build())
 
         task?.addOnSuccessListener {
-            // All location settings are satisfied. The client can initialize
-            // location requests here.
+            // create object
             val currentTime = LocalDateTime.now()
             recordRunViewModel.insertAndObserve(
                 RunHistoryEntry(currentTime),
@@ -225,7 +244,20 @@ class RecordRunFragment : Fragment() {
                 observerListener
             )
 
-            //TODO: Forground service kann mehrmals gestatrtet werden (dann wird onStartCommand erneut aufgerufen)
+            // switch buttons
+            binding.startButton.visibility = View.GONE
+            binding.stopButton.visibility = View.VISIBLE
+
+            with(sharedPref.edit()) {
+                putBoolean(
+                    getString(R.string.service_active),
+                    true
+                )
+                apply()
+            }
+
+
+            // start service
             context?.startForegroundService(
                 Intent(
                     context,
@@ -239,8 +271,6 @@ class RecordRunFragment : Fragment() {
                 // Location settings are not satisfied, but this can be fixed
                 // by showing the user a dialog.
                 try {
-                    // Show the dialog by calling startResolutionForResult(),
-                    // and check the result in onActivityResult().
                     activity?.let {
                         exception.startResolutionForResult(
                             it,
