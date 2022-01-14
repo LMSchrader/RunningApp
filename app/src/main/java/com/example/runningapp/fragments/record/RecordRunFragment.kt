@@ -32,6 +32,7 @@ import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 class RecordRunFragment : Fragment() {
+    // TODO: wenn app beendet wird und service noch läuft, wird beim starten der app nichts angezeigt
     private val recordRunViewModel: RecordRunViewModel by activityViewModels {
         RecordRunViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
@@ -125,7 +126,7 @@ class RecordRunFragment : Fragment() {
         }
 
         // check location settings
-        checkLocationSettingsAndStartService(createLocationRequest())
+        checkLocationSettingsAndStartService(RecordRunService.createLocationRequest())
     }
 
     private fun stopRun() {
@@ -205,14 +206,6 @@ class RecordRunFragment : Fragment() {
             dialog.dismiss()
         }
         dialog?.show()
-    }
-
-    private fun createLocationRequest(): LocationRequest {
-        return LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
     }
 
     private fun checkLocationSettingsAndStartService(locationRequest: LocationRequest) {

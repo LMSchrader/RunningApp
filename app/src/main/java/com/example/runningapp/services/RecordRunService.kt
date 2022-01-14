@@ -35,6 +35,14 @@ class RecordRunService() : LifecycleService() {
     companion object {
         const val CHANNEL_ID = "Job progress"
         const val TAG = "ForegroundWorker"
+
+        fun createLocationRequest(): LocationRequest {
+            return LocationRequest.create().apply {
+                interval = 10000
+                fastestInterval = 5000
+                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            }
+        }
     }
 
 
@@ -105,7 +113,7 @@ class RecordRunService() : LifecycleService() {
             }
         }
 
-        getLastLocation()
+        //getLastLocation()
 
         startLocationUpdates()
     }
@@ -139,14 +147,6 @@ class RecordRunService() : LifecycleService() {
             .build()
 
         startForeground(155555, notification)
-    }
-
-    private fun createLocationRequest(): LocationRequest {
-        return LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
     }
 
     private fun getLastLocation() {
