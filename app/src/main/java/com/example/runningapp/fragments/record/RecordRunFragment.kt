@@ -33,7 +33,6 @@ import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 class RecordRunFragment : Fragment() {
-    // TODO: wenn app beendet wird und service noch läuft, wird beim starten der app nichts angezeigt
     private val recordRunViewModel: RecordRunViewModel by activityViewModels {
         RecordRunViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
@@ -94,16 +93,32 @@ class RecordRunFragment : Fragment() {
     ): View {
         _binding = FragmentRecordRunBinding.inflate(inflater, container, false)
 
-        recordRunViewModel.currentRun.observe(viewLifecycleOwner, observerListener)
-
         binding.startButton.setOnClickListener { startRun() }
         binding.stopButton.setOnClickListener { stopRun() }
 
+
         sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)!!
-        if (sharedPref.getBoolean(getString(R.string.service_active), false)) {
-            // switch buttons
+        val date = sharedPref.getString(getString(R.string.service_active), "")
+
+        // if service is active, show stop button
+        if (!date.isNullOrEmpty()) {
             binding.startButton.visibility = View.GONE
             binding.stopButton.visibility = View.VISIBLE
+
+            // update view model if necessary and observe current run
+            if (recordRunViewModel.currentRun.value == null) {
+                recordRunViewModel.setCurrentRunAndObserve(
+                    LocalDateTime.parse(date as CharSequence?), viewLifecycleOwner, observerListener
+                )
+            } else {
+                recordRunViewModel.currentRun.observe(viewLifecycleOwner, observerListener)
+            }
+        } else {
+            // if service is not active, show default
+            binding.currentTime.text = getString(R.string.time_empty)
+            binding.currentKm.text = getString(R.string.value_empty)
+            binding.avgPace.text = getString(R.string.value_empty)
+            binding.currentPace.text = getString(R.string.value_empty)
         }
 
         return binding.root
@@ -149,9 +164,9 @@ class RecordRunFragment : Fragment() {
         binding.stopButton.visibility = View.GONE
         //TODO: auslagern in service
         with(sharedPref.edit()) {
-            putBoolean(
+            putString(
                 getString(R.string.service_active),
-                false
+                ""
             )
             apply()
         }
@@ -249,9 +264,9 @@ class RecordRunFragment : Fragment() {
             binding.stopButton.visibility = View.VISIBLE
 
             with(sharedPref.edit()) {
-                putBoolean(
+                putString(
                     getString(R.string.service_active),
-                    true
+                    currentTime.toString()
                 )
                 apply()
             }

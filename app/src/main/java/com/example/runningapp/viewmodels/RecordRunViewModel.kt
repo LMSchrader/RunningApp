@@ -11,13 +11,18 @@ import androidx.lifecycle.viewModelScope
 import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.data.RunHistoryRepository
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 class RecordRunViewModel(private val repository: RunHistoryRepository) : ViewModel() {
 
     var currentRun: LiveData<RunHistoryEntry?> =
         MutableLiveData(null)
 
-    fun insertAndObserve(entry: RunHistoryEntry, lifecycleOwner: LifecycleOwner, observerListener : (run: RunHistoryEntry?) -> Unit) =
+    fun insertAndObserve(
+        entry: RunHistoryEntry,
+        lifecycleOwner: LifecycleOwner,
+        observerListener: (run: RunHistoryEntry?) -> Unit
+    ) =
         viewModelScope.launch {
             repository.insert(entry)
             currentRun.removeObservers(lifecycleOwner)
@@ -29,6 +34,15 @@ class RecordRunViewModel(private val repository: RunHistoryRepository) : ViewMod
         currentRun.removeObservers(lifecycleOwner)
         currentRun = MutableLiveData(null)
     }
+
+    fun setCurrentRunAndObserve(
+        id: LocalDateTime, lifecycleOwner: LifecycleOwner,
+        observerListener: (run: RunHistoryEntry?) -> Unit
+    ) =
+        viewModelScope.launch {
+            currentRun = repository.getAsFlow(id).asLiveData()
+            currentRun.observe(lifecycleOwner, observerListener)
+        }
 }
 
 class RecordRunViewModelFactory(private val repository: RunHistoryRepository) :
