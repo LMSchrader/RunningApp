@@ -1,6 +1,5 @@
 package com.example.runningapp.services
 
-import android.app.*
 import android.content.Intent
 import android.location.Location
 import android.os.IBinder
@@ -22,9 +21,7 @@ import java.util.concurrent.Executors.newSingleThreadExecutor
 import kotlin.math.pow
 
 class RecordRunService: LifecycleService() {
-    //TODO: Notification ueberarbeiten
-
-    private val executor: Executor = newSingleThreadExecutor()
+    private val executor: Executor = newSingleThreadExecutor() // TODO: ist executor noch notwendig
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -86,8 +83,6 @@ class RecordRunService: LifecycleService() {
     }
 
     private fun recordRun() {
-        //locationRequest = createLocationRequest()
-
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
