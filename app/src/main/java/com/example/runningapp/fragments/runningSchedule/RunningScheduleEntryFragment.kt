@@ -1,10 +1,6 @@
 package com.example.runningapp.fragments.runningSchedule
 
-import android.Manifest
-import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,17 +12,6 @@ import com.example.runningapp.databinding.FragmentRunningScheduleEntryBinding
 import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
-import com.google.android.gms.nearby.Nearby
-import com.google.android.gms.nearby.connection.Strategy.P2P_POINT_TO_POINT
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
-import android.content.DialogInterface
-import android.content.pm.PackageManager
-import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
-import com.google.android.gms.nearby.connection.*
 
 class RunningScheduleEntryFragment : Fragment() {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
@@ -35,35 +20,6 @@ class RunningScheduleEntryFragment : Fragment() {
     private var _binding: FragmentRunningScheduleEntryBinding? = null
 
     private val binding get() = _binding!!
-
-    private var connectionsClient: ConnectionsClient? = null
-
-    private var REQUIRED_PERMISSIONS: Array<String>
-
-    init {
-        if (Build.VERSION.SDK_INT >= 29) {
-            REQUIRED_PERMISSIONS = arrayOf(
-                Manifest.permission.BLUETOOTH,
-                Manifest.permission.BLUETOOTH_ADMIN,
-                Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.CHANGE_WIFI_STATE,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        } else {
-            REQUIRED_PERMISSIONS = arrayOf(
-                Manifest.permission.BLUETOOTH,
-                Manifest.permission.BLUETOOTH_ADMIN,
-                Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.CHANGE_WIFI_STATE,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-        }
-    }
-
-    private val locationPermissionRequest = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) {}
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,16 +68,6 @@ class RunningScheduleEntryFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.imageShare) {
-            if (hasPermissions()) {
-                startAdvertising()
-                startDiscovery()
-            } else {
-                requestPermissions()
-            }
-            return true
-        }
-
         if (context?.let { isLandscapeMode(it) } == true) {
             return when (item.itemId) {
                 R.id.imageEdit -> {
@@ -158,166 +104,6 @@ class RunningScheduleEntryFragment : Fragment() {
 
                 else -> super.onOptionsItemSelected(item)
             }
-        }
-    }
-
-    private fun getConnection(): ConnectionsClient? {
-        if (connectionsClient == null) {
-            connectionsClient = context?.let { Nearby.getConnectionsClient(it) }
-        }
-        return connectionsClient
-    }
-
-    private fun hasPermissions(): Boolean {
-        for (permission in REQUIRED_PERMISSIONS) {
-            if (context?.let { ContextCompat.checkSelfPermission(it, permission) }
-                != PackageManager.PERMISSION_GRANTED
-            ) {
-                return false
-            }
-        }
-        return true
-    }
-
-    private fun shouldShowRequestPermissionRationale(): Boolean {
-        for (permission in REQUIRED_PERMISSIONS) {
-            if (shouldShowRequestPermissionRationale(permission)) {
-                return true
-            }
-        }
-        return false
-    }
-
-
-    private fun requestPermissions() {
-        if (shouldShowRequestPermissionRationale()) {
-            showDialog()
-        } else {
-            locationPermissionRequest.launch(REQUIRED_PERMISSIONS)
-        }
-    }
-
-    /**
-     * Opens a dialog, that explains why the permissions are needed and asks for the permissions afterwards.
-     */
-    private fun showDialog() {
-        val dialog = context?.let { Dialog(it) }
-        dialog?.setContentView(R.layout.permission_dialog)
-        dialog?.findViewById<TextView>(R.id.description)?.text =
-            getString(R.string.location_permission_required_google_nearby)
-        val btn: TextView? = dialog?.findViewById(R.id.button)
-        btn?.setOnClickListener {
-            dialog.dismiss()
-            locationPermissionRequest.launch(REQUIRED_PERMISSIONS)
-        }
-        dialog?.show()
-    }
-
-    private fun startAdvertising() {
-        val advertisingOptions: AdvertisingOptions =
-            AdvertisingOptions.Builder().setStrategy(P2P_POINT_TO_POINT).build()
-        context?.let {
-            getConnection()
-                ?.startAdvertising(
-                    Settings.Global.getString(it.contentResolver, "device_name"),
-                    it.packageName,
-                    connectionLifecycleCallback,
-                    advertisingOptions
-                )
-                ?.addOnSuccessListener { unused: Void? -> }
-                ?.addOnFailureListener { e: Exception? -> }
-        }
-    }
-
-    private fun startDiscovery() {
-        val discoveryOptions = DiscoveryOptions.Builder().setStrategy(P2P_POINT_TO_POINT).build()
-        context?.let {
-            getConnection()
-                ?.startDiscovery(it.packageName, endpointDiscoveryCallback, discoveryOptions)
-                ?.addOnSuccessListener { unused: Void? -> }
-                ?.addOnFailureListener { e: java.lang.Exception? -> }
-        }
-    }
-
-    private val endpointDiscoveryCallback: EndpointDiscoveryCallback =
-        object : EndpointDiscoveryCallback() {
-            override fun onEndpointFound(endpointId: String, info: DiscoveredEndpointInfo) {
-                // An endpoint was found. We request a connection to it.
-                context?.let {
-                    getConnection()
-                        ?.requestConnection(
-                            Settings.Global.getString(
-                                it.contentResolver,
-                                "device_name"
-                            ), endpointId, connectionLifecycleCallback
-                        )
-                        ?.addOnSuccessListener(
-                            OnSuccessListener { unused: Void? -> })
-                        ?.addOnFailureListener(
-                            OnFailureListener { e: java.lang.Exception? -> })
-                }
-            }
-
-            override fun onEndpointLost(endpointId: String) {
-                // A previously discovered endpoint has gone away.
-            }
-        }
-
-    private val connectionLifecycleCallback: ConnectionLifecycleCallback =
-        object : ConnectionLifecycleCallback() {
-            override fun onConnectionInitiated(endpointId: String, connectionInfo: ConnectionInfo) {
-                context?.let {
-                    AlertDialog.Builder(it)
-                        .setTitle("Accept connection to " + connectionInfo.endpointName)
-                        .setMessage("Confirm the code matches on both devices: " + connectionInfo.authenticationDigits)
-                        .setPositiveButton(
-                            "Accept"
-                        ) { dialog: DialogInterface?, which: Int ->  // The user confirmed, so we can accept the connection.
-                            getConnection()
-                                ?.acceptConnection(endpointId, ReceiveBytesPayloadListener())
-                        }
-                        .setNegativeButton(
-                            android.R.string.cancel
-                        ) { dialog: DialogInterface?, which: Int ->  // The user canceled, so we should reject the connection.
-                            getConnection()?.rejectConnection(endpointId)
-                        }
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show()
-                }
-            }
-
-            override fun onConnectionResult(endpointId: String, result: ConnectionResolution) {
-                when (result.status.statusCode) {
-                    ConnectionsStatusCodes.STATUS_OK -> {
-                        val bytesPayload = Payload.fromBytes(byteArrayOf(0xa, 0xb, 0xc, 0xd))
-                        getConnection()?.sendPayload(endpointId, bytesPayload)
-                    }
-                    ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED -> {
-                    }
-                    ConnectionsStatusCodes.STATUS_ERROR -> {
-                    }
-                    else -> {
-                    }
-                }
-            }
-
-            override fun onDisconnected(endpointId: String) {
-                // We've been disconnected from this endpoint. No more data can be
-                // sent or received.
-            }
-        }
-
-    internal class ReceiveBytesPayloadListener : PayloadCallback() {
-        override fun onPayloadReceived(endpointId: String, payload: Payload) {
-            // This always gets the full data of the payload. Is null if it's not a BYTES payload.
-            if (payload.type == Payload.Type.BYTES) {
-                val receivedBytes = payload.asBytes()
-            }
-        }
-
-        override fun onPayloadTransferUpdate(endpointId: String, update: PayloadTransferUpdate) {
-            // Bytes payloads are sent as a single chunk, so you'll receive a SUCCESS update immediately
-            // after the call to onPayloadReceived().
         }
     }
 }
