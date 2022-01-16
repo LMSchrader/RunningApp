@@ -1,10 +1,13 @@
 package com.example.runningapp.worker
 
-import android.app.*
+import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.work.*
+import com.example.runningapp.MainActivity
+import com.example.runningapp.R
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -13,14 +16,12 @@ import java.util.concurrent.TimeUnit
 
 class RunningNotificationWorker(appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {
-
+    //TODO: testen
     companion object {
         private const val WORKER_NAME = "RunningNotification"
         private const val hour = 0
         private const val minute = 0
-
-        const val CHANNEL_ID = "RunningNotification"
-        const val TAG = "Worker"
+        private const val ID = 155556
 
 
         fun runAt(context: Context) {
@@ -55,9 +56,11 @@ class RunningNotificationWorker(appContext: Context, workerParams: WorkerParamet
 
     override fun doWork(): Result {
         try {
-            // TODO
-            if (true) {
-                createNotificationChannel()
+            // remove old notifications
+            (applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+                .cancel(ID)
+
+            if (true) { // TODO
                 showNotification()
             }
 
@@ -67,29 +70,25 @@ class RunningNotificationWorker(appContext: Context, workerParams: WorkerParamet
         }
     }
 
-    //TODO: notification
-    // wird momentan nicht angezeigt
-    private fun createNotificationChannel() {
-        val notificationManager =
-            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        var notificationChannel = notificationManager.getNotificationChannel(CHANNEL_ID)
-        if (notificationChannel == null) {
-            notificationChannel = NotificationChannel(
-                CHANNEL_ID, TAG, NotificationManager.IMPORTANCE_DEFAULT
-            )
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
-    }
-
     private fun showNotification() {
-        val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-            .setContentTitle("Test")
-            .setContentText("Test")
+        val pendingIntent = NavDeepLinkBuilder(applicationContext)
+            .setGraph(R.navigation.mobile_navigation)
+            .setDestination(R.id.nav_record_run)
+            .createPendingIntent()
+
+        val builder = NotificationCompat.Builder(
+            applicationContext,
+            MainActivity.CHANNEL_ID_RUNNING_NOTIFICATIONS
+        )
+            .setSmallIcon(R.drawable.ic_baseline_directions_run_24)
+            .setContentTitle(applicationContext.getString(R.string.runningDay))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+            .setCategory(NotificationCompat.CATEGORY_REMINDER)
+            .setAutoCancel(true)
 
         with(NotificationManagerCompat.from(applicationContext)) {
-            notify(155556, builder.build())
+            notify(ID, builder.build())
         }
     }
 }

@@ -75,5 +75,6 @@
     <string name="notification_summary">Du wirst über anstehende Laufeinheiten benachricht</string>
 
     <!-- notification channels -->
-    <string name="channel_description_running_days">Benachrichtigungen über anstehende Lauftage</string>
+    <string name="channel_name_running_day">Lauftagerinnerung</string>
+    <string name="channel_name_record_run">Laufaufnahme</string>
 </resources>

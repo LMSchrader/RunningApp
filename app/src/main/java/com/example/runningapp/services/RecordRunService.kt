@@ -5,9 +5,13 @@ import android.content.Intent
 import android.location.Location
 import android.os.IBinder
 import android.os.Looper
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDeepLinkBuilder
 import com.example.runningapp.AppApplication
+import com.example.runningapp.MainActivity
+import com.example.runningapp.R
 import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.data.RunHistoryRepository
 import com.google.android.gms.location.*
@@ -17,7 +21,7 @@ import java.util.concurrent.Executor
 import java.util.concurrent.Executors.newSingleThreadExecutor
 import kotlin.math.pow
 
-class RecordRunService() : LifecycleService() {
+class RecordRunService: LifecycleService() {
     //TODO: Notification ueberarbeiten
 
     private val executor: Executor = newSingleThreadExecutor()
@@ -33,8 +37,7 @@ class RecordRunService() : LifecycleService() {
     private lateinit var run : RunHistoryEntry
 
     companion object {
-        const val CHANNEL_ID = "Job progress"
-        const val TAG = "ForegroundWorker"
+        private const val ID = 155555
 
         fun createLocationRequest(): LocationRequest {
             return LocationRequest.create().apply {
@@ -63,7 +66,6 @@ class RecordRunService() : LifecycleService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        createNotificationChannel()
         generateForegroundNotification()
 
         executor.execute {
@@ -122,31 +124,22 @@ class RecordRunService() : LifecycleService() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
     }
 
-    private fun createNotificationChannel() {
-        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+    private fun generateForegroundNotification() { //TODO: eventuell stop button einbauen
+        val pendingIntent = NavDeepLinkBuilder(this)
+            .setGraph(R.navigation.mobile_navigation)
+            .setDestination(R.id.nav_record_run)
+            .createPendingIntent()
 
-        var notificationChannel = notificationManager.getNotificationChannel(CHANNEL_ID)
-        if (notificationChannel == null) {
-            notificationChannel = NotificationChannel(
-                CHANNEL_ID, TAG, NotificationManager.IMPORTANCE_LOW
-            )
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
-    }
-
-    private fun generateForegroundNotification() {
-        val pendingIntent: PendingIntent =
-            Intent(this, RecordRunService::class.java).let { notificationIntent ->
-                PendingIntent.getActivity(this, 0, notificationIntent, 0)
-            }
-
-        val notification = Notification.Builder(application, CHANNEL_ID)
-            .setContentTitle("Test")
-            .setContentText("Test")
+        val notification = NotificationCompat.Builder(this, MainActivity.CHANNEL_ID_SERVICE)
+            .setSmallIcon(R.drawable.ic_baseline_directions_run_24)
+            .setContentTitle(getString(R.string.record_run_notification_title))
+            .setContentText(getString(R.string.record_run_notification_text))
             .setContentIntent(pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setCategory(NotificationCompat.CATEGORY_LOCATION_SHARING)
             .build()
 
-        startForeground(155555, notification)
+        startForeground(ID, notification)
     }
 
     private fun getLastLocation() {

@@ -1,5 +1,8 @@
 package com.example.runningapp
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.os.Bundle
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -17,6 +20,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
+    companion object {
+        const val CHANNEL_ID_RUNNING_NOTIFICATIONS = "RunningNotification"
+        const val CHANNEL_ID_SERVICE = "ServiceNotification"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,18 +40,46 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_running_schedule, R.id.nav_history, R.id.nav_record_run, R.id.nav_settings
+                R.id.nav_home,
+                R.id.nav_running_schedule,
+                R.id.nav_history,
+                R.id.nav_record_run,
+                R.id.nav_settings
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        //TODO
+
+        createNotificationChannels()
+
         RunningNotificationWorker.runAt(applicationContext)
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    private fun createNotificationChannels() {
+        val notificationManager =
+            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // channel 1: worker notify if today is a running day
+        val notificationChannel = NotificationChannel(
+            CHANNEL_ID_RUNNING_NOTIFICATIONS,
+            getString(R.string.channel_name_running_day),
+            NotificationManager.IMPORTANCE_DEFAULT
+        )
+        notificationManager.createNotificationChannel(notificationChannel)
+
+
+        // channel 2: foreground service record run
+        val notificationChannel2 = NotificationChannel(
+            CHANNEL_ID_SERVICE,
+            getString(R.string.channel_name_record_run),
+            NotificationManager.IMPORTANCE_LOW
+        )
+        notificationManager.createNotificationChannel(notificationChannel2)
     }
 }

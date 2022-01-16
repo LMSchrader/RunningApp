@@ -277,7 +277,7 @@ class RecordRunFragment : Fragment() {
                 Intent(
                     context,
                     RecordRunService()::class.java
-                ).putExtra("id", currentTime.toString())
+                ).putExtra("id", currentTime.toString()) //TODO: nicht mehr nötig -> in sharedPreferences
             )
         }
 
