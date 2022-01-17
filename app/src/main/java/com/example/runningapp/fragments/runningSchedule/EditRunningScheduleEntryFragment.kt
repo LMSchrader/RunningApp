@@ -9,8 +9,8 @@ import com.example.runningapp.R
 import com.example.runningapp.AppApplication
 import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBinding
+import com.example.runningapp.fragments.dialogs.AlertDialogTwoButtonsFragment
 import com.example.runningapp.util.DatePickerUtil.StaticFunctions.initDatePicker
-import com.example.runningapp.util.DialogUtil.StaticFunctions.showDialog
 import com.example.runningapp.util.KeyboardUtil
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
@@ -24,7 +24,7 @@ class EditRunningScheduleEntryFragment : Fragment() {
     }
     private var _binding: FragmentEditRunningScheduleEntryBinding? = null
 
-    private lateinit var datePickerDialogStartDate: DatePickerDialog
+    private lateinit var datePickerDialogStartDate: DatePickerDialog //TODO: dialog
     private lateinit var datePickerDialogEndDate: DatePickerDialog
 
     // This property is only valid between onCreateView and
@@ -124,14 +124,16 @@ class EditRunningScheduleEntryFragment : Fragment() {
         return when (item.itemId) {
             android.R.id.home -> {
                 if (viewModel.currentEntry.value?.equals(editedEntry) == false) {
-                    context?.let {
-                        activity?.let { it1 ->
-                            showDialog(
-                                getString(R.string.data_loss), it,
-                                it1
-                            )
-                        }
-                    }
+                    //context?.let {
+                    //    activity?.let { it1 ->
+                    //        showDialog(
+                    //            getString(R.string.data_loss), it,
+                    //            it1
+                    //        )
+                    //    }
+                    //}
+                    val dialog = AlertDialogTwoButtonsFragment.getInstance(getString(R.string.data_loss))
+                    activity?.let { dialog.show(it.supportFragmentManager, AlertDialogTwoButtonsFragment.TAG) }
                 } else {
                     activity?.onBackPressed()
                 }

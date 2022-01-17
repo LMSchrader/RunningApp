@@ -8,18 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRecordRunBinding
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.SharedPreferences
-import android.widget.TextView
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.*
 import com.example.runningapp.AppApplication
 import com.example.runningapp.data.RunHistoryEntry
+import com.example.runningapp.fragments.dialogs.AlertDialogWithListenerFragment
+import com.example.runningapp.fragments.dialogs.AlertDialogFragment
 import com.example.runningapp.services.RecordRunService
 import com.example.runningapp.viewmodels.RecordRunViewModel
 import com.example.runningapp.viewmodels.RecordRunViewModelFactory
@@ -32,7 +31,7 @@ import java.time.LocalDateTime
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
-class RecordRunFragment : Fragment() {
+class RecordRunFragment : Fragment(), FragmentResultListener {
     private val recordRunViewModel: RecordRunViewModel by activityViewModels {
         RecordRunViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
@@ -209,38 +208,43 @@ class RecordRunFragment : Fragment() {
     /**
      * Opens a dialog, that explains why the permissions are needed and asks for the permissions afterwards.
      */
-    private fun showPermissionDialog() {
-        val dialog = context?.let { Dialog(it) }
-        dialog?.setContentView(R.layout.permission_dialog)
-        dialog?.findViewById<TextView>(R.id.description)?.text =
-            getString(R.string.location_permission_required)
-        val btn: TextView? = dialog?.findViewById(R.id.button)
-        btn?.setOnClickListener {
-            dialog.dismiss()
-            locationPermissionRequest.launch(
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            )
-        }
-        dialog?.show()
+    private fun showPermissionDialog() { //TODO
+        val dialog = AlertDialogWithListenerFragment.getInstance(getString(R.string.location_permission_required))
+
+        //parentFragmentManager.setFragmentResultListener("15557", viewLifecycleOwner, this)
+//
+        //parentFragmentManager.setFragmentResultListener("15557", viewLifecycleOwner) { key, bundle ->
+        //    if (key == "15557") {
+        //        // Get result from bundle
+        //        locationPermissionRequest.launch(
+        //            arrayOf(
+        //                Manifest.permission.ACCESS_FINE_LOCATION,
+        //                Manifest.permission.ACCESS_COARSE_LOCATION
+        //            )
+        //        )
+        //    }
+        //}
+
+        activity?.let { dialog.show(it.supportFragmentManager, AlertDialogWithListenerFragment.TAG) }
     }
 
+    //override fun onDialogPositiveClick(dialog: DialogFragment) {
+    //    locationPermissionRequest.launch(
+    //        arrayOf(
+    //            Manifest.permission.ACCESS_FINE_LOCATION,
+    //            Manifest.permission.ACCESS_COARSE_LOCATION
+    //        )
+    //    )
+    //}
+
     private fun showMissingGooglePlayServicesDialog() {
-        val dialog = context?.let { Dialog(it) }
-        dialog?.setContentView(R.layout.permission_dialog)
-        dialog?.findViewById<TextView>(R.id.description)?.text =
-            getString(R.string.google_play_services_missing)
-
-        val btn: TextView? = dialog?.findViewById(R.id.button)
-
-        btn?.text = getString(R.string.ok)
-
-        btn?.setOnClickListener {
-            dialog.dismiss()
+        val dialog = AlertDialogFragment.getInstance(getString(R.string.google_play_services_missing))
+        activity?.let {
+            dialog.show(
+                it.supportFragmentManager,
+                AlertDialogFragment.TAG
+            )
         }
-        dialog?.show()
     }
 
     private fun checkLocationSettingsAndStartService(locationRequest: LocationRequest) {
@@ -297,5 +301,14 @@ class RecordRunFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onFragmentResult(requestKey: String, result: Bundle) {
+        locationPermissionRequest.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
     }
 }
