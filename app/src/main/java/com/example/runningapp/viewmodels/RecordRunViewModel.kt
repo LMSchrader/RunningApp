@@ -1,6 +1,5 @@
 package com.example.runningapp.viewmodels
 
-
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,8 +14,7 @@ import java.time.LocalDateTime
 
 class RecordRunViewModel(private val repository: RunHistoryRepository) : ViewModel() {
 
-    var currentRun: LiveData<RunHistoryEntry?> =
-        MutableLiveData(null)
+    var currentRun: LiveData<RunHistoryEntry?> = MutableLiveData(null)
 
     fun insertAndObserve(
         entry: RunHistoryEntry,
