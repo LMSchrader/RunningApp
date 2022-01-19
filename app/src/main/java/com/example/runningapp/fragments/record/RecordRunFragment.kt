@@ -31,7 +31,7 @@ import java.time.LocalDateTime
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
-class RecordRunFragment : Fragment(), FragmentResultListener {
+class RecordRunFragment : Fragment(), AlertDialogWithListenerFragment.NoticeDialogListener {
     private val recordRunViewModel: RecordRunViewModel by activityViewModels {
         RecordRunViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
@@ -208,43 +208,14 @@ class RecordRunFragment : Fragment(), FragmentResultListener {
     /**
      * Opens a dialog, that explains why the permissions are needed and asks for the permissions afterwards.
      */
-    private fun showPermissionDialog() { //TODO
+    private fun showPermissionDialog() {
         val dialog = AlertDialogWithListenerFragment.getInstance(getString(R.string.location_permission_required))
-
-        //parentFragmentManager.setFragmentResultListener("15557", viewLifecycleOwner, this)
-//
-        //parentFragmentManager.setFragmentResultListener("15557", viewLifecycleOwner) { key, bundle ->
-        //    if (key == "15557") {
-        //        // Get result from bundle
-        //        locationPermissionRequest.launch(
-        //            arrayOf(
-        //                Manifest.permission.ACCESS_FINE_LOCATION,
-        //                Manifest.permission.ACCESS_COARSE_LOCATION
-        //            )
-        //        )
-        //    }
-        //}
-
-        activity?.let { dialog.show(it.supportFragmentManager, AlertDialogWithListenerFragment.TAG) }
+        dialog.show(childFragmentManager, AlertDialogWithListenerFragment.TAG)
     }
-
-    //override fun onDialogPositiveClick(dialog: DialogFragment) {
-    //    locationPermissionRequest.launch(
-    //        arrayOf(
-    //            Manifest.permission.ACCESS_FINE_LOCATION,
-    //            Manifest.permission.ACCESS_COARSE_LOCATION
-    //        )
-    //    )
-    //}
 
     private fun showMissingGooglePlayServicesDialog() {
         val dialog = AlertDialogFragment.getInstance(getString(R.string.google_play_services_missing))
-        activity?.let {
-            dialog.show(
-                it.supportFragmentManager,
-                AlertDialogFragment.TAG
-            )
-        }
+        dialog.show(childFragmentManager, AlertDialogFragment.TAG)
     }
 
     private fun checkLocationSettingsAndStartService(locationRequest: LocationRequest) {
@@ -303,7 +274,7 @@ class RecordRunFragment : Fragment(), FragmentResultListener {
         }
     }
 
-    override fun onFragmentResult(requestKey: String, result: Bundle) {
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
         locationPermissionRequest.launch(
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
