@@ -11,7 +11,7 @@ import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBindin
 import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.fragments.dialogs.AlertDialogTwoButtonsFragment
 import com.example.runningapp.fragments.dialogs.DatePickerFragment
-import com.example.runningapp.util.DatePickerUtil.StaticFunctions.getTodaysDate
+import com.example.runningapp.util.DateUtil.StaticFunctions.getTodaysDate
 import com.example.runningapp.util.KeyboardUtil
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
@@ -24,14 +24,23 @@ class AddRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetLi
     private val viewModel: RunningScheduleViewModel by activityViewModels {
         RunningScheduleViewModelFactory((activity?.application as AppApplication).runningScheduleRepository)
     }
-    private var _binding: FragmentEditRunningScheduleEntryBinding? = null
 
-    //private lateinit var datePickerDialogStartDate: DatePickerDialog
-    //private lateinit var datePickerDialogEndDate: DatePickerDialog
+    private var dialog: Int = 0
+
+    private var _binding: FragmentEditRunningScheduleEntryBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState != null) {
+            with(savedInstanceState) {
+                dialog = getInt("DatePickerFragment")
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,14 +56,15 @@ class AddRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetLi
         binding.editEndDate.text = getTodaysDate().toString()
 
         binding.editStartingDate.setOnClickListener {
-            val newFragment = DatePickerFragment()
-            activity?.let { it1 -> newFragment.show(it1.supportFragmentManager, DatePickerFragment.TAG) }
-
-            //datePickerDialogStartDate.show()
+            dialog = 1
+            val datePickerFragment = DatePickerFragment()
+            datePickerFragment.show(childFragmentManager, DatePickerFragment.TAG)
         }
 
         binding.editEndDate.setOnClickListener {
-            //datePickerDialogEndDate.show() //TODO
+            dialog = 2
+            val datePickerFragment = DatePickerFragment()
+            datePickerFragment.show(childFragmentManager, DatePickerFragment.TAG)
         }
 
         return binding.root
@@ -65,27 +75,14 @@ class AddRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetLi
         _binding = null
     }
 
-    fun updateDate() {
-        val dateSetListener =
-            DatePickerDialog.OnDateSetListener { _, year, month, day ->
-                val startDate = LocalDate.of(year, month + 1, day)
-                binding.editStartingDate.text = startDate.toString()
-            }
-    }
-
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val date = LocalDate.of(year, month + 1, dayOfMonth)
-        binding.editStartingDate.text = date.toString()
-        //val c: Calendar = Calendar.getInstance()
-        //c.set(Calendar.YEAR, year)
-        //c.set(Calendar.MONTH, month)
-        //c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-        //val currentDate: String = DateFormat.getDateInstance().format(c.getTime())
 
-        //dates = Integer.toString(dayOfMonth)
-        //months = Integer.toString(month)
-        //years = Integer.toString(year)
-        //mDisplayDate.setText(currentDate)
+        if (dialog == 1) {
+            binding.editStartingDate.text = date.toString()
+        } else if (dialog == 2) {
+            binding.editEndDate.text = date.toString()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -93,26 +90,6 @@ class AddRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetLi
         inflater.inflate(R.menu.menu_edit_running_schedule_entry, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
-
-    //private fun initDatePickerStartDate() { //TODO
-    //    val dateSetListener =
-    //        DatePickerDialog.OnDateSetListener { _, year, month, day ->
-    //            val startDate = LocalDate.of(year, month + 1, day)
-    //            binding.editStartingDate.text = startDate.toString()
-    //        }
-//
-    //    datePickerDialogStartDate = context?.let { initDatePicker(it, dateSetListener) }!!
-    //}
-//
-    //private fun initDatePickerEndDate() { //TODO
-    //    val dateSetListener =
-    //        DatePickerDialog.OnDateSetListener { _, year, month, day ->
-    //            val endDate = LocalDate.of(year, month + 1, day)
-    //            binding.editEndDate.text = endDate.toString()
-    //        }
-//
-    //    datePickerDialogEndDate = context?.let { initDatePicker(it, dateSetListener) }!!
-    //}
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         activity?.let { KeyboardUtil.StaticFunctions.hideKeyboard(it) }
@@ -122,7 +99,8 @@ class AddRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetLi
         return when (item.itemId) {
             android.R.id.home -> {
                 if (entry.notDefault()) {
-                    val dialog = AlertDialogTwoButtonsFragment.getInstance(getString(R.string.data_loss))
+                    val dialog =
+                        AlertDialogTwoButtonsFragment.getInstance(getString(R.string.data_loss))
                     dialog.show(childFragmentManager, AlertDialogTwoButtonsFragment.TAG)
                 } else {
                     activity?.onBackPressed()
@@ -174,4 +152,12 @@ class AddRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetLi
 
         return entry
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.run {
+            putInt("DatePickerFragment", dialog)
+        }
+        super.onSaveInstanceState(outState)
+    }
+
 }

@@ -16,8 +16,19 @@ class AlertDialogWithListenerFragment : DialogFragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        outState.run {
+            putString("text", text)
+        }
         super.onSaveInstanceState(outState)
-        outState.putString("text", text)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState != null) {
+            with(savedInstanceState) {
+                text = getString("text") ?: ""
+            }
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -32,12 +43,7 @@ class AlertDialogWithListenerFragment : DialogFragment() {
         }
     }
 
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        if (savedInstanceState != null) {
-            text = savedInstanceState.getString("text").toString()
-        }
-
         return AlertDialog.Builder(requireContext())
             .setMessage(text)
             .setPositiveButton(
@@ -54,10 +60,6 @@ class AlertDialogWithListenerFragment : DialogFragment() {
         fun getInstance(text: String): DialogFragment {
             val dialog = AlertDialogWithListenerFragment()
             dialog.text = text
-
-            val args = Bundle()
-            args.putString("text", text)
-            dialog.onSaveInstanceState(args)
 
             return dialog
         }

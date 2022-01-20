@@ -10,15 +10,22 @@ class AlertDialogFragment : DialogFragment() {
     private lateinit var text: String
 
     override fun onSaveInstanceState(outState: Bundle) {
+        outState.run {
+            putString("text", text)
+        }
         super.onSaveInstanceState(outState)
-        outState.putString("text", text)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState != null) {
+            with(savedInstanceState) {
+                text = getString("text") ?: ""
+            }
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        if (savedInstanceState != null) {
-            text = savedInstanceState.getString("text").toString()
-        }
-
         return AlertDialog.Builder(requireContext())
             .setMessage(text)
             .setPositiveButton(R.string.ok) { _, _ -> }
@@ -31,10 +38,6 @@ class AlertDialogFragment : DialogFragment() {
         fun getInstance(text: String): DialogFragment {
             val dialog = AlertDialogFragment()
             dialog.text = text
-
-            val args = Bundle()
-            args.putString("text", text)
-            dialog.onSaveInstanceState(args)
 
             return dialog
         }

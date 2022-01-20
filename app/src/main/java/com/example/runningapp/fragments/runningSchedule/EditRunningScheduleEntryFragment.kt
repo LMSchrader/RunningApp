@@ -3,6 +3,7 @@ package com.example.runningapp.fragments.runningSchedule
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
+import android.widget.DatePicker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.runningapp.R
@@ -10,7 +11,7 @@ import com.example.runningapp.AppApplication
 import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBinding
 import com.example.runningapp.fragments.dialogs.AlertDialogTwoButtonsFragment
-import com.example.runningapp.util.DatePickerUtil.StaticFunctions.initDatePicker
+import com.example.runningapp.fragments.dialogs.DatePickerFragment
 import com.example.runningapp.util.KeyboardUtil
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
@@ -18,18 +19,27 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDate
 
-class EditRunningScheduleEntryFragment : Fragment() {
+class EditRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
         RunningScheduleViewModelFactory((activity?.application as AppApplication).runningScheduleRepository)
     }
-    private var _binding: FragmentEditRunningScheduleEntryBinding? = null
 
-    private lateinit var datePickerDialogStartDate: DatePickerDialog //TODO: dialog
-    private lateinit var datePickerDialogEndDate: DatePickerDialog
+    private var dialog: Int = 0
+
+    private var _binding: FragmentEditRunningScheduleEntryBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState != null) {
+            with(savedInstanceState) {
+                dialog = getInt("DatePickerFragment")
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,16 +70,16 @@ class EditRunningScheduleEntryFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        // initialize date picker
-        initDatePickerStartDate()
-        initDatePickerEndDate()
-
         binding.editStartingDate.setOnClickListener {
-            datePickerDialogStartDate.show()
+            dialog = 1
+            val datePickerFragment = DatePickerFragment()
+            datePickerFragment.show(childFragmentManager, DatePickerFragment.TAG)
         }
 
         binding.editEndDate.setOnClickListener {
-            datePickerDialogEndDate.show()
+            dialog = 2
+            val datePickerFragment = DatePickerFragment()
+            datePickerFragment.show(childFragmentManager, DatePickerFragment.TAG)
         }
 
         return binding.root
@@ -84,36 +94,6 @@ class EditRunningScheduleEntryFragment : Fragment() {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_edit_running_schedule_entry, menu)
         super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    private fun initDatePickerStartDate() {
-        val dateSetListener =
-            DatePickerDialog.OnDateSetListener { _, year, month, day ->
-                val startDate = LocalDate.of(year, month + 1, day)
-                binding.editStartingDate.text = startDate.toString()
-            }
-
-        datePickerDialogStartDate = context?.let {
-            initDatePicker(
-                it,
-                dateSetListener
-            )
-        }!!
-    }
-
-    private fun initDatePickerEndDate() {
-        val dateSetListener =
-            DatePickerDialog.OnDateSetListener { _, year, month, day ->
-                val endDate = LocalDate.of(year, month + 1, day)
-                binding.editEndDate.text = endDate.toString()
-            }
-
-        datePickerDialogEndDate = context?.let {
-            initDatePicker(
-                it,
-                dateSetListener
-            )
-        }!!
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -174,5 +154,22 @@ class EditRunningScheduleEntryFragment : Fragment() {
         editedEntry.sunday = binding.checkBoxSunday.isChecked
 
         return editedEntry
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        val date = LocalDate.of(year, month + 1, dayOfMonth)
+
+        if (dialog == 1) {
+            binding.editStartingDate.text = date.toString()
+        } else if (dialog == 2) {
+            binding.editEndDate.text = date.toString()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.run {
+            putInt("DatePickerFragment", dialog)
+        }
+        super.onSaveInstanceState(outState)
     }
 }
