@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit
 
 class RunningNotificationWorker(appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {
-    //TODO: testen
     companion object {
         private const val WORKER_NAME = "RunningNotification"
         private const val hour = 0

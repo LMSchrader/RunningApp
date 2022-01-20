@@ -108,7 +108,7 @@ class AddRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetLi
                 true
             }
 
-            R.id.imageSave -> { //TODO snackbar überprüfen
+            R.id.imageSave -> {
                 when {
                     !entry.isTitleSet() -> {
                         view?.let {
