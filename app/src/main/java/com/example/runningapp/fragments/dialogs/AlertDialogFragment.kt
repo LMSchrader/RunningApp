@@ -9,6 +9,11 @@ import com.example.runningapp.R
 class AlertDialogFragment : DialogFragment() {
     private lateinit var text: String
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("text", text)
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (savedInstanceState != null) {
             text = savedInstanceState.getString("text").toString()
@@ -29,7 +34,7 @@ class AlertDialogFragment : DialogFragment() {
 
             val args = Bundle()
             args.putString("text", text)
-            dialog.arguments = args
+            dialog.onSaveInstanceState(args)
 
             return dialog
         }

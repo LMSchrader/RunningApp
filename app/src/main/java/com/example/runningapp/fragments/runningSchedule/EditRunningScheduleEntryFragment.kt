@@ -124,23 +124,15 @@ class EditRunningScheduleEntryFragment : Fragment() {
         return when (item.itemId) {
             android.R.id.home -> {
                 if (viewModel.currentEntry.value?.equals(editedEntry) == false) {
-                    //context?.let {
-                    //    activity?.let { it1 ->
-                    //        showDialog(
-                    //            getString(R.string.data_loss), it,
-                    //            it1
-                    //        )
-                    //    }
-                    //}
                     val dialog = AlertDialogTwoButtonsFragment.getInstance(getString(R.string.data_loss))
-                    activity?.let { dialog.show(it.supportFragmentManager, AlertDialogTwoButtonsFragment.TAG) }
+                    dialog.show(childFragmentManager, AlertDialogTwoButtonsFragment.TAG)
                 } else {
                     activity?.onBackPressed()
                 }
                 true
             }
 
-            R.id.imageSave -> {
+            R.id.imageSave -> {//TODO: snackbar überprüfen
                 when {
                     !editedEntry.isTitleSet() -> {
                         view?.let {

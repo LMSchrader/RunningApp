@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.activityViewModels
 import com.example.runningapp.R
 import com.example.runningapp.AppApplication
@@ -20,11 +19,8 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDate
 import android.widget.DatePicker
-import java.text.DateFormat
-import java.util.*
 
-
-class AddRunningScheduleEntryFragment : Fragment(), FragmentResultListener, DatePickerDialog.OnDateSetListener {
+class AddRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
         RunningScheduleViewModelFactory((activity?.application as AppApplication).runningScheduleRepository)
     }
@@ -126,18 +122,8 @@ class AddRunningScheduleEntryFragment : Fragment(), FragmentResultListener, Date
         return when (item.itemId) {
             android.R.id.home -> {
                 if (entry.notDefault()) {
-                    //context?.let {
-                    //    activity?.let { it1 ->
-                    //        showDialog(  //TODO
-                    //            getString(R.string.data_loss), it,
-                    //            it1
-                    //        )
-                    //    }
-                    //}
                     val dialog = AlertDialogTwoButtonsFragment.getInstance(getString(R.string.data_loss))
-                    //parentFragmentManager.setFragmentResultListener("15559", viewLifecycleOwner, this)
-
-                    activity?.let { dialog.show(it.supportFragmentManager, AlertDialogTwoButtonsFragment.TAG) }
+                    dialog.show(childFragmentManager, AlertDialogTwoButtonsFragment.TAG)
                 } else {
                     activity?.onBackPressed()
                 }
@@ -188,10 +174,4 @@ class AddRunningScheduleEntryFragment : Fragment(), FragmentResultListener, Date
 
         return entry
     }
-
-    override fun onFragmentResult(requestKey: String, result: Bundle) {
-        activity?.onBackPressed()
-    }
-
-
 }

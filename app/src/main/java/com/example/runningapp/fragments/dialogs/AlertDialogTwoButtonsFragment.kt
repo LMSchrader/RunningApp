@@ -9,6 +9,11 @@ import com.example.runningapp.R
 class AlertDialogTwoButtonsFragment : DialogFragment() {
     private lateinit var text: String
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("text", text)
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (savedInstanceState != null) {
             text = savedInstanceState.getString("text").toString()
@@ -16,11 +21,7 @@ class AlertDialogTwoButtonsFragment : DialogFragment() {
 
         return AlertDialog.Builder(requireContext())
             .setMessage(text)
-            .setPositiveButton(getString(R.string.continue_text)) { _, _ ->
-                val bundle = Bundle()
-                bundle.putString("result", getString(R.string.continue_text))
-                parentFragmentManager.setFragmentResult("15559", bundle)
-            }//activity?.onBackPressed() }
+            .setPositiveButton(getString(R.string.continue_text)) { _, _ -> activity?.onBackPressed() }
             .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
             .create()
     }
@@ -34,7 +35,6 @@ class AlertDialogTwoButtonsFragment : DialogFragment() {
 
             val args = Bundle()
             args.putString("text", text)
-            //dialog.arguments = args
             dialog.onSaveInstanceState(args)
 
             return dialog
