@@ -14,6 +14,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.fragment.app.*
 import com.example.runningapp.AppApplication
 import com.example.runningapp.data.RunHistoryEntry
@@ -43,6 +44,7 @@ class RecordRunFragment : Fragment(), AlertDialogWithListenerFragment.NoticeDial
     private val binding get() = _binding!!
 
     private lateinit var sharedPref: SharedPreferences
+    private lateinit var prefListener: OnSharedPreferenceChangeListener
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -85,6 +87,26 @@ class RecordRunFragment : Fragment(), AlertDialogWithListenerFragment.NoticeDial
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)!!
+        prefListener = OnSharedPreferenceChangeListener { prefs, key ->
+            if (key == getString(R.string.service_active)) {
+                val date = sharedPref.getString(getString(R.string.service_active), "")
+
+                if (date != "") {
+                    binding.startButton.visibility = View.GONE
+                    binding.stopButton.visibility = View.VISIBLE
+                } else {
+                    binding.startButton.visibility = View.VISIBLE
+                    binding.stopButton.visibility = View.GONE
+                }
+            }
+        }
+
+        sharedPref.registerOnSharedPreferenceChangeListener(prefListener)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -96,7 +118,6 @@ class RecordRunFragment : Fragment(), AlertDialogWithListenerFragment.NoticeDial
         binding.stopButton.setOnClickListener { stopRun() }
 
 
-        sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)!!
         val date = sharedPref.getString(getString(R.string.service_active), "")
 
         // if service is active, show stop button
@@ -153,14 +174,11 @@ class RecordRunFragment : Fragment(), AlertDialogWithListenerFragment.NoticeDial
         checkLocationSettingsAndStartService(RecordRunService.createLocationRequest())
     }
 
-    private fun stopRun() { // TODO: Alles auslager, Button switches abhängig von sharedPref machen und niht im code switchen
+    private fun stopRun() { // TODO: Alles auslager in service, da es nicht vom broadcast receiver aufgerufen wird
         context?.stopService(Intent(context, RecordRunService::class.java))
 
         recordRunViewModel.removeObserver(viewLifecycleOwner)
 
-        // switch buttons
-        binding.startButton.visibility = View.VISIBLE
-        binding.stopButton.visibility = View.GONE
         //TODO: auslagern in service
         with(sharedPref.edit()) {
             putString(
@@ -234,9 +252,6 @@ class RecordRunFragment : Fragment(), AlertDialogWithListenerFragment.NoticeDial
                 observerListener
             )
 
-            // switch buttons
-            binding.startButton.visibility = View.GONE
-            binding.stopButton.visibility = View.VISIBLE
 
             with(sharedPref.edit()) {
                 putString(
