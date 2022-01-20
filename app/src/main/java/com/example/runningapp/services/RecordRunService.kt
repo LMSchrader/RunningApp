@@ -1,5 +1,6 @@
 package com.example.runningapp.services
 
+import android.app.PendingIntent
 import android.content.Intent
 import android.location.Location
 import android.os.IBinder
@@ -11,6 +12,7 @@ import androidx.navigation.NavDeepLinkBuilder
 import com.example.runningapp.AppApplication
 import com.example.runningapp.MainActivity
 import com.example.runningapp.R
+import com.example.runningapp.broadcastReceiver.StopRunBroadcastReceiver
 import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.data.RunHistoryRepository
 import com.google.android.gms.location.*
@@ -119,11 +121,15 @@ class RecordRunService: LifecycleService() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
     }
 
-    private fun generateForegroundNotification() { //TODO: eventuell stop button einbauen
+    private fun generateForegroundNotification() {
         val pendingIntent = NavDeepLinkBuilder(this)
             .setGraph(R.navigation.mobile_navigation)
             .setDestination(R.id.nav_record_run)
             .createPendingIntent()
+
+        val stopRunIntent = Intent(this, StopRunBroadcastReceiver::class.java)
+        val stopRunPendingIntent: PendingIntent =
+            PendingIntent.getBroadcast(this, 0, stopRunIntent, 0)
 
         val notification = NotificationCompat.Builder(this, MainActivity.CHANNEL_ID_SERVICE)
             .setSmallIcon(R.drawable.ic_baseline_directions_run_24)
@@ -132,6 +138,8 @@ class RecordRunService: LifecycleService() {
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setCategory(NotificationCompat.CATEGORY_LOCATION_SHARING)
+            .addAction(0, getString(R.string.stop),
+                stopRunPendingIntent)
             .build()
 
         startForeground(ID, notification)

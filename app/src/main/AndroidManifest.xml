@@ -31,6 +31,9 @@
             android:description="@string/service_description"
             android:exported="false"
             android:foregroundServiceType="location" />
+
+        <receiver android:name="com.example.runningapp.broadcastReceiver.StopRunBroadcastReceiver"/>
+
     </application>
 
 </manifest>

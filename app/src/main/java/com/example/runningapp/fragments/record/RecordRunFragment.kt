@@ -66,12 +66,12 @@ class RecordRunFragment : Fragment(), AlertDialogWithListenerFragment.NoticeDial
             binding.currentKm.text = getString(R.string.value_empty)
             binding.avgPace.text = getString(R.string.value_empty)
             binding.currentPace.text = getString(R.string.value_empty)
-        } else {
+        } else { // TODO: überarbeiten
             binding.currentTime.text = run.timeValues[run.timeValues.lastIndex].toLong()
                 .toDuration(DurationUnit.NANOSECONDS).toString(DurationUnit.MINUTES, 2)
             binding.currentKm.text = "%.2f".format(run.kmRun)
 
-            val pace = run.paceValues[run.paceValues.lastIndex]
+            val pace = run.paceValues[run.paceValues.lastIndex] //TODO: hier kommt es manchmal zu ArrayIndexOutOfBoundsException
             if (pace != null) {
                 binding.currentPace.text = "%.2f".format(pace)
             } else {
@@ -153,7 +153,7 @@ class RecordRunFragment : Fragment(), AlertDialogWithListenerFragment.NoticeDial
         checkLocationSettingsAndStartService(RecordRunService.createLocationRequest())
     }
 
-    private fun stopRun() {
+    private fun stopRun() { // TODO: Alles auslager, Button switches abhängig von sharedPref machen und niht im code switchen
         context?.stopService(Intent(context, RecordRunService::class.java))
 
         recordRunViewModel.removeObserver(viewLifecycleOwner)
