@@ -32,7 +32,9 @@
             android:exported="false"
             android:foregroundServiceType="location" />
 
-        <receiver android:name="com.example.runningapp.broadcastReceiver.StopRunBroadcastReceiver"/>
+        <receiver
+            android:name="com.example.runningapp.broadcastReceiver.StopRunBroadcastReceiver"
+            android:exported="false" />
 
     </application>
 
