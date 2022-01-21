@@ -93,17 +93,15 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
         super.onCreate(savedInstanceState)
         sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)!!
         prefListener = OnSharedPreferenceChangeListener { prefs, key ->
-            if (context != null) {
-                if (key == getString(R.string.service_active)) {
-                    val date = sharedPref.getString(getString(R.string.service_active), "")
+            if (key == getString(R.string.service_active)) {
+                val date = sharedPref.getString(getString(R.string.service_active), "")
 
-                    if (date != "") {
-                        binding.startButton.visibility = View.GONE
-                        binding.stopButton.visibility = View.VISIBLE
-                    } else {
-                        binding.startButton.visibility = View.VISIBLE
-                        binding.stopButton.visibility = View.GONE
-                    }
+                if (date != "") {
+                    binding.startButton.visibility = View.GONE
+                    binding.stopButton.visibility = View.VISIBLE
+                } else {
+                    binding.startButton.visibility = View.VISIBLE
+                    binding.stopButton.visibility = View.GONE
                 }
             }
         }
@@ -150,6 +148,7 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
 
     override fun onDestroyView() {
         super.onDestroyView()
+        sharedPref.unregisterOnSharedPreferenceChangeListener(prefListener)
         _binding = null
     }
 
