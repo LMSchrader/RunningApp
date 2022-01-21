@@ -1,13 +1,19 @@
 package com.example.runningapp.fragments.dialogs
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.runningapp.R
 
-class AlertDialogTwoButtonsFragment : DialogFragment() {
+class CustomDialogFragment : DialogFragment() {
     private lateinit var text: String
+    private lateinit var listener: CustomDialogListener
+
+    interface CustomDialogListener {
+        fun onDialogPositiveClick(dialog: DialogFragment)
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.run {
@@ -25,19 +31,31 @@ class AlertDialogTwoButtonsFragment : DialogFragment() {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            listener = parentFragment as CustomDialogListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException((parentFragment.toString() + " must implement CustomDialogListener"))
+        }
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())
             .setMessage(text)
-            .setPositiveButton(getString(R.string.continue_text)) { _, _ -> activity?.onBackPressed() }
-            .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
+            .setPositiveButton(
+                R.string.continue_text
+            ) { _, _ ->
+                listener.onDialogPositiveClick(this)
+            }
             .create()
     }
 
     companion object {
-        const val TAG = "AlertDialogTwoButtonsFragment"
+        const val TAG = "CustomDialogFragment"
 
         fun getInstance(text: String): DialogFragment {
-            val dialog = AlertDialogTwoButtonsFragment()
+            val dialog = CustomDialogFragment()
             dialog.text = text
 
             return dialog

@@ -6,7 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.runningapp.R
 
-class AlertDialogFragment : DialogFragment() {
+class CancelContinueDialogsFragment : DialogFragment() {
     private lateinit var text: String
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -28,15 +28,16 @@ class AlertDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())
             .setMessage(text)
-            .setPositiveButton(R.string.ok) { _, _ -> }
+            .setPositiveButton(getString(R.string.continue_text)) { _, _ -> activity?.onBackPressed() }
+            .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
             .create()
     }
 
     companion object {
-        const val TAG = "AlertDialogFragment"
+        const val TAG = "CancelContinueDialogsFragment"
 
         fun getInstance(text: String): DialogFragment {
-            val dialog = AlertDialogFragment()
+            val dialog = CancelContinueDialogsFragment()
             dialog.text = text
 
             return dialog

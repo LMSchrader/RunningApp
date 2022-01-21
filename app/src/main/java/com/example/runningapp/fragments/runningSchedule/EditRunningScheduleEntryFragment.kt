@@ -10,7 +10,7 @@ import com.example.runningapp.R
 import com.example.runningapp.AppApplication
 import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBinding
-import com.example.runningapp.fragments.dialogs.AlertDialogTwoButtonsFragment
+import com.example.runningapp.fragments.dialogs.CancelContinueDialogsFragment
 import com.example.runningapp.fragments.dialogs.DatePickerFragment
 import com.example.runningapp.util.KeyboardUtil
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
@@ -104,8 +104,8 @@ class EditRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetL
         return when (item.itemId) {
             android.R.id.home -> {
                 if (viewModel.currentEntry.value?.equals(editedEntry) == false) {
-                    val dialog = AlertDialogTwoButtonsFragment.getInstance(getString(R.string.data_loss))
-                    dialog.show(childFragmentManager, AlertDialogTwoButtonsFragment.TAG)
+                    val dialog = CancelContinueDialogsFragment.getInstance(getString(R.string.data_loss))
+                    dialog.show(childFragmentManager, CancelContinueDialogsFragment.TAG)
                 } else {
                     activity?.onBackPressed()
                 }

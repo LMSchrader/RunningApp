@@ -18,8 +18,8 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.fragment.app.*
 import com.example.runningapp.AppApplication
 import com.example.runningapp.data.RunHistoryEntry
-import com.example.runningapp.fragments.dialogs.AlertDialogWithListenerFragment
-import com.example.runningapp.fragments.dialogs.AlertDialogFragment
+import com.example.runningapp.fragments.dialogs.CustomDialogFragment
+import com.example.runningapp.fragments.dialogs.NoteDialogFragment
 import com.example.runningapp.services.RecordRunService
 import com.example.runningapp.viewmodels.RecordRunViewModel
 import com.example.runningapp.viewmodels.RecordRunViewModelFactory
@@ -32,7 +32,7 @@ import java.time.LocalDateTime
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
-class RecordRunFragment : Fragment(), AlertDialogWithListenerFragment.NoticeDialogListener {
+class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener {
     private val recordRunViewModel: RecordRunViewModel by activityViewModels {
         RecordRunViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
@@ -227,13 +227,13 @@ class RecordRunFragment : Fragment(), AlertDialogWithListenerFragment.NoticeDial
      * Opens a dialog, that explains why the permissions are needed and asks for the permissions afterwards.
      */
     private fun showPermissionDialog() {
-        val dialog = AlertDialogWithListenerFragment.getInstance(getString(R.string.location_permission_required))
-        dialog.show(childFragmentManager, AlertDialogWithListenerFragment.TAG)
+        val dialog = CustomDialogFragment.getInstance(getString(R.string.location_permission_required))
+        dialog.show(childFragmentManager, CustomDialogFragment.TAG)
     }
 
     private fun showMissingGooglePlayServicesDialog() {
-        val dialog = AlertDialogFragment.getInstance(getString(R.string.google_play_services_missing))
-        dialog.show(childFragmentManager, AlertDialogFragment.TAG)
+        val dialog = NoteDialogFragment.getInstance(getString(R.string.google_play_services_missing))
+        dialog.show(childFragmentManager, NoteDialogFragment.TAG)
     }
 
     private fun checkLocationSettingsAndStartService(locationRequest: LocationRequest) {
