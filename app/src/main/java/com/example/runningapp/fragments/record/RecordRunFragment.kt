@@ -73,17 +73,19 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
                 .toDuration(DurationUnit.NANOSECONDS).toString(DurationUnit.MINUTES, 2)
             binding.currentKm.text = "%.2f".format(run.kmRun)
 
-            val pace = run.paceValues[run.paceValues.lastIndex] //TODO: hier kommt es manchmal zu ArrayIndexOutOfBoundsException
-            if (pace != null) {
-                binding.currentPace.text = "%.2f".format(pace)
-            } else {
+            //val pace = run.paceValues[run.paceValues.lastIndex] //TODO: hier kommt es manchmal zu ArrayIndexOutOfBoundsException und infinit exeptions
+            //if (pace != null) {
+            //    binding.currentPace.text = "%.2f".format(pace)
+            //} else {
                 binding.currentPace.text = getString(R.string.value_empty)
-            }
-
-            run.paceValues.removeAll(listOf(null))
-            if (run.paceValues.isNotEmpty()) {
-                binding.avgPace.text = "%.2f".format((run.paceValues as List<Float>).average())
-            }
+            //}
+//
+            //run.paceValues.removeAll(listOf(null))
+            //if (run.paceValues.isNotEmpty()) {
+            //    binding.avgPace.text = "%.2f".format((run.paceValues as List<Float>).average())
+            //} else {
+            binding.avgPace.text = getString(R.string.value_empty)
+            //}
         }
     }
 
@@ -91,15 +93,17 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
         super.onCreate(savedInstanceState)
         sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)!!
         prefListener = OnSharedPreferenceChangeListener { prefs, key ->
-            if (key == getString(R.string.service_active)) {
-                val date = sharedPref.getString(getString(R.string.service_active), "")
+            if (context != null) {
+                if (key == getString(R.string.service_active)) {
+                    val date = sharedPref.getString(getString(R.string.service_active), "")
 
-                if (date != "") {
-                    binding.startButton.visibility = View.GONE
-                    binding.stopButton.visibility = View.VISIBLE
-                } else {
-                    binding.startButton.visibility = View.VISIBLE
-                    binding.stopButton.visibility = View.GONE
+                    if (date != "") {
+                        binding.startButton.visibility = View.GONE
+                        binding.stopButton.visibility = View.VISIBLE
+                    } else {
+                        binding.startButton.visibility = View.VISIBLE
+                        binding.stopButton.visibility = View.GONE
+                    }
                 }
             }
         }
