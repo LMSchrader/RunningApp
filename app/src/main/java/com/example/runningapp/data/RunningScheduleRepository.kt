@@ -7,8 +7,6 @@ import kotlinx.coroutines.withContext
 class RunningScheduleRepository(private val runningScheduleDao: RunningScheduleDao) {
     val runningSchedule: Flow<List<RunningScheduleEntry>> = runningScheduleDao.getAll()
 
-    //val nextRunningDay: Flow<LocalDate> = runningScheduleDao.getNextRunningDay()
-
     val isTodayARunningDay: Flow<Boolean> = runningScheduleDao.isTodayARunningDay()
 
     suspend fun insert(entry: RunningScheduleEntry) {
@@ -29,10 +27,9 @@ class RunningScheduleRepository(private val runningScheduleDao: RunningScheduleD
         }
     }
 
-    //suspend fun isTodayARunningDay(mon: Boolean, tue: Boolean, wed: Boolean, thu: Boolean, fri: Boolean, sat: Boolean, sun: Boolean) {
-    //    withContext(Dispatchers.IO) {
-    //        runningScheduleDao.isTodayARunningDay(mon, tue, wed, thu, fri, sat, sun)
-//
-    //    }
-    //}
+    suspend fun isTodayARunningDayOneTimeRequest(): Boolean {
+        return withContext(Dispatchers.IO) {
+            runningScheduleDao.isTodayARunningDayOneTimeRequest()
+        }
+    }
 }
