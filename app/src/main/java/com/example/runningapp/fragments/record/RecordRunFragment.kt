@@ -43,7 +43,19 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
     private val binding get() = _binding!!
 
     private lateinit var sharedPref: SharedPreferences
-    private lateinit var prefListener: OnSharedPreferenceChangeListener
+    private var prefListener: OnSharedPreferenceChangeListener = OnSharedPreferenceChangeListener { prefs, key ->
+        if (key == getString(R.string.service_active_preferences)) {
+            val date = sharedPref.getString(getString(R.string.service_active_preferences), "")
+
+            if (date != "") {
+                binding.startButton.visibility = View.GONE
+                binding.stopButton.visibility = View.VISIBLE
+            } else {
+                binding.startButton.visibility = View.VISIBLE
+                binding.stopButton.visibility = View.GONE
+            }
+        }
+    }
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -91,21 +103,6 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPref = (activity?.application as AppApplication).shardPref
-        prefListener = OnSharedPreferenceChangeListener { prefs, key ->
-            if (key == getString(R.string.service_active_preferences)) {
-                val date = sharedPref.getString(getString(R.string.service_active_preferences), "")
-
-                if (date != "") {
-                    binding.startButton.visibility = View.GONE
-                    binding.stopButton.visibility = View.VISIBLE
-                } else {
-                    binding.startButton.visibility = View.VISIBLE
-                    binding.stopButton.visibility = View.GONE
-                }
-            }
-        }
-
-        sharedPref.registerOnSharedPreferenceChangeListener(prefListener)
     }
 
     override fun onCreateView(
@@ -145,9 +142,18 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        sharedPref.registerOnSharedPreferenceChangeListener(prefListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sharedPref.unregisterOnSharedPreferenceChangeListener(prefListener)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        sharedPref.unregisterOnSharedPreferenceChangeListener(prefListener)
         _binding = null
     }
 

@@ -70,6 +70,7 @@
     <string name="service_description">Dieser Service nimmt einen Lauf auf.</string>
 
     <!-- settings -->
+    <string name="notification_category">Benachrichtigungen</string>
     <string name="notification">Benachrichtigungen aktivieren</string>
     <string name="notification_summary">Du wirst über anstehende Laufeinheiten benachricht</string>
 

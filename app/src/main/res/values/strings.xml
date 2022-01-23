@@ -71,7 +71,8 @@
     <string name="service_description">This service records a run.</string>
 
     <!-- settings -->
-    <string name="notification">Enable message notifications</string>
+    <string name="notification_category">Notifications</string>
+    <string name="notification">Enable notifications</string>
     <string name="notification_summary">You will be notified about upcoming running sessions</string>
 
     <!-- notification channels -->
