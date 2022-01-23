@@ -12,6 +12,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import com.example.runningapp.databinding.ActivityMainBinding
 import com.example.runningapp.worker.RunningNotificationWorker
 
@@ -53,7 +54,10 @@ class MainActivity : AppCompatActivity() {
 
         createNotificationChannels()
 
-        RunningNotificationWorker.runAt(applicationContext)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        if (sharedPreferences.getBoolean("notifications", true)) {
+            RunningNotificationWorker.runAt(applicationContext)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
