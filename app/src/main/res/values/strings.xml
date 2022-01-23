@@ -44,7 +44,6 @@
     <string name="pause">Pause</string>
     <string name="time_empty" translatable="false">--:--</string>
     <string name="value_empty">--.--</string>
-    <string name="service_active">service active</string>
     <string name="record_run_notification_title">Your run is recorded</string>
     <string name="record_run_notification_text">Click to return to the app</string>
 
@@ -78,4 +77,11 @@
     <!-- notification channels -->
     <string name="channel_name_running_day">Running day notification</string>
     <string name="channel_name_record_run">Record run</string>
+
+    <!-- shared preferences -->
+    <string name="record_run_preferences_file" translatable="false">record run</string>
+    <string name="service_active_preferences" translatable="false">service active</string>
+    <string name="last_running_day_preferences" translatable="false">last running day</string>
+    <string name="running_days_kept_preferences" translatable="false">running days kept</string>
+    <string name="kilometers_run_preferences" translatable="false">kilometers run</string>
 </resources>

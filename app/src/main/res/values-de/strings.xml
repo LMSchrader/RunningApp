@@ -43,7 +43,6 @@
     <string name="stop">Stop</string>
     <string name="pause">Pause</string>
     <string name="value_empty">--,--</string>
-    <string name="service_active">Service aktiv</string>
     <string name="record_run_notification_title">Dein Lauf wird aufgezeichnet</string>
     <string name="record_run_notification_text">Klicken um zur App zurückzukehren</string>
 

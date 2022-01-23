@@ -10,7 +10,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRecordRunBinding
-import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.SharedPreferences
@@ -91,10 +90,10 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)!!
+        sharedPref = (activity?.application as AppApplication).shardPref
         prefListener = OnSharedPreferenceChangeListener { prefs, key ->
-            if (key == getString(R.string.service_active)) {
-                val date = sharedPref.getString(getString(R.string.service_active), "")
+            if (key == getString(R.string.service_active_preferences)) {
+                val date = sharedPref.getString(getString(R.string.service_active_preferences), "")
 
                 if (date != "") {
                     binding.startButton.visibility = View.GONE
@@ -120,7 +119,7 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
         binding.stopButton.setOnClickListener { stopRun() }
 
 
-        val date = sharedPref.getString(getString(R.string.service_active), "")
+        val date = sharedPref.getString(getString(R.string.service_active_preferences), "")
 
         // if service is active, show stop button
         if (!date.isNullOrEmpty()) {
@@ -177,39 +176,18 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
         checkLocationSettingsAndStartService(RecordRunService.createLocationRequest())
     }
 
-    private fun stopRun() { // TODO: Alles auslager in service, da es nicht vom broadcast receiver aufgerufen wird
+    private fun stopRun() {
         context?.stopService(Intent(context, RecordRunService::class.java))
 
         recordRunViewModel.removeObserver(viewLifecycleOwner)
 
-        //TODO: auslagern in service
+        // mark service as stopped
         with(sharedPref.edit()) {
             putString(
-                getString(R.string.service_active),
+                getString(R.string.service_active_preferences),
                 ""
             )
             apply()
-        }
-
-
-        with(sharedPref.edit()) {
-            putInt(
-                getString(R.string.kilometers_run),
-                sharedPref.getInt(getString(R.string.kilometers_run), 0) + 10
-            )
-            apply()
-        }
-
-        //TODO
-        val runningDay = true
-        if (runningDay) {
-            with(sharedPref.edit()) {
-                putInt(
-                    getString(R.string.running_days_kept),
-                    sharedPref.getInt(getString(R.string.running_days_kept), 0) + 1
-                )
-                apply()
-            }
         }
     }
 
@@ -256,9 +234,10 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
             )
 
 
+            // mark service as active
             with(sharedPref.edit()) {
                 putString(
-                    getString(R.string.service_active),
+                    getString(R.string.service_active_preferences),
                     currentTime.toString()
                 )
                 apply()
@@ -270,7 +249,7 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
                 Intent(
                     context,
                     RecordRunService()::class.java
-                ).putExtra("id", currentTime.toString()) //TODO: nicht mehr nötig -> in sharedPreferences
+                ).putExtra("id", currentTime.toString())
             )
         }
 

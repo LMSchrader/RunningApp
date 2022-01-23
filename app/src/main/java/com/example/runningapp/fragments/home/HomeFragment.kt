@@ -1,6 +1,5 @@
 package com.example.runningapp.fragments.home
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -57,15 +56,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun initKeyValuePairs() {
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val sharedPref = (activity?.application as AppApplication).shardPref
 
-        val defaultValue = 0
-        val runningDaysKept = sharedPref.getInt(getString(R.string.running_days_kept), defaultValue)
-        val kilometersRun = sharedPref.getInt(getString(R.string.kilometers_run), defaultValue)
+        val runningDaysKept =
+            sharedPref.getInt(getString(R.string.running_days_kept_preferences), 0)
+        val kilometersRun =
+            "%.2f".format(sharedPref.getFloat(getString(R.string.kilometers_run_preferences), 0.0F))
 
-        binding.runningDaysKept.text =
-            resources.getString(R.string.running_days_kept, runningDaysKept.toString())
-        binding.kilometersRun.text =
-            resources.getString(R.string.kilometers_run, kilometersRun.toString())
+        binding.runningDaysKept.text = getString(R.string.running_days_kept, runningDaysKept.toString())
+        binding.kilometersRun.text = getString(R.string.kilometers_run, kilometersRun)
     }
 }
