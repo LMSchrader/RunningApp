@@ -28,6 +28,8 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 import java.time.LocalDateTime
+import kotlin.math.floor
+import kotlin.math.pow
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
@@ -80,23 +82,53 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
             binding.avgPace.text = getString(R.string.value_empty)
             binding.currentPace.text = getString(R.string.value_empty)
         } else { // TODO: überarbeiten
-            binding.currentTime.text = run.timeValues[run.timeValues.lastIndex].toLong()
-                .toDuration(DurationUnit.NANOSECONDS).toString(DurationUnit.MINUTES, 2)
+            binding.currentTime.text = floor(run.timeValues[run.timeValues.lastIndex].toLong().div(10.toDouble().pow(9)))
+                .toDuration(DurationUnit.SECONDS).toString()
             binding.currentKm.text = "%.2f".format(run.kmRun)
 
-            //val pace = run.paceValues[run.paceValues.lastIndex] //TODO: hier kommt es manchmal zu ArrayIndexOutOfBoundsException und infinit exeptions
-            //if (pace != null) {
-            //    binding.currentPace.text = "%.2f".format(pace)
+            //if (run.paceValues.isNotEmpty()) {
+                val pace =
+                    run.paceValues[run.paceValues.lastIndex] //TODO: hier kommt es manchmal zu ArrayIndexOutOfBoundsException und infinit exeptions
+                if (pace != null) {
+                    if(pace.toLong().toDuration(DurationUnit.MINUTES).inWholeDays > 1) {
+                        binding.avgPace.text = getString(R.string.value_empty)
+                    } else {
+                        if(pace.toLong().toDuration(DurationUnit.MINUTES).inWholeHours > 1) {
+                            binding.currentPace.text =
+                                pace.div(60).toLong().toDuration(DurationUnit.MINUTES)
+                                    .toString()
+                        } else {
+                            binding.currentPace.text =
+                                pace.times(60).toLong().toDuration(DurationUnit.SECONDS)
+                                    .toString()
+                        }
+                    }
+                } else {
+                    binding.currentPace.text = getString(R.string.value_empty)
+                }
             //} else {
-                binding.currentPace.text = getString(R.string.value_empty)
+            //    binding.currentPace.text = getString(R.string.value_empty)
             //}
 //
-            //run.paceValues.removeAll(listOf(null))
-            //if (run.paceValues.isNotEmpty()) {
-            //    binding.avgPace.text = "%.2f".format((run.paceValues as List<Float>).average())
-            //} else {
-            binding.avgPace.text = getString(R.string.value_empty)
-            //}
+            run.paceValues.removeAll(listOf(null))
+            if (run.paceValues.isNotEmpty()) {
+                val average = (run.paceValues as List<Float>).average()
+                if(average.toLong().toDuration(DurationUnit.MINUTES).inWholeDays > 1) {
+                    binding.avgPace.text = getString(R.string.value_empty)
+                } else {
+                    if(average.toLong().toDuration(DurationUnit.MINUTES).inWholeHours > 1) {
+                        binding.avgPace.text =
+                            average.div(60).toLong().toDuration(DurationUnit.MINUTES)
+                                .toString()
+                    } else {
+                        binding.avgPace.text =
+                            average.times(60).toLong().toDuration(DurationUnit.SECONDS)
+                                .toString()
+                    }
+                }
+            } else {
+                binding.avgPace.text = getString(R.string.value_empty)
+            }
         }
     }
 
