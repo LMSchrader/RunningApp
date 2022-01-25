@@ -12,6 +12,7 @@ import com.example.runningapp.databinding.FragmentRunningScheduleEntryBinding
 import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
+import kotlin.properties.Delegates
 
 class RunningScheduleEntryFragment : Fragment() {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
@@ -21,12 +22,21 @@ class RunningScheduleEntryFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    private var childFragmentManagerWasNotEmpty = false
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("childFragmentManagerWasEmpty", childFragmentManager.fragments.isEmpty())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (savedInstanceState != null) {
+            childFragmentManagerWasNotEmpty = savedInstanceState.getBoolean("childFragmentManagerWasEmpty")
+        }
         // in landscape mode this fragment should not be displayed alone
-        if (context?.let { isLandscapeMode(it) } == true && parentFragmentManager.findFragmentById(R.id.leftFragment) == null) {
+        if (context?.let { isLandscapeMode(it) } == true && parentFragmentManager.findFragmentById(R.id.leftFragment) == null && !childFragmentManagerWasNotEmpty) {
             findNavController().popBackStack()
         }
     }
