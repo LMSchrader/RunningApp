@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.location.Location
 import android.os.Looper
+import android.os.SystemClock
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
@@ -87,6 +88,7 @@ class RecordRunService: LifecycleService() {
     }
 
     private suspend fun recordRun() {
+        startTime = SystemClock.elapsedRealtimeNanos()
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
@@ -116,7 +118,11 @@ class RecordRunService: LifecycleService() {
                                 apply()
                             }
                         } else {
-                            startTime = location.elapsedRealtimeNanos
+                            if ((startTime as Long) < location.elapsedRealtimeNanos) {
+                                startTime = location.elapsedRealtimeNanos
+                            } else {
+                                continue
+                            }
                         }
                         lastLocation = location
                     }
