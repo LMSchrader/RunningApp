@@ -15,7 +15,7 @@
     <string name="restDay">Today is a rest day!</string>
     <string name="runningDay">Today is a running day!</string>
     <string name="kilometers_run">%1$s kilometers run so far</string>
-    <string name="running_days_kept">You have followed your running plan %1$s times in a row!</string>
+    <string name="running_days_kept">You have followed your running plan %1$s times!</string>
 
     <!-- running schedule-->
     <string name="addRunningSchedule">Add running schedule entry</string>

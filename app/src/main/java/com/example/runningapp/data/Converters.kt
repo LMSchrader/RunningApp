@@ -41,7 +41,7 @@ class Converters {
     }
 
     @TypeConverter
-    fun floatListToString(someObjects: List<Float?>?): String? {
-        return gson.toJson(someObjects)
+    fun floatListToString(list: List<Float?>?): String? {
+        return gson.toJson(list)
     }
 }
