@@ -106,10 +106,7 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
                 } else {
                     binding.currentPace.text = getString(R.string.value_empty)
                 }
-            //} else {
-            //    binding.currentPace.text = getString(R.string.value_empty)
-            //}
-//
+
             run.paceValues.removeAll(listOf(null))
             if (run.paceValues.isNotEmpty()) {
                 val average = (run.paceValues as List<Float>).average()

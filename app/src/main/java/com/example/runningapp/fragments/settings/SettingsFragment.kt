@@ -14,18 +14,19 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     override fun onResume() {
         super.onResume()
-        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onPause() {
         super.onPause()
-        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key == "notifications") {
-            val enableNotifications = PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("notifications", true)
-            if(enableNotifications) {
+            val enableNotifications =
+                context?.let { PreferenceManager.getDefaultSharedPreferences(it).getBoolean("notifications", true) }
+            if(enableNotifications == true) {
                 context?.let { RunningNotificationWorker.runAt(it) }
             } else {
                 context?.let { RunningNotificationWorker.cancel(it) }

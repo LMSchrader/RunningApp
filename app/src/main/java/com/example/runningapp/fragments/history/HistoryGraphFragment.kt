@@ -8,8 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.runningapp.AppApplication
 import com.example.runningapp.R
-
 import com.example.runningapp.databinding.FragmentHistoryGraphBinding
+import com.example.runningapp.util.LineChartUtil.StaticFunctions.configureLineChart
+import com.example.runningapp.util.LineChartUtil.StaticFunctions.lineWidth
 import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
 import com.github.mikephil.charting.charts.LineChart
@@ -19,7 +20,7 @@ import com.github.mikephil.charting.data.LineDataSet
 
 class HistoryGraphFragment : Fragment() {
 
-    private val historyViewModel: HistoryViewModel by activityViewModels{
+    private val historyViewModel: HistoryViewModel by activityViewModels {
         HistoryViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
     private var _binding: FragmentHistoryGraphBinding? = null
@@ -39,16 +40,14 @@ class HistoryGraphFragment : Fragment() {
 
         chart = binding.lineChart
 
-        chart.description.isEnabled = true
-
-        chart.setDrawGridBackground(false)
+        context?.let { configureLineChart(chart, it) }
 
         historyViewModel.currentRunHistoryEntry.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
-                    val timeList = currentRunHistoryEntry?.timeValues
-                    val paceList = currentRunHistoryEntry?.paceValues
-                    val altitudeList = currentRunHistoryEntry?.altitudeValues
-                    val paceTimeSeries: MutableList<Entry> = mutableListOf()
-                    val altitudeTimeSeries: MutableList<Entry> = mutableListOf()
+            val timeList = currentRunHistoryEntry?.timeValues
+            val paceList = currentRunHistoryEntry?.paceValues
+            val altitudeList = currentRunHistoryEntry?.altitudeValues
+            val paceTimeSeries: MutableList<Entry> = mutableListOf()
+            val altitudeTimeSeries: MutableList<Entry> = mutableListOf()
             if (timeList != null) {
                 for (i in timeList.indices) {
                     paceList?.get(i)?.let { Entry(timeList[i], it) }?.let { paceTimeSeries.add(it) }
@@ -59,17 +58,27 @@ class HistoryGraphFragment : Fragment() {
                     }
                 }
             }
-                    chart.data = LineData(
-                        LineDataSet(
-                            paceTimeSeries,
-                            root.context.resources.getString(R.string.pace_label)
-                        ),
-                        LineDataSet(
-                            altitudeTimeSeries,
-                            root.context.resources.getString(R.string.altitude_label)
-                        )
-                    )
-                    chart.animateX(500)
+
+            val pace = LineDataSet(
+                paceTimeSeries,
+                root.context.resources.getString(R.string.pace_label)
+            )
+            pace.lineWidth = lineWidth
+
+            val altitude = LineDataSet(
+                altitudeTimeSeries,
+                root.context.resources.getString(R.string.altitude_label)
+            )
+            altitude.color = R.color.purple_200
+            altitude.setCircleColor(R.color.purple_200)
+            altitude.lineWidth = lineWidth
+
+            chart.data = LineData(
+                pace,
+                altitude
+            )
+            chart.data.setDrawValues(false)
+            chart.animateX(500)
         }
 
         return root
