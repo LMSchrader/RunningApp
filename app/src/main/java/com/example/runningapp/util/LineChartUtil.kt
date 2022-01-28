@@ -41,6 +41,9 @@ class LineChartUtil {
             chart.description.isEnabled = false
 
             chart.setDrawGridBackground(false)
+            chart.xAxis.setDrawGridLines(true)
+            chart.axisLeft.setDrawGridLines(true)
+            chart.axisRight.setDrawGridLines(false)
 
             configureLineChartIfDarkMode(chart, context)
 
