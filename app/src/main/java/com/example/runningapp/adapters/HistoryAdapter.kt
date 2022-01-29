@@ -57,8 +57,8 @@ class HistoryAdapter(
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        val TS_DATE_PATTERN = "yyyy-MM-dd' 'HH:mm:ss"
-        val formatter = DateTimeFormatter.ofPattern(TS_DATE_PATTERN)
+        val datePattern = "yyyy-MM-dd' 'HH:mm:ss"
+        val formatter = DateTimeFormatter.ofPattern(datePattern)
 
         viewHolder.dateTime.text = data[position].date.format(formatter).toString()
 
