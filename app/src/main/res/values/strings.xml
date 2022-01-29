@@ -59,6 +59,7 @@
     <string name="delete">Delete</string>
     <string name="continue_text">Continue</string>
     <string name="ok">OK</string>
+    <string name="undo">Undo</string>
 
     <!-- alert -->
     <string name="location_permission_required">Runs cannot be recorded without precise location permission</string>

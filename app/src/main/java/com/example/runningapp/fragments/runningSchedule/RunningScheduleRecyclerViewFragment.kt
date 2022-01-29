@@ -16,6 +16,9 @@ import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMo
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import androidx.recyclerview.widget.ItemTouchHelper
+import com.example.runningapp.data.RunningScheduleEntry
 
 class RunningScheduleRecyclerViewFragment : Fragment() {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
@@ -37,6 +40,8 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
         _binding = FragmentRecyclerViewBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+
+        // add recycler view adapter
         layoutManager = LinearLayoutManager(context)
         binding.recyclerView.layoutManager = layoutManager
 
@@ -60,7 +65,20 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
 
-        // floating action button animation
+        addOnSwipedCallback()
+
+        animateFloatingActionButtonWhenScrollingRecyclerView()
+
+
+        return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun animateFloatingActionButtonWhenScrollingRecyclerView() {
         if (!context?.let { isLandscapeMode(it) }!!) {
             val recyclerView: RecyclerView = binding.recyclerView
             val fab: FloatingActionButton =
@@ -84,13 +102,36 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
                 }
             })
         }
-
-
-        return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    /**
+     * Delete recycler view items when swiping to the right
+     */
+    private fun addOnSwipedCallback() {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val deletedItem: RunningScheduleEntry =
+                    viewModel.entries.value?.get(viewHolder.adapterPosition) ?: return
+
+                viewModel.delete(deletedItem)
+
+                view?.let {
+                    Snackbar.make(it, deletedItem.title, Snackbar.LENGTH_LONG)
+                        .setAction(
+                            "Undo"
+                        ) {
+                            viewModel.insert(deletedItem)
+                        }
+                }?.show()
+            }
+        }).attachToRecyclerView(binding.recyclerView)
     }
 }
