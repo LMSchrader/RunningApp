@@ -26,11 +26,10 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
     }
 
     private var _binding: FragmentRecyclerViewBinding? = null
+    private val binding get() = _binding!!
 
-    private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter: RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>? = null
 
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,8 +41,7 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
 
 
         // add recycler view adapter
-        layoutManager = LinearLayoutManager(context)
-        binding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
 
         adapter = context?.let {
             RunningScheduleAdapter(viewModel.entries, { position ->
