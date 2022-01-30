@@ -5,8 +5,10 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_foreground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?android:itemBackground">
 
         <TextView
             android:id="@+id/title"
@@ -14,40 +16,40 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="16dp"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/startDate"
+            style="@style/Theme.RunningApp.FadedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            style="@style/Theme.RunningApp.FadedText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
         <TextView
             android:id="@+id/to"
+            style="@style/Theme.RunningApp.FadedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginTop="8dp"
             android:text="@string/to_short"
-            style="@style/Theme.RunningApp.FadedText"
             app:layout_constraintStart_toEndOf="@id/startDate"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
         <TextView
             android:id="@+id/endDate"
+            style="@style/Theme.RunningApp.FadedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginTop="8dp"
-            style="@style/Theme.RunningApp.FadedText"
             app:layout_constraintStart_toEndOf="@id/to"
             app:layout_constraintTop_toBottomOf="@id/title" />
 

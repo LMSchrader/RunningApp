@@ -32,6 +32,8 @@ class RunningScheduleAdapter(
      */
     class ViewHolder(view: View, private val onClickListener: (position: Int?) -> Unit) :
         RecyclerView.ViewHolder(view) {
+        var viewForeground: View = view.findViewById(R.id.view_foreground)
+
         val context: Context = view.context
 
         val title: TextView = view.findViewById(R.id.title)

@@ -4,23 +4,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.runningapp.R
 import com.example.runningapp.AppApplication
+import com.example.runningapp.R
 import com.example.runningapp.adapters.RunningScheduleAdapter
+import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.databinding.FragmentRecyclerViewBinding
 import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
+import com.example.runningapp.util.RecyclerViewItemTouchHelper
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import androidx.recyclerview.widget.ItemTouchHelper
-import com.example.runningapp.data.RunningScheduleEntry
+import androidx.recyclerview.widget.DividerItemDecoration
 
-class RunningScheduleRecyclerViewFragment : Fragment() {
+class RunningScheduleRecyclerViewFragment : Fragment(),
+    RecyclerViewItemTouchHelper.RecyclerItemTouchHelperListener {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
         RunningScheduleViewModelFactory((activity?.application as AppApplication).runningScheduleRepository)
     }
@@ -63,7 +67,19 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
 
-        addOnSwipedCallback()
+        binding.recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+
+        // swipe to delete items in portrait mode
+        if(!context?.let { isLandscapeMode(it) }!!) {
+            val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
+                RecyclerViewItemTouchHelper(0, ItemTouchHelper.LEFT, this)
+            ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.recyclerView)
+        }
 
         animateFloatingActionButtonWhenScrollingRecyclerView()
 
@@ -103,33 +119,25 @@ class RunningScheduleRecyclerViewFragment : Fragment() {
     }
 
     /**
-     * Delete recycler view items when swiping to the right
+     * callback when recycler view is swiped
+     * Delete recycler view item on swiped
+     * undo option in snackbar
      */
-    private fun addOnSwipedCallback() {
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int, position: Int) {
+        if (viewHolder is RunningScheduleAdapter.ViewHolder) {
+            val deletedItem: RunningScheduleEntry =
+                viewModel.entries.value?.get(viewHolder.adapterPosition) ?: return
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val deletedItem: RunningScheduleEntry =
-                    viewModel.entries.value?.get(viewHolder.adapterPosition) ?: return
+            viewModel.delete(deletedItem)
 
-                viewModel.delete(deletedItem)
-
-                view?.let {
-                    Snackbar.make(it, deletedItem.title, Snackbar.LENGTH_LONG)
-                        .setAction(
-                            "Undo"
-                        ) {
-                            viewModel.insert(deletedItem)
-                        }
-                }?.show()
-            }
-        }).attachToRecyclerView(binding.recyclerView)
+            view?.let {
+                Snackbar.make(it, deletedItem.title, Snackbar.LENGTH_LONG)
+                    .setAction(
+                        "Undo"
+                    ) {
+                        viewModel.insert(deletedItem)
+                    }
+            }?.show()
+        }
     }
 }
