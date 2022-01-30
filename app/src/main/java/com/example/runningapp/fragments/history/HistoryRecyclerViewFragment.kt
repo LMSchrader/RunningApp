@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,14 +14,16 @@ import com.example.runningapp.AppApplication
 import com.example.runningapp.adapters.HistoryAdapter
 import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.databinding.FragmentRecyclerViewBinding
+import com.example.runningapp.util.RecyclerViewItemTouchHelper
 import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import java.time.format.DateTimeFormatter
 
-class HistoryRecyclerViewFragment : Fragment() {
+class HistoryRecyclerViewFragment : Fragment(),
+    RecyclerViewItemTouchHelper.RecyclerItemTouchHelperListener {
 
-    private val historyViewModel: HistoryViewModel by activityViewModels{
+    private val historyViewModel: HistoryViewModel by activityViewModels {
         HistoryViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
     private var _binding: FragmentRecyclerViewBinding? = null
@@ -45,19 +48,29 @@ class HistoryRecyclerViewFragment : Fragment() {
         binding.recyclerView.layoutManager = layoutManager
 
         adapter = HistoryAdapter(historyViewModel.runHistoryEntries,
-            {position ->  historyViewModel.currentRunHistoryEntry.value = position?.let { it ->
-                historyViewModel.runHistoryEntries.value?.get(
-                    it
-                )
-            }
-                if(!historyViewModel.isInSplitScreenMode) {
+            { position ->
+                historyViewModel.currentRunHistoryEntry.value = position?.let { it ->
+                    historyViewModel.runHistoryEntries.value?.get(
+                        it
+                    )
+                }
+                if (!historyViewModel.isInSplitScreenMode) {
                     (parentFragment as HistoryFragment).doForwardTransition()
                 }
-            }
-            , viewLifecycleOwner)
+            }, viewLifecycleOwner)
         binding.recyclerView.adapter = adapter
 
-        addOnSwipedCallback()
+        binding.recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+
+        // swipe to delete items
+        val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
+            RecyclerViewItemTouchHelper(0, ItemTouchHelper.LEFT, this)
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.recyclerView)
 
         return root
     }
@@ -68,37 +81,30 @@ class HistoryRecyclerViewFragment : Fragment() {
     }
 
     /**
-     * Delete recycler view items when swiping to the right
+     * callback when recycler view is swiped
+     * Delete recycler view item on swiped
+     * undo option in snackbar
      */
-    private fun addOnSwipedCallback() {
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int, position: Int) {
+        if (viewHolder is HistoryAdapter.ViewHolder) {
+            val deletedItem: RunHistoryEntry =
+                historyViewModel.runHistoryEntries.value?.get(viewHolder.adapterPosition)
+                    ?: return
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val deletedItem: RunHistoryEntry =
-                    historyViewModel.runHistoryEntries.value?.get(viewHolder.adapterPosition) ?: return
+            historyViewModel.delete(deletedItem)
 
-                historyViewModel.delete(deletedItem)
+            val datePattern = "yyyy-MM-dd' 'HH:mm:ss"
+            val formatter = DateTimeFormatter.ofPattern(datePattern)
+            val date = deletedItem.date.format(formatter).toString()
 
-                val datePattern = "yyyy-MM-dd' 'HH:mm:ss"
-                val formatter = DateTimeFormatter.ofPattern(datePattern)
-                val date = deletedItem.date.format(formatter).toString()
-
-                view?.let {
-                    Snackbar.make(it, date, Snackbar.LENGTH_LONG)
-                        .setAction(
-                            "Undo"
-                        ) {
-                            historyViewModel.insert(deletedItem)
-                        }
-                }?.show()
-            }
-        }).attachToRecyclerView(binding.recyclerView)
+            view?.let {
+                Snackbar.make(it, date, Snackbar.LENGTH_LONG)
+                    .setAction(
+                        "Undo"
+                    ) {
+                        historyViewModel.insert(deletedItem)
+                    }
+            }?.show()
+        }
     }
 }

@@ -4,7 +4,6 @@ import android.graphics.Canvas
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
-import com.example.runningapp.adapters.RunningScheduleAdapter
 
 class RecyclerViewItemTouchHelper(
     dragDirs: Int,
@@ -27,9 +26,7 @@ class RecyclerViewItemTouchHelper(
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         if (viewHolder != null) {
-            val foregroundView: View =
-                (viewHolder as RunningScheduleAdapter.ViewHolder).viewForeground
-            getDefaultUIUtil().onSelected(foregroundView)
+            getDefaultUIUtil().onSelected(getForegroundView(viewHolder))
         }
     }
 
@@ -42,16 +39,14 @@ class RecyclerViewItemTouchHelper(
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-        val foregroundView: View = (viewHolder as RunningScheduleAdapter.ViewHolder).viewForeground
         getDefaultUIUtil().onDrawOver(
-            c, recyclerView, foregroundView, dX, dY,
+            c, recyclerView, viewHolder?.let { getForegroundView(it) }, dX, dY,
             actionState, isCurrentlyActive
         )
     }
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
-        val foregroundView: View = (viewHolder as RunningScheduleAdapter.ViewHolder).viewForeground
-        getDefaultUIUtil().clearView(foregroundView)
+        getDefaultUIUtil().clearView(getForegroundView(viewHolder))
     }
 
     override fun onChildDraw(
@@ -63,14 +58,21 @@ class RecyclerViewItemTouchHelper(
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-        val foregroundView: View = (viewHolder as RunningScheduleAdapter.ViewHolder).viewForeground
         getDefaultUIUtil().onDraw(
-            c, recyclerView, foregroundView, dX, dY,
+            c, recyclerView, getForegroundView(viewHolder), dX, dY,
             actionState, isCurrentlyActive
         )
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         listener.onSwiped(viewHolder, direction, viewHolder.adapterPosition)
+    }
+
+    private fun getForegroundView(viewHolder: RecyclerView.ViewHolder): View {
+        try {
+            return (viewHolder as SwipableViewHolder).viewForeground
+        } catch (e: ClassCastException) {
+            throw ClassCastException(("$viewHolder must be SwipableViewHolder"))
+        }
     }
 }

@@ -12,7 +12,6 @@ import com.example.runningapp.databinding.FragmentRunningScheduleEntryBinding
 import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
-import kotlin.properties.Delegates
 
 class RunningScheduleEntryFragment : Fragment() {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
