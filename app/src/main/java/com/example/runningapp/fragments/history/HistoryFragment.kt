@@ -79,8 +79,8 @@ class HistoryFragment : Fragment() {
         childFragmentManager.commit {
             setReorderingAllowed(true)
             replace<HistoryRecyclerViewFragment>(R.id.recycler_view_fragment_container)
-            //replace<HistoryViewPager2Fragment>(R.id.graph_fragment_container)
-            replace<HistoryMapFragment>(R.id.graph_fragment_container)
+            replace<HistoryViewPager2Fragment>(R.id.graph_fragment_container)
+            //replace<HistoryMapFragment>(R.id.graph_fragment_container)
             //replace<HistoryGraphFragment>(R.id.graph_fragment_container)
         }
         historyViewModel.isInSplitScreenMode = true

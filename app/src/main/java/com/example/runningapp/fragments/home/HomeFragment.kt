@@ -48,14 +48,8 @@ class HomeFragment : Fragment() {
 
         binding.pager.adapter = HomeAdapter(viewModel.entries, viewLifecycleOwner)
 
-        val tabLayoutMediator = binding.tabLayout?.let {
-            TabLayoutMediator(
-                it, binding.pager, true
-            ) { tab, position -> }
-        }
-        if (tabLayoutMediator != null) {
-            tabLayoutMediator.attach()
-        }
+        val tabLayoutMediator = TabLayoutMediator(binding.tabLayout, binding.pager, true)
+        { tab, position -> }.attach()
 
         return binding.root
     }

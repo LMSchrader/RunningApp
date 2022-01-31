@@ -1,5 +1,6 @@
 package com.example.runningapp.fragments.history
 
+import android.opengl.ETC1
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +17,8 @@ import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPolylineAnnotationManager
 import com.example.runningapp.data.RunHistoryEntry
-import com.mapbox.maps.plugin.annotation.AnnotationPlugin
 import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationManager
+import android.view.MotionEvent
 
 
 class HistoryMapFragment : Fragment() {
@@ -42,6 +43,19 @@ class HistoryMapFragment : Fragment() {
         val root: View = binding.root
 
         mapView = binding.mapView
+        var intercepMove = false
+        mapView.setOnTouchListener { view, motionEvent ->
+            // Disallow the touch request for recyclerView scroll
+            when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN ->            // See if we touch the screen borders
+                    intercepMove =
+                        100 * motionEvent.x > 5 * view.width && 100 * motionEvent.x < 95 * view.width
+                MotionEvent.ACTION_MOVE -> if (intercepMove &&  view.parent != null) {
+                view.parent.requestDisallowInterceptTouchEvent(true)
+                }
+            }
+            false
+        }
         mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
 
         polylineAnnotationManager = mapView.annotations.createPolylineAnnotationManager()
