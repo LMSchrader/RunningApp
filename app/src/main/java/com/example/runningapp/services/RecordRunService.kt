@@ -106,6 +106,8 @@ class RecordRunService: LifecycleService() {
                                         .toFloat()
                                 )
                             }
+                            run.longitudeValues.add(location.longitude)
+                            run.latitudeValues.add(location.latitude)
 
                             // update kilometers run counter
                             with(sharedPref.edit()) {

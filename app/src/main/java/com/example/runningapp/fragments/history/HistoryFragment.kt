@@ -7,10 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
+import androidx.fragment.app.*
 import com.example.runningapp.AppApplication
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentHistoryBinding
@@ -81,8 +78,10 @@ class HistoryFragment : Fragment() {
         TransitionManager.go(forwardScene, null)
         childFragmentManager.commit {
             setReorderingAllowed(true)
-            add<HistoryRecyclerViewFragment>(R.id.recycler_view_fragment_container)
-            add<HistoryGraphFragment>(R.id.graph_fragment_container)
+            replace<HistoryRecyclerViewFragment>(R.id.recycler_view_fragment_container)
+            //replace<HistoryViewPager2Fragment>(R.id.graph_fragment_container)
+            replace<HistoryMapFragment>(R.id.graph_fragment_container)
+            //replace<HistoryGraphFragment>(R.id.graph_fragment_container)
         }
         historyViewModel.isInSplitScreenMode = true
         callback.isEnabled = true
@@ -92,7 +91,7 @@ class HistoryFragment : Fragment() {
         TransitionManager.go(backwardScene, null)
         childFragmentManager.commit {
             setReorderingAllowed(true)
-            add<HistoryRecyclerViewFragment>(R.id.recycler_view_fragment_container)
+            replace<HistoryRecyclerViewFragment>(R.id.recycler_view_fragment_container)
         }
         historyViewModel.isInSplitScreenMode = false
     }

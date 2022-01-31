@@ -89,4 +89,7 @@ dependencies {
 
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
 
+    // mapbox (maps)
+    implementation 'com.mapbox.maps:android:10.2.0'
+
 }

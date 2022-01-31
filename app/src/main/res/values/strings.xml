@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">RunningApp</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -86,4 +86,8 @@
     <string name="last_running_day_preferences" translatable="false">last running day</string>
     <string name="running_days_kept_preferences" translatable="false">running days kept</string>
     <string name="kilometers_run_preferences" translatable="false">kilometers run</string>
+
+
+    <!-- public mapbox access token -->
+    <string name="mapbox_access_token" translatable="false" tools:ignore="Typos">pk.eyJ1IjoidW9sYW5kcm9pZGxhdWZhcHAiLCJhIjoiY2t5d3k4NTVzMDUwYzJxbXZzeWp3dWhkOCJ9.fZnP3Wx3tzXk7mtiCL_BUA</string>
 </resources>

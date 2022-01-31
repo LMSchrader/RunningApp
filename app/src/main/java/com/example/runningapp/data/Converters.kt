@@ -44,4 +44,18 @@ class Converters {
     fun floatListToString(list: List<Float?>?): String? {
         return gson.toJson(list)
     }
+
+    @TypeConverter
+    fun doubleToFloatList(data: String?): List<Double?>? {
+        if (data == null) {
+            return Collections.emptyList()
+        }
+        val listType: Type = object : TypeToken<List<Double?>?>() {}.type
+        return gson.fromJson(data, listType)
+    }
+
+    @TypeConverter
+    fun doubleListToString(list: List<Double?>?): String? {
+        return gson.toJson(list)
+    }
 }
