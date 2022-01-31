@@ -13,6 +13,7 @@ import com.example.runningapp.adapters.HomeAdapter
 import com.example.runningapp.databinding.FragmentHomeBinding
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
+import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment() {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
@@ -46,6 +47,15 @@ class HomeFragment : Fragment() {
         }
 
         binding.pager.adapter = HomeAdapter(viewModel.entries, viewLifecycleOwner)
+
+        val tabLayoutMediator = binding.tabLayout?.let {
+            TabLayoutMediator(
+                it, binding.pager, true
+            ) { tab, position -> }
+        }
+        if (tabLayoutMediator != null) {
+            tabLayoutMediator.attach()
+        }
 
         return binding.root
     }

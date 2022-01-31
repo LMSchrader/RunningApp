@@ -60,5 +60,18 @@
 
     </androidx.viewpager2.widget.ViewPager2>
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:background="#00FFFFFF"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabIndicatorGravity="center"
+        app:tabIndicatorHeight="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pager"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
