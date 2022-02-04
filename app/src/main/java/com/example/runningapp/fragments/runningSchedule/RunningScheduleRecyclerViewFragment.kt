@@ -133,7 +133,7 @@ class RunningScheduleRecyclerViewFragment : Fragment(),
             view?.let {
                 Snackbar.make(it, deletedItem.title, Snackbar.LENGTH_LONG)
                     .setAction(
-                        "Undo"
+                        getString(R.string.undo)
                     ) {
                         viewModel.insert(deletedItem)
                     }

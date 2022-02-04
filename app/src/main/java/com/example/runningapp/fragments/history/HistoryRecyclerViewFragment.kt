@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.AppApplication
+import com.example.runningapp.R
 import com.example.runningapp.adapters.HistoryAdapter
 import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.databinding.FragmentRecyclerViewBinding
@@ -100,7 +101,7 @@ class HistoryRecyclerViewFragment : Fragment(),
             view?.let {
                 Snackbar.make(it, date, Snackbar.LENGTH_LONG)
                     .setAction(
-                        "Undo"
+                        getString(R.string.undo)
                     ) {
                         historyViewModel.insert(deletedItem)
                     }
