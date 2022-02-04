@@ -1,6 +1,5 @@
 package com.example.runningapp.fragments.history
 
-import android.opengl.ETC1
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,14 +42,14 @@ class HistoryMapFragment : Fragment() {
         val root: View = binding.root
 
         mapView = binding.mapView
-        var intercepMove = false
+        var interceptMove = false
         mapView.setOnTouchListener { view, motionEvent ->
             // Disallow the touch request for recyclerView scroll
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN ->            // See if we touch the screen borders
-                    intercepMove =
+                    interceptMove =
                         100 * motionEvent.x > 5 * view.width && 100 * motionEvent.x < 95 * view.width
-                MotionEvent.ACTION_MOVE -> if (intercepMove &&  view.parent != null) {
+                MotionEvent.ACTION_MOVE -> if (interceptMove &&  view.parent != null) {
                 view.parent.requestDisallowInterceptTouchEvent(true)
                 }
             }
