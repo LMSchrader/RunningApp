@@ -4,13 +4,15 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.DatePicker
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.runningapp.R
 import com.example.runningapp.AppApplication
 import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBinding
-import com.example.runningapp.fragments.dialogs.CancelContinueDialogsFragment
+import com.example.runningapp.fragments.dialogs.CancelContinueDialogFragment
 import com.example.runningapp.fragments.dialogs.DatePickerFragment
 import com.example.runningapp.util.KeyboardUtil
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
@@ -19,24 +21,23 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDate
 
-class EditRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+class EditRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetListener,
+    CancelContinueDialogFragment.CancelContinueDialogListener {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
         RunningScheduleViewModelFactory((activity?.application as AppApplication).runningScheduleRepository)
     }
 
-    private var dialog: Int = 0
+    private var activeDialog: Int = 0
+    private var leaveFragmentWithoutSaving: Boolean = false
 
     private var _binding: FragmentEditRunningScheduleEntryBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState != null) {
             with(savedInstanceState) {
-                dialog = getInt("DatePickerFragment")
+                activeDialog = getInt("DatePickerFragment")
             }
         }
     }
@@ -71,16 +72,34 @@ class EditRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetL
         setHasOptionsMenu(true)
 
         binding.editStartingDate.setOnClickListener {
-            dialog = 1
+            activeDialog = 1
             val datePickerFragment = DatePickerFragment()
             datePickerFragment.show(childFragmentManager, DatePickerFragment.TAG)
         }
 
         binding.editEndDate.setOnClickListener {
-            dialog = 2
+            activeDialog = 2
             val datePickerFragment = DatePickerFragment()
             datePickerFragment.show(childFragmentManager, DatePickerFragment.TAG)
         }
+
+        activity?.onBackPressedDispatcher?.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val editedEntry = buildRunningScheduleEntryObject()
+
+                    if (viewModel.currentEntry.value?.equals(editedEntry) == false && !leaveFragmentWithoutSaving) {
+                        val dialog =
+                            CancelContinueDialogFragment.getInstance(getString(R.string.data_loss))
+                        dialog.show(childFragmentManager, CancelContinueDialogFragment.TAG)
+                    } else {
+                        isEnabled = false
+                        activity?.onBackPressed()
+                    }
+
+                }
+            })
 
         return binding.root
     }
@@ -103,12 +122,7 @@ class EditRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetL
 
         return when (item.itemId) {
             android.R.id.home -> {
-                if (viewModel.currentEntry.value?.equals(editedEntry) == false) {
-                    val dialog = CancelContinueDialogsFragment.getInstance(getString(R.string.data_loss))
-                    dialog.show(childFragmentManager, CancelContinueDialogsFragment.TAG)
-                } else {
-                    activity?.onBackPressed()
-                }
+                activity?.onBackPressed()
                 true
             }
 
@@ -141,7 +155,8 @@ class EditRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetL
         val startDate = LocalDate.parse(binding.editStartingDate.text)
         val endDate = LocalDate.parse(binding.editEndDate.text)
 
-        val editedEntry = RunningScheduleEntry(binding.editTitle.text.toString(), startDate, endDate)
+        val editedEntry =
+            RunningScheduleEntry(binding.editTitle.text.toString(), startDate, endDate)
 
         viewModel.currentEntry.value?.getId()?.let { editedEntry.setId(it) }
         editedEntry.description = binding.editDescription.text.toString()
@@ -159,17 +174,22 @@ class EditRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetL
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val date = LocalDate.of(year, month + 1, dayOfMonth)
 
-        if (dialog == 1) {
+        if (activeDialog == 1) {
             binding.editStartingDate.text = date.toString()
-        } else if (dialog == 2) {
+        } else if (activeDialog == 2) {
             binding.editEndDate.text = date.toString()
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.run {
-            putInt("DatePickerFragment", dialog)
+            putInt("DatePickerFragment", activeDialog)
         }
         super.onSaveInstanceState(outState)
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        this.leaveFragmentWithoutSaving = true
+        activity?.onBackPressed()
     }
 }
