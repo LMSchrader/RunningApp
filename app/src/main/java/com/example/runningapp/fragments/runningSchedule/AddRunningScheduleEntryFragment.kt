@@ -137,6 +137,7 @@ class AddRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetLi
                     }
                     else -> {
                         viewModel.insert(entry)
+                        leaveFragmentWithoutSaving = true
                         activity?.onBackPressed()
                     }
                 }

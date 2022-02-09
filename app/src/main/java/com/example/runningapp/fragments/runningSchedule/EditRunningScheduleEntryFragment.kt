@@ -142,6 +142,7 @@ class EditRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetL
                     }
                     else -> {
                         viewModel.update(editedEntry)
+                        leaveFragmentWithoutSaving = true
                         activity?.onBackPressed()
                     }
                 }
