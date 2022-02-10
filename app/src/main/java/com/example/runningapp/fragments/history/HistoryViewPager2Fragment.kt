@@ -8,6 +8,8 @@ import com.example.runningapp.AppApplication
 import com.example.runningapp.R
 import com.example.runningapp.adapters.HistoryFragmentStateAdapter
 import com.example.runningapp.databinding.FragmentHistoryViewPager2Binding
+import com.example.runningapp.fragments.dialogs.CancelContinueDialogFragment
+import com.example.runningapp.util.DateUtil.StaticFunctions.formatDate
 import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
 import com.google.android.material.tabs.TabLayoutMediator
@@ -47,7 +49,7 @@ class HistoryViewPager2Fragment : Fragment() {
             return when (item.itemId) {
 
                 R.id.imageDelete -> {
-                    historyViewModel.currentRunHistoryEntry.value?.let { historyViewModel.delete(it) }
+                    showDeleteDialog()
                     true
                 }
 
@@ -58,5 +60,16 @@ class HistoryViewPager2Fragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showDeleteDialog() {
+        val dialog =
+            CancelContinueDialogFragment.getInstance(getString(R.string.delete_item,
+                historyViewModel.currentRunHistoryEntry.value?.date?.let {
+                    formatDate(
+                        it
+                    )
+                }))
+        dialog.show(parentFragmentManager, CancelContinueDialogFragment.TAG)
     }
 }

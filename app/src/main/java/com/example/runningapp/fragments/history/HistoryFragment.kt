@@ -11,10 +11,11 @@ import androidx.fragment.app.*
 import com.example.runningapp.AppApplication
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentHistoryBinding
+import com.example.runningapp.fragments.dialogs.CancelContinueDialogFragment
 import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
 
-class HistoryFragment : Fragment() {
+class HistoryFragment : Fragment(), CancelContinueDialogFragment.CancelContinueDialogListener {
     private val historyViewModel: HistoryViewModel by activityViewModels {
         HistoryViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
@@ -91,5 +92,9 @@ class HistoryFragment : Fragment() {
             remove(childFragmentManager.findFragmentById(R.id.graph_fragment_container)!!)
         }
         historyViewModel.isInSplitScreenMode = false
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        historyViewModel.currentRunHistoryEntry.value?.let { historyViewModel.delete(it) }
     }
 }

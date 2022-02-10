@@ -2,6 +2,7 @@ package com.example.runningapp.fragments.runningSchedule
 
 import android.os.Bundle
 import android.view.*
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
@@ -9,11 +10,12 @@ import androidx.navigation.fragment.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.AppApplication
 import com.example.runningapp.databinding.FragmentRunningScheduleEntryBinding
+import com.example.runningapp.fragments.dialogs.CancelContinueDialogFragment
 import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
 
-class RunningScheduleEntryFragment : Fragment() {
+class RunningScheduleEntryFragment : Fragment(), CancelContinueDialogFragment.CancelContinueDialogListener {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
         RunningScheduleViewModelFactory((activity?.application as AppApplication).runningScheduleRepository)
     }
@@ -106,13 +108,23 @@ class RunningScheduleEntryFragment : Fragment() {
                 }
 
                 R.id.imageDelete -> {
-                    viewModel.currentEntry.value?.let { viewModel.delete(it) }
-                    activity?.onBackPressed()
+                    showDeleteDialog()
                     true
                 }
 
                 else -> super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    private fun showDeleteDialog() {
+        val dialog =
+            CancelContinueDialogFragment.getInstance(getString(R.string.delete_item, viewModel.currentEntry.value?.title))
+        dialog.show(childFragmentManager, CancelContinueDialogFragment.TAG)
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        viewModel.currentEntry.value?.let { viewModel.delete(it) }
+        activity?.onBackPressed()
     }
 }

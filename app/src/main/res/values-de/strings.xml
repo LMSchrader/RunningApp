@@ -64,6 +64,7 @@
     <string name="location_permission_required">Ohne Berechtigung zum Zugriff auf den genauen Standort können keine Läufe aufgezeichnet werden</string>
     <string name="google_play_services_missing">Google Play Services sind auf deinem Gerät nicht installiert. Ohne diese können keine Läufe aufgezeichnet werden.</string>
     <string name="data_loss">Änderungen werden beim Verlassen nicht gespeichert. Wollen Sie fortfahren?</string>
+    <string name="delete_item">Soll %1$s gelöscht werden?</string>
     <string name="incorrect_date">Start Datum muss vor dem Enddatum liegen</string>
     <string name="incorrect_title">Titel muss gesetzt werden</string>
 
