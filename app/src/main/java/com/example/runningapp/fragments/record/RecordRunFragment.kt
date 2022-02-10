@@ -17,7 +17,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.fragment.app.*
 import com.example.runningapp.AppApplication
 import com.example.runningapp.data.RunHistoryEntry
-import com.example.runningapp.fragments.dialogs.CustomDialogFragment
+import com.example.runningapp.fragments.dialogs.ContinueDialogFragment
 import com.example.runningapp.fragments.dialogs.NoteDialogFragment
 import com.example.runningapp.services.RecordRunService
 import com.example.runningapp.viewmodels.RecordRunViewModel
@@ -33,7 +33,7 @@ import kotlin.math.pow
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
-class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener {
+class RecordRunFragment : Fragment(), ContinueDialogFragment.CustomDialogListener {
     private val recordRunViewModel: RecordRunViewModel by activityViewModels {
         RecordRunViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
@@ -45,7 +45,7 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
     private val binding get() = _binding!!
 
     private lateinit var sharedPref: SharedPreferences
-    private var prefListener: OnSharedPreferenceChangeListener = OnSharedPreferenceChangeListener { prefs, key ->
+    private var prefListener: OnSharedPreferenceChangeListener = OnSharedPreferenceChangeListener { _, key ->
         if (key == getString(R.string.service_active_preferences)) {
             val date = sharedPref.getString(getString(R.string.service_active_preferences), "")
 
@@ -243,8 +243,8 @@ class RecordRunFragment : Fragment(), CustomDialogFragment.CustomDialogListener 
      * Opens a dialog, that explains why the permissions are needed and asks for the permissions afterwards.
      */
     private fun showPermissionDialog() {
-        val dialog = CustomDialogFragment.getInstance(getString(R.string.location_permission_required))
-        dialog.show(childFragmentManager, CustomDialogFragment.TAG)
+        val dialog = ContinueDialogFragment.getInstance(getString(R.string.location_permission_required))
+        dialog.show(childFragmentManager, ContinueDialogFragment.TAG)
     }
 
     private fun showMissingGooglePlayServicesDialog() {

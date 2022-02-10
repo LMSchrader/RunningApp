@@ -27,7 +27,7 @@ class EditRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetL
         RunningScheduleViewModelFactory((activity?.application as AppApplication).runningScheduleRepository)
     }
 
-    private var activeDialog: Int = 0
+    private var idOfActiveDatePickerDialog: Int = 0
     private var leaveFragmentWithoutSaving: Boolean = false
 
     private var _binding: FragmentEditRunningScheduleEntryBinding? = null
@@ -37,7 +37,7 @@ class EditRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetL
         super.onCreate(savedInstanceState)
         if (savedInstanceState != null) {
             with(savedInstanceState) {
-                activeDialog = getInt("DatePickerFragment")
+                idOfActiveDatePickerDialog = getInt("DatePickerFragment")
             }
         }
     }
@@ -72,13 +72,13 @@ class EditRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetL
         setHasOptionsMenu(true)
 
         binding.editStartingDate.setOnClickListener {
-            activeDialog = 1
+            idOfActiveDatePickerDialog = 1
             val datePickerFragment = DatePickerFragment()
             datePickerFragment.show(childFragmentManager, DatePickerFragment.TAG)
         }
 
         binding.editEndDate.setOnClickListener {
-            activeDialog = 2
+            idOfActiveDatePickerDialog = 2
             val datePickerFragment = DatePickerFragment()
             datePickerFragment.show(childFragmentManager, DatePickerFragment.TAG)
         }
@@ -175,16 +175,16 @@ class EditRunningScheduleEntryFragment : Fragment(), DatePickerDialog.OnDateSetL
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val date = LocalDate.of(year, month + 1, dayOfMonth)
 
-        if (activeDialog == 1) {
+        if (idOfActiveDatePickerDialog == 1) {
             binding.editStartingDate.text = date.toString()
-        } else if (activeDialog == 2) {
+        } else if (idOfActiveDatePickerDialog == 2) {
             binding.editEndDate.text = date.toString()
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.run {
-            putInt("DatePickerFragment", activeDialog)
+            putInt("DatePickerFragment", idOfActiveDatePickerDialog)
         }
         super.onSaveInstanceState(outState)
     }

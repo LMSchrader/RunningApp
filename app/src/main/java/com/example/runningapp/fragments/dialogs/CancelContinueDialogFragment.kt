@@ -47,7 +47,7 @@ class CancelContinueDialogFragment : DialogFragment() {
                 listener.onDialogPositiveClick(
                     this
                 )
-            } //activity?.onBackPressed() }
+            }
             .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
             .create()
     }

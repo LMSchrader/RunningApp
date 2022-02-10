@@ -9,8 +9,8 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.R
 import com.example.runningapp.data.RunHistoryEntry
+import com.example.runningapp.util.DateUtil.StaticFunctions.formatDate
 import com.example.runningapp.util.SwipableViewHolder
-import java.time.format.DateTimeFormatter
 
 class HistoryAdapter(
     runHistoryLiveData: LiveData<List<RunHistoryEntry>>,
@@ -55,14 +55,7 @@ class HistoryAdapter(
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
-        val datePattern = "yyyy-MM-dd' 'HH:mm:ss"
-        val formatter = DateTimeFormatter.ofPattern(datePattern)
-
-        viewHolder.dateTime.text = data[position].date.format(formatter).toString()
-
+        viewHolder.dateTime.text = formatDate(data[position].date)
     }
 
     // Return the size of your dataset (invoked by the layout manager)

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.runningapp.R
 
-class CustomDialogFragment : DialogFragment() {
+class ContinueDialogFragment : DialogFragment() {
     private lateinit var text: String
     private lateinit var listener: CustomDialogListener
 
@@ -55,7 +55,7 @@ class CustomDialogFragment : DialogFragment() {
         const val TAG = "CustomDialogFragment"
 
         fun getInstance(text: String): DialogFragment {
-            val dialog = CustomDialogFragment()
+            val dialog = ContinueDialogFragment()
             dialog.text = text
 
             return dialog

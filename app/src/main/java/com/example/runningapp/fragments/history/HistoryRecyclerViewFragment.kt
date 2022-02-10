@@ -15,11 +15,11 @@ import com.example.runningapp.R
 import com.example.runningapp.adapters.HistoryAdapter
 import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.databinding.FragmentRecyclerViewBinding
+import com.example.runningapp.util.DateUtil.StaticFunctions.formatDate
 import com.example.runningapp.util.RecyclerViewItemTouchHelper
 import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
 import com.google.android.material.snackbar.Snackbar
-import java.time.format.DateTimeFormatter
 
 class HistoryRecyclerViewFragment : Fragment(),
     RecyclerViewItemTouchHelper.RecyclerItemTouchHelperListener {
@@ -94,12 +94,12 @@ class HistoryRecyclerViewFragment : Fragment(),
 
             historyViewModel.delete(deletedItem)
 
-            val datePattern = "yyyy-MM-dd' 'HH:mm:ss"
-            val formatter = DateTimeFormatter.ofPattern(datePattern)
-            val date = deletedItem.date.format(formatter).toString()
+            //val datePattern = "yyyy-MM-dd' 'HH:mm:ss"
+            //val formatter = DateTimeFormatter.ofPattern(datePattern)
+            //val date = deletedItem.date.format(formatter).toString()
 
             view?.let {
-                Snackbar.make(it, date, Snackbar.LENGTH_LONG)
+                Snackbar.make(it, formatDate(deletedItem.date), Snackbar.LENGTH_LONG)
                     .setAction(
                         getString(R.string.undo)
                     ) {
