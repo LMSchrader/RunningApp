@@ -7,7 +7,17 @@ import kotlinx.coroutines.launch
 
 class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel() {
 
-    val runHistoryEntries: LiveData<List<RunHistoryEntry>> = repository.runHistory.asLiveData()
+     val runHistoryEntries: LiveData<List<RunHistoryEntry>> = repository.runHistory.asLiveData()
+    //val runHistoryEntriesWithoutCurrentEntry: LiveData<List<RunHistoryEntry>> =
+    //    Transformations.map(repository.runHistory.asLiveData()) { test(it) }
+//
+    //private fun test(a: List<RunHistoryEntry>): List<RunHistoryEntry> {
+    //    return a.toMutableList().filter {
+    //        it.date != currentRunHistoryEntry.value?.date
+    //    }
+    //    //remove(currentRunHistoryEntry.value)
+    //    return a
+    //}
 
     val currentRunHistoryEntry: MutableLiveData<RunHistoryEntry?> =
         MutableLiveData(null)
