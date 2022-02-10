@@ -94,9 +94,9 @@ class HistoryRecyclerViewFragment : Fragment(),
 
             historyViewModel.delete(deletedItem)
 
-            //val datePattern = "yyyy-MM-dd' 'HH:mm:ss"
-            //val formatter = DateTimeFormatter.ofPattern(datePattern)
-            //val date = deletedItem.date.format(formatter).toString()
+            //if(adapter.viewHo) {
+            //    (parentFragment as HistoryFragment).doBackwardTransition()
+            //}
 
             view?.let {
                 Snackbar.make(it, formatDate(deletedItem.date), Snackbar.LENGTH_LONG)
