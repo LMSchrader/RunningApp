@@ -15,19 +15,16 @@ import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
 
 class HistoryFragment : Fragment() {
-
     private val historyViewModel: HistoryViewModel by activityViewModels {
         HistoryViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
     private var _binding: FragmentHistoryBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var forwardScene: Scene
     private lateinit var backwardScene: Scene
     private lateinit var callback: OnBackPressedCallback
 
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,13 +34,15 @@ class HistoryFragment : Fragment() {
                 add<HistoryRecyclerViewFragment>(R.id.recycler_view_fragment_container)
             }
         }
-        callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            doBackwardTransition()
-            callback.isEnabled = false
-        }
 
-        //historyViewModel.isInSplitScreenMode = false
-        //callback.isEnabled = false
+        callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (historyViewModel.isInSplitScreenMode) {
+                doBackwardTransition()
+            } else {
+                callback.isEnabled = false
+                activity?.onBackPressed()
+            }
+        }
     }
 
     override fun onCreateView(
@@ -80,11 +79,8 @@ class HistoryFragment : Fragment() {
             setReorderingAllowed(true)
             replace<HistoryRecyclerViewFragment>(R.id.recycler_view_fragment_container)
             replace<HistoryViewPager2Fragment>(R.id.graph_fragment_container)
-            //replace<HistoryMapFragment>(R.id.graph_fragment_container)
-            //replace<HistoryGraphFragment>(R.id.graph_fragment_container)
         }
         historyViewModel.isInSplitScreenMode = true
-        callback.isEnabled = true
     }
 
     fun doBackwardTransition() {
@@ -92,6 +88,7 @@ class HistoryFragment : Fragment() {
         childFragmentManager.commit {
             setReorderingAllowed(true)
             replace<HistoryRecyclerViewFragment>(R.id.recycler_view_fragment_container)
+            remove(childFragmentManager.findFragmentById(R.id.graph_fragment_container)!!)
         }
         historyViewModel.isInSplitScreenMode = false
     }

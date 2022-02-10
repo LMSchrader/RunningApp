@@ -9,11 +9,11 @@ class HistoryFragmentStateAdapter(fragment: Fragment) : FragmentStateAdapter(fra
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
-        when (position) {
-            0 -> return HistoryGraphFragment()
-            1 -> return HistoryMapFragment()
+        return when (position) {
+            0 -> HistoryGraphFragment()
+            1 -> HistoryMapFragment()
             else -> {
-                return HistoryGraphFragment()
+                HistoryGraphFragment()
             }
         }
     }
