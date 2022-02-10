@@ -15,7 +15,7 @@ import kotlin.time.toDuration
 class LineChartUtil {
 
     object StaticFunctions {
-        const val lineWidth = 2f
+        const val lineWidth = 3f
         const val textSize = 11f
 
         /**

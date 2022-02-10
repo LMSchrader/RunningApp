@@ -64,6 +64,7 @@ class HistoryGraphFragment : Fragment() {
                 root.context.resources.getString(R.string.pace_label)
             )
             pace.lineWidth = lineWidth
+            pace.setDrawCircles(false)
 
             val altitude = LineDataSet(
                 altitudeTimeSeries,
@@ -72,6 +73,7 @@ class HistoryGraphFragment : Fragment() {
             altitude.color = R.color.purple_200
             altitude.setCircleColor(R.color.purple_200)
             altitude.lineWidth = lineWidth
+            altitude.setDrawCircles(false)
 
             chart.data = LineData(
                 pace,
