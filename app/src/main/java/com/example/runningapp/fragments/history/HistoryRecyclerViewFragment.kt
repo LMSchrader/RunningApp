@@ -94,10 +94,6 @@ class HistoryRecyclerViewFragment : Fragment(),
 
             historyViewModel.delete(deletedItem)
 
-            //if(adapter.viewHo) {
-            //    (parentFragment as HistoryFragment).doBackwardTransition()
-            //}
-
             view?.let {
                 Snackbar.make(it, formatDate(deletedItem.date), Snackbar.LENGTH_LONG)
                     .setAction(
