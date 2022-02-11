@@ -47,9 +47,12 @@
     <string name="record_run_notification_text">Klicken um zur App zurückzukehren</string>
 
     <!-- run history-->
-    <string name="intro_text">Lauf vom</string>
+    <string name="run_from">Lauf vom</string>
     <string name="pace_label">Pace</string>
     <string name="altitude_label">Altitude</string>
+    <string name="distance">Strecke</string>
+    <string name="mean_pace">Mittlerer Pace</string>
+    <string name="duration">Dauer</string>
 
     <!-- general -->
     <string name="save">Speichern</string>

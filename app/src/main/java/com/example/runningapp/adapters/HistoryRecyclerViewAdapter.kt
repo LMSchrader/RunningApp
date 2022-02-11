@@ -35,7 +35,7 @@ class HistoryRecyclerViewAdapter(
         val dateTime: TextView = view.findViewById(R.id.date_time)
 
         init {
-            introText.text = view.context.resources.getString(R.string.intro_text)
+            introText.text = view.context.resources.getString(R.string.run_from)
             // Define click listener for the ViewHolder's View.
             view.setOnClickListener {
                 onClickListener.invoke(adapterPosition)
