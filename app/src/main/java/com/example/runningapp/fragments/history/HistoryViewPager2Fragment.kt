@@ -47,15 +47,15 @@ class HistoryViewPager2Fragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-            return when (item.itemId) {
+        return when (item.itemId) {
 
-                R.id.imageDelete -> {
-                    showDeleteDialog()
-                    true
-                }
-
-                else -> super.onOptionsItemSelected(item)
+            R.id.imageDelete -> {
+                showDeleteDialog()
+                true
             }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onDestroyView() {
@@ -72,15 +72,17 @@ class HistoryViewPager2Fragment : Fragment() {
         )
 
         if (!dateActiveRun.equals(deletedItem.date.toString())) {
+            // delete dialog
             val dialog =
-                CancelContinueDialogFragment.getInstance(getString(R.string.delete_item,
-                    historyViewModel.currentRunHistoryEntry.value?.date?.let {
-                        formatDate(
-                            it
-                        )
-                    }))
+                CancelContinueDialogFragment.getInstance(
+                    getString(
+                        R.string.delete_item,
+                        dateDeletedItem
+                    )
+                )
             dialog.show(parentFragmentManager, CancelContinueDialogFragment.TAG)
         } else {
+            // can't delete when run is still being recorded
             view?.let {
                 Snackbar.make(
                     it,
