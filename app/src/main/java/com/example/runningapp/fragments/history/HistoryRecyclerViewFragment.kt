@@ -55,7 +55,7 @@ class HistoryRecyclerViewFragment : Fragment(),
                         it
                     )
                 }
-                if (!historyViewModel.isInSplitScreenMode) {
+                if (!historyViewModel.historyFragmentIsInSplitScreenMode) {
                     (parentFragment as HistoryFragment).doForwardTransition()
                 }
             }, viewLifecycleOwner)
@@ -92,16 +92,31 @@ class HistoryRecyclerViewFragment : Fragment(),
                 historyViewModel.runHistoryEntries.value?.get(viewHolder.adapterPosition)
                     ?: return
 
-            historyViewModel.delete(deletedItem)
+            val dateDeletedItem = formatDate(deletedItem.date)
+            val dateActiveRun = (activity?.application as AppApplication).shardPref.getString(
+                getString(R.string.service_active_preferences),
+                ""
+            )
+            if (!dateActiveRun.equals(deletedItem.date.toString())) {
+                historyViewModel.delete(deletedItem)
 
-            view?.let {
-                Snackbar.make(it, formatDate(deletedItem.date), Snackbar.LENGTH_LONG)
-                    .setAction(
-                        getString(R.string.undo)
-                    ) {
-                        historyViewModel.insert(deletedItem)
-                    }
-            }?.show()
+                view?.let {
+                    Snackbar.make(it, dateDeletedItem, Snackbar.LENGTH_LONG)
+                        .setAction(
+                            getString(R.string.undo)
+                        ) {
+                            historyViewModel.insert(deletedItem)
+                        }
+                }?.show()
+            } else {
+                view?.let {
+                    Snackbar.make(
+                        it,
+                        getString(R.string.could_not_delete, dateDeletedItem),
+                        Snackbar.LENGTH_LONG
+                    )
+                }?.show()
+            }
         }
     }
 }

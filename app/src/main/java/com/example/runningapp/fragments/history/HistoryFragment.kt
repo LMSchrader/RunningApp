@@ -37,7 +37,7 @@ class HistoryFragment : Fragment(), CancelContinueDialogFragment.CancelContinueD
         }
 
         callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            if (historyViewModel.isInSplitScreenMode) {
+            if (historyViewModel.historyFragmentIsInSplitScreenMode) {
                 doBackwardTransition()
             } else {
                 callback.isEnabled = false
@@ -62,7 +62,7 @@ class HistoryFragment : Fragment(), CancelContinueDialogFragment.CancelContinueD
         )
         backwardScene = Scene.getSceneForLayout(root, R.layout.fragment_history, requireContext())
 
-        if (historyViewModel.isInSplitScreenMode) {
+        if (historyViewModel.historyFragmentIsInSplitScreenMode) {
             doForwardTransition()
         }
 
@@ -81,7 +81,7 @@ class HistoryFragment : Fragment(), CancelContinueDialogFragment.CancelContinueD
             replace<HistoryRecyclerViewFragment>(R.id.recycler_view_fragment_container)
             replace<HistoryViewPager2Fragment>(R.id.graph_fragment_container)
         }
-        historyViewModel.isInSplitScreenMode = true
+        historyViewModel.historyFragmentIsInSplitScreenMode = true
     }
 
     fun doBackwardTransition() {
@@ -91,7 +91,7 @@ class HistoryFragment : Fragment(), CancelContinueDialogFragment.CancelContinueD
             replace<HistoryRecyclerViewFragment>(R.id.recycler_view_fragment_container)
             remove(childFragmentManager.findFragmentById(R.id.graph_fragment_container)!!)
         }
-        historyViewModel.isInSplitScreenMode = false
+        historyViewModel.historyFragmentIsInSplitScreenMode = false
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment) {

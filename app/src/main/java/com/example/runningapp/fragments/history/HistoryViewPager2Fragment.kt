@@ -12,6 +12,7 @@ import com.example.runningapp.fragments.dialogs.CancelContinueDialogFragment
 import com.example.runningapp.util.DateUtil.StaticFunctions.formatDate
 import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HistoryViewPager2Fragment : Fragment() {
@@ -63,13 +64,30 @@ class HistoryViewPager2Fragment : Fragment() {
     }
 
     private fun showDeleteDialog() {
-        val dialog =
-            CancelContinueDialogFragment.getInstance(getString(R.string.delete_item,
-                historyViewModel.currentRunHistoryEntry.value?.date?.let {
-                    formatDate(
-                        it
-                    )
-                }))
-        dialog.show(parentFragmentManager, CancelContinueDialogFragment.TAG)
+        val deletedItem = historyViewModel.currentRunHistoryEntry.value ?: return
+        val dateDeletedItem = formatDate(deletedItem.date)
+        val dateActiveRun = (activity?.application as AppApplication).shardPref.getString(
+            getString(R.string.service_active_preferences),
+            ""
+        )
+
+        if (!dateActiveRun.equals(deletedItem.date.toString())) {
+            val dialog =
+                CancelContinueDialogFragment.getInstance(getString(R.string.delete_item,
+                    historyViewModel.currentRunHistoryEntry.value?.date?.let {
+                        formatDate(
+                            it
+                        )
+                    }))
+            dialog.show(parentFragmentManager, CancelContinueDialogFragment.TAG)
+        } else {
+            view?.let {
+                Snackbar.make(
+                    it,
+                    getString(R.string.could_not_delete, dateDeletedItem),
+                    Snackbar.LENGTH_LONG
+                )
+            }?.show()
+        }
     }
 }
