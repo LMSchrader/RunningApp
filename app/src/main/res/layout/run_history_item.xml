@@ -4,14 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <include
-        android:id="@+id/view_background"
-        layout="@layout/delete_recycler_view_item"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/view_foreground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:itemBackground">

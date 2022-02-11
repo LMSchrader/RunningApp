@@ -7,22 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.AppApplication
-import com.example.runningapp.R
 import com.example.runningapp.adapters.HistoryAdapter
-import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.databinding.FragmentRecyclerViewBinding
-import com.example.runningapp.util.DateUtil.StaticFunctions.formatDate
-import com.example.runningapp.util.RecyclerViewItemTouchHelper
 import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
-import com.google.android.material.snackbar.Snackbar
 
-class HistoryRecyclerViewFragment : Fragment(),
-    RecyclerViewItemTouchHelper.RecyclerItemTouchHelperListener {
+class HistoryRecyclerViewFragment : Fragment() {
 
     private val historyViewModel: HistoryViewModel by activityViewModels {
         HistoryViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
@@ -58,7 +51,8 @@ class HistoryRecyclerViewFragment : Fragment(),
                 if (!historyViewModel.historyFragmentIsInSplitScreenMode) {
                     (parentFragment as HistoryFragment).doForwardTransition()
                 }
-            }, viewLifecycleOwner)
+            }, viewLifecycleOwner
+        )
         binding.recyclerView.adapter = adapter
 
         binding.recyclerView.addItemDecoration(
@@ -68,55 +62,11 @@ class HistoryRecyclerViewFragment : Fragment(),
             )
         )
 
-        // swipe to delete items
-        val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
-            RecyclerViewItemTouchHelper(0, ItemTouchHelper.LEFT, this)
-        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.recyclerView)
-
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    /**
-     * callback when recycler view is swiped
-     * Delete recycler view item on swiped
-     * undo option in snackbar
-     */
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int, position: Int) {
-        if (viewHolder is HistoryAdapter.ViewHolder) {
-            val deletedItem: RunHistoryEntry =
-                historyViewModel.runHistoryEntries.value?.get(viewHolder.adapterPosition)
-                    ?: return
-
-            val dateDeletedItem = formatDate(deletedItem.date)
-            val dateActiveRun = (activity?.application as AppApplication).shardPref.getString(
-                getString(R.string.service_active_preferences),
-                ""
-            )
-            if (!dateActiveRun.equals(deletedItem.date.toString())) {
-                historyViewModel.delete(deletedItem)
-
-                view?.let {
-                    Snackbar.make(it, dateDeletedItem, Snackbar.LENGTH_LONG)
-                        .setAction(
-                            getString(R.string.undo)
-                        ) {
-                            historyViewModel.insert(deletedItem)
-                        }
-                }?.show()
-            } else {
-                view?.let {
-                    Snackbar.make(
-                        it,
-                        getString(R.string.could_not_delete, dateDeletedItem),
-                        Snackbar.LENGTH_LONG
-                    )
-                }?.show()
-            }
-        }
     }
 }

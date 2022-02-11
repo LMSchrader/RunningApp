@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.R
 import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.util.DateUtil.StaticFunctions.formatDate
-import com.example.runningapp.util.SwipableViewHolder
 
 class HistoryAdapter(
     runHistoryLiveData: LiveData<List<RunHistoryEntry>>,
@@ -31,7 +30,7 @@ class HistoryAdapter(
      * (custom ViewHolder).
      */
     class ViewHolder(view: View, private val onClickListener: (position: Int?) -> Unit) :
-        SwipableViewHolder(view, view.findViewById(R.id.view_foreground)) {
+        RecyclerView.ViewHolder(view) {
         private val introText: TextView = view.findViewById(R.id.intro_text)
         val dateTime: TextView = view.findViewById(R.id.date_time)
 
