@@ -11,11 +11,11 @@ import com.example.runningapp.R
 import com.example.runningapp.data.RunHistoryEntry
 import com.example.runningapp.util.DateUtil.StaticFunctions.formatDate
 
-class HistoryAdapter(
+class HistoryRecyclerViewAdapter(
     runHistoryLiveData: LiveData<List<RunHistoryEntry>>,
     private val onClickListener: (position: Int?) -> Unit,
     lifecycleOwner: LifecycleOwner
-) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder>() {
     private var data: List<RunHistoryEntry> = emptyList()
 
     init {

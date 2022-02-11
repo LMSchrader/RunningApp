@@ -12,11 +12,11 @@ import com.example.runningapp.R
 import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.util.SwipableViewHolder
 
-class RunningScheduleAdapter(
+class RunningScheduleRecyclerViewAdapter(
     liveData: LiveData<List<RunningScheduleEntry>>,
     private val onClickListener: (position: Int?) -> Unit,
     lifecycleOwner: LifecycleOwner
-) : RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<RunningScheduleRecyclerViewAdapter.ViewHolder>() {
 
     private var data: List<RunningScheduleEntry> = emptyList()
 

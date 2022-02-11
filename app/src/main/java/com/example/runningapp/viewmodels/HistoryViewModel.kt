@@ -20,6 +20,8 @@ class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel
 
     var historyFragmentIsInSplitScreenMode: Boolean = false
 
+    var currentViewPagerItem: Int = 0
+
     //init {
     //    runHistoryEntriesWithoutCurrentRun.addSource(runHistoryEntriesWithCurrentRun) {
     //        val allRunHistoryEntries: MutableList<RunHistoryEntry> = mutableListOf()

@@ -35,8 +35,8 @@ class HistoryViewPager2Fragment : Fragment() {
         setHasOptionsMenu(true)
 
         binding.pager.adapter = HistoryFragmentStateAdapter(this)
-
         TabLayoutMediator(binding.tabLayout, binding.pager, true) { _, _ -> }.attach()
+        binding.pager.currentItem = historyViewModel.currentViewPagerItem
 
         return root
     }
@@ -60,6 +60,7 @@ class HistoryViewPager2Fragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        historyViewModel.currentViewPagerItem = binding.pager.currentItem
         _binding = null
     }
 

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.AppApplication
 import com.example.runningapp.R
-import com.example.runningapp.adapters.RunningScheduleAdapter
+import com.example.runningapp.adapters.RunningScheduleRecyclerViewAdapter
 import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.databinding.FragmentRecyclerViewBinding
 import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
@@ -32,7 +32,7 @@ class RunningScheduleRecyclerViewFragment : Fragment(),
     private var _binding: FragmentRecyclerViewBinding? = null
     private val binding get() = _binding!!
 
-    private var adapter: RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>? = null
+    private var adapter: RecyclerView.Adapter<RunningScheduleRecyclerViewAdapter.ViewHolder>? = null
 
 
     override fun onCreateView(
@@ -48,7 +48,7 @@ class RunningScheduleRecyclerViewFragment : Fragment(),
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
 
         adapter = context?.let {
-            RunningScheduleAdapter(viewModel.entries, { position ->
+            RunningScheduleRecyclerViewAdapter(viewModel.entries, { position ->
                 viewModel.currentEntry.value = position?.let { it1 ->
                     viewModel.entries.value?.get(
                         it1
@@ -124,7 +124,7 @@ class RunningScheduleRecyclerViewFragment : Fragment(),
      * undo option in snackbar
      */
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int, position: Int) {
-        if (viewHolder is RunningScheduleAdapter.ViewHolder) {
+        if (viewHolder is RunningScheduleRecyclerViewAdapter.ViewHolder) {
             val deletedItem: RunningScheduleEntry =
                 viewModel.entries.value?.get(viewHolder.adapterPosition) ?: return
 

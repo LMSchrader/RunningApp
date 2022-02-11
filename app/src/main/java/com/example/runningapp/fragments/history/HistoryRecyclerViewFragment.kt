@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.AppApplication
-import com.example.runningapp.adapters.HistoryAdapter
+import com.example.runningapp.adapters.HistoryRecyclerViewAdapter
 import com.example.runningapp.databinding.FragmentRecyclerViewBinding
 import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
@@ -23,7 +23,7 @@ class HistoryRecyclerViewFragment : Fragment() {
     private var _binding: FragmentRecyclerViewBinding? = null
 
     private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: RecyclerView.Adapter<HistoryAdapter.ViewHolder>? = null
+    private var adapter: RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder>? = null
 
     private val binding get() = _binding!!
 
@@ -41,7 +41,7 @@ class HistoryRecyclerViewFragment : Fragment() {
         layoutManager = LinearLayoutManager(context)
         binding.recyclerView.layoutManager = layoutManager
 
-        adapter = HistoryAdapter(historyViewModel.runHistoryEntries,
+        adapter = HistoryRecyclerViewAdapter(historyViewModel.runHistoryEntries,
             { position ->
                 historyViewModel.currentRunHistoryEntry.value = position?.let { it ->
                     historyViewModel.runHistoryEntries.value?.get(
