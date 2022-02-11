@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
 import com.example.runningapp.AppApplication
 import com.example.runningapp.R
 import com.example.runningapp.adapters.HomeAdapter
@@ -19,10 +18,8 @@ class HomeFragment : Fragment() {
     private val viewModel: RunningScheduleViewModel by activityViewModels {
         RunningScheduleViewModelFactory((activity?.application as AppApplication).runningScheduleRepository)
     }
-    private var _binding: FragmentHomeBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -42,14 +39,9 @@ class HomeFragment : Fragment() {
 
         initKeyValuePairs()
 
-        binding.recordRunButton.setOnClickListener {
-            view?.findNavController()?.navigate(R.id.action_nav_home_to_nav_record_run)
-        }
-
         binding.pager.adapter = HomeAdapter(viewModel.entries, viewLifecycleOwner)
 
-        val tabLayoutMediator = TabLayoutMediator(binding.tabLayout, binding.pager, true)
-        { tab, position -> }.attach()
+        TabLayoutMediator(binding.tabLayout, binding.pager, true) { _, _ -> }.attach()
 
         return binding.root
     }
@@ -67,7 +59,8 @@ class HomeFragment : Fragment() {
         val kilometersRun =
             "%.2f".format(sharedPref.getFloat(getString(R.string.kilometers_run_preferences), 0.0F))
 
-        binding.runningDaysKept.text = getString(R.string.running_days_kept, runningDaysKept.toString())
+        binding.runningDaysKept.text =
+            getString(R.string.running_days_kept, runningDaysKept.toString())
         binding.kilometersRun.text = getString(R.string.kilometers_run, kilometersRun)
     }
 }
