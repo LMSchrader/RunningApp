@@ -90,7 +90,7 @@ class HomeAdapter(
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
-            LayoutInflater.from(viewGroup.context).inflate(R.layout.home_item, viewGroup, false)
+            LayoutInflater.from(viewGroup.context).inflate(R.layout.fragment_history_graph, viewGroup, false)
         return ViewHolder(view)
     }
 

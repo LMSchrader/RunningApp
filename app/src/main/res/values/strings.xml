@@ -40,6 +40,7 @@
     <!-- record run-->
     <string name="time">Time</string>
     <string name="kilometer">KM</string>
+    <string name="kilometer_with_number">%1$s km</string>
     <string name="current_pace">Current Pace</string>
     <string name="avg_pace">Avg Pace</string>
     <string name="start">Start</string>

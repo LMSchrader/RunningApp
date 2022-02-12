@@ -36,7 +36,7 @@ class HistoryOverviewFragment : Fragment() {
         historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
             if (currentRunHistoryEntry != null) {
                 binding.runFrom.text = formatDate(currentRunHistoryEntry.metaData.date)
-                binding.distance.text = "%.2f".format(currentRunHistoryEntry.metaData.kmRun)+" km"
+                binding.distance.text = getString(R.string.kilometer_with_number, "%.2f".format(currentRunHistoryEntry.metaData.kmRun))
                 binding.duration.text = round(currentRunHistoryEntry.metaData.timeRun.toLong().div(10.toDouble().pow(9))).toDuration(DurationUnit.SECONDS).toString()
                 if (currentRunHistoryEntry.measurements.isNotEmpty()) {
                     var sum = 0F
