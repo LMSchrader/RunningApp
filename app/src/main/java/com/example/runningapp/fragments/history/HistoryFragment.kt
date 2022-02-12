@@ -95,6 +95,8 @@ class HistoryFragment : Fragment(), CancelContinueDialogFragment.CancelContinueD
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment) {
+        // delete entry
         historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.value?.let { historyViewModel.delete(it) }
+        doBackwardTransition()
     }
 }
