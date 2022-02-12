@@ -1,27 +1,28 @@
 package com.example.runningapp.viewmodels
 
 import androidx.lifecycle.*
-import com.example.runningapp.data.HomeRepository
 import com.example.runningapp.data.RunHistoryDao
+import com.example.runningapp.data.RunHistoryRepository
+import com.example.runningapp.data.RunningScheduleRepository
 
-class HomeViewModel(repository: HomeRepository) : ViewModel() {
+class HomeViewModel(runningScheduleRepository: RunningScheduleRepository, runHistoryRepository: RunHistoryRepository) : ViewModel() {
 
-    val kmRunData: LiveData<List<RunHistoryDao.DailyMetaDataTuple>> = repository.kmRunData.asLiveData()
+    val kilometersRunForTheLastMonthPerDay: LiveData<List<RunHistoryDao.DailyMetaDataTuple>> = runHistoryRepository.kilometersRunForTheLastMonthPerDay.asLiveData()
 
-    val timeRunData: LiveData<List<RunHistoryDao.DailyMetaDataTuple>> = repository.timeRunData.asLiveData()
+    val timeRunForTheLastMonthPerDay: LiveData<List<RunHistoryDao.DailyMetaDataTuple>> = runHistoryRepository.timeRunForTheLastMonthPerDay.asLiveData()
 
-    val averagePaceRunData: LiveData<List<RunHistoryDao.DailyMetaDataTuple>> = repository.averagePaceRunData.asLiveData()
+    val averagePaceRunForTheLastMonthPerDay: LiveData<List<RunHistoryDao.DailyMetaDataTuple>> = runHistoryRepository.averagePaceRunForTheLastMonthPerDay.asLiveData()
 
-    val isTodayARunningDay: LiveData<Boolean> = repository.isTodayARunningDay.asLiveData()
+    val isTodayARunningDay: LiveData<Boolean> = runningScheduleRepository.isTodayARunningDay.asLiveData()
 
 }
 
-class HomeViewModelFactory(private val repository: HomeRepository) :
+class HomeViewModelFactory(private val runningScheduleRepository: RunningScheduleRepository, private val runHistoryRepository: RunHistoryRepository) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return HomeViewModel(repository) as T
+            return HomeViewModel(runningScheduleRepository, runHistoryRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

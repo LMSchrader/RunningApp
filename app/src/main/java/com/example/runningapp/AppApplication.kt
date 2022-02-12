@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.runningapp.data.AppDatabase
-import com.example.runningapp.data.HomeRepository
 import com.example.runningapp.data.RunHistoryRepository
 import com.example.runningapp.data.RunningScheduleRepository
 
@@ -18,5 +17,4 @@ class AppApplication : Application() {
     private val database by lazy { AppDatabase.getDatabase(this) }
     val runningScheduleRepository by lazy { RunningScheduleRepository(database.runningScheduleDao()) }
     val runHistoryRepository by lazy { RunHistoryRepository(database.runHistoryDao()) }
-    val homeRepository by lazy { HomeRepository(database.runHistoryDao(), database.runningScheduleDao()) }
 }

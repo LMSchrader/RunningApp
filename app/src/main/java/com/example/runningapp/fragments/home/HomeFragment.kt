@@ -16,7 +16,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by activityViewModels {
-        HomeViewModelFactory((activity?.application as AppApplication).homeRepository)
+        HomeViewModelFactory((activity?.application as AppApplication).runningScheduleRepository, (activity?.application as AppApplication).runHistoryRepository)
     }
 
     private var _binding: FragmentHomeBinding? = null
@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
 
         initKeyValuePairs()
 
-        binding.pager.adapter = HomeAdapter(mapOf("kmData" to viewModel.kmRunData, "timeData" to viewModel.timeRunData, "paceData" to viewModel.averagePaceRunData), viewLifecycleOwner)
+        binding.pager.adapter = HomeAdapter(mapOf("kmData" to viewModel.kilometersRunForTheLastMonthPerDay, "timeData" to viewModel.timeRunForTheLastMonthPerDay, "paceData" to viewModel.averagePaceRunForTheLastMonthPerDay), viewLifecycleOwner)
 
         TabLayoutMediator(binding.tabLayout, binding.pager, true) { _, _ -> }.attach()
 

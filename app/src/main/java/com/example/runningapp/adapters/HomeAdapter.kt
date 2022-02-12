@@ -45,6 +45,7 @@ class HomeAdapter(
                             paceTime.add(averagePaceRunTuple.date.toLocalDate().toEpochDay().toFloat())
                         }
                     }
+                    notifyDataSetChanged()
                 }
                 "kmData" -> mapEntry.value.observe(lifecycleOwner) { entry ->
                     kmData.clear()
@@ -57,6 +58,7 @@ class HomeAdapter(
                             kmTime.add(kmRunTuple.date.toLocalDate().toEpochDay().toFloat())
                         }
                     }
+                    notifyDataSetChanged()
                 }
                 "timeData" -> mapEntry.value.observe(lifecycleOwner) { entry ->
                     timeData.clear()
@@ -73,6 +75,7 @@ class HomeAdapter(
                             timeTime.add(timeRunTuple.date.toLocalDate().toEpochDay().toFloat())
                         }
                     }
+                    notifyDataSetChanged()
                 }
                 else -> {
                 }

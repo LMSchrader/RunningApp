@@ -8,6 +8,12 @@ import java.time.LocalDateTime
 class RunHistoryRepository(private val runHistoryDao: RunHistoryDao) {
     val runHistory: Flow<List<RunHistoryEntryMetaDataWithMeasurements>> = runHistoryDao.getAll()
 
+    val kilometersRunForTheLastMonthPerDay: Flow<List<RunHistoryDao.DailyMetaDataTuple>> = runHistoryDao.getKilometersRunForTheLastMonthPerDay()
+
+    val timeRunForTheLastMonthPerDay: Flow<List<RunHistoryDao.DailyMetaDataTuple>> = runHistoryDao.getTimeRunForTheLastMonthPerDay()
+
+    val averagePaceRunForTheLastMonthPerDay: Flow<List<RunHistoryDao.DailyMetaDataTuple>> = runHistoryDao.getAveragePaceRunForTheLastMonthPerDay()
+
     suspend fun get(entry: LocalDateTime): RunHistoryEntryMetaDataWithMeasurements {
         return withContext(Dispatchers.IO) {
             runHistoryDao.get(entry)
