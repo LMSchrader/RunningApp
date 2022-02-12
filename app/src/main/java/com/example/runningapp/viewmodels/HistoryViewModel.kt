@@ -19,6 +19,7 @@ class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel
         MutableLiveData(null)
     var historyFragmentIsInSplitScreenMode: Boolean = false
 
+    var currentRecyclerViewPosition: Int? = null
     var currentViewPagerItem: Int = 0
 
     //init {

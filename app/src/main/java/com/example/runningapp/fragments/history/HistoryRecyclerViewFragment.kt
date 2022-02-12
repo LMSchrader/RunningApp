@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.AppApplication
 import com.example.runningapp.adapters.HistoryRecyclerViewAdapter
+import com.example.runningapp.data.RunHistoryEntryMetaDataWithMeasurements
 import com.example.runningapp.databinding.FragmentRecyclerViewBinding
 import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
@@ -43,17 +44,29 @@ class HistoryRecyclerViewFragment : Fragment() {
 
         adapter = HistoryRecyclerViewAdapter(historyViewModel.runHistoryEntriesMetaDataWithMeasurements,
             { position ->
-                historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.value = position?.let { it ->
-                    historyViewModel.runHistoryEntriesMetaDataWithMeasurements.value?.get(
-                        it
-                    )
+                historyViewModel.runHistoryEntriesMetaDataWithMeasurements.observe(viewLifecycleOwner) { runHistory : List<RunHistoryEntryMetaDataWithMeasurements> ->
+                    historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.value = position?.let { it ->
+                        runHistory[it]
+                    }
                 }
+
+                historyViewModel.currentRecyclerViewPosition = position
+
                 if (!historyViewModel.historyFragmentIsInSplitScreenMode) {
                     (parentFragment as HistoryFragment).doForwardTransition()
                 }
             }, viewLifecycleOwner
         )
         binding.recyclerView.adapter = adapter
+
+        if(historyViewModel.currentRecyclerViewPosition != null) {
+            historyViewModel.runHistoryEntriesMetaDataWithMeasurements.observe(viewLifecycleOwner) { runHistory : List<RunHistoryEntryMetaDataWithMeasurements> ->
+                historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.value = historyViewModel.currentRecyclerViewPosition?.let { it ->
+                    runHistory[it]
+                }
+            }
+        }
+
 
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(

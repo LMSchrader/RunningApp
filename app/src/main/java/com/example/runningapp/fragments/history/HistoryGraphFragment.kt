@@ -64,6 +64,8 @@ class HistoryGraphFragment : Fragment() {
                 }
             }
 
+            chart.clear()
+
             if (paceTimeSeries.isNotEmpty()) {
                 val pace = LineDataSet(
                     paceTimeSeries,
@@ -87,7 +89,6 @@ class HistoryGraphFragment : Fragment() {
                 )
                 chart.data.setDrawValues(false)
             }
-
             chart.animateX(500)
         }
 
