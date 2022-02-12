@@ -29,8 +29,8 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 import java.time.LocalDateTime
-import kotlin.math.floor
 import kotlin.math.pow
+import kotlin.math.round
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
@@ -83,7 +83,7 @@ class RecordRunFragment : Fragment(), ContinueDialogFragment.CustomDialogListene
             binding.avgPace.text = getString(R.string.value_empty)
             binding.currentPace.text = getString(R.string.value_empty)
         } else {
-            binding.currentTime.text = floor(run.measurements[run.measurements.lastIndex].timeValue.toLong().div(10.toDouble().pow(9)))
+            binding.currentTime.text = round(run.measurements[run.measurements.lastIndex].timeValue.toLong().div(10.toDouble().pow(9)))
                 .toDuration(DurationUnit.SECONDS).toString()
             binding.currentKm.text = "%.2f".format(run.metaData.kmRun)
 
