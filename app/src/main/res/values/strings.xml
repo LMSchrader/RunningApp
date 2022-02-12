@@ -67,6 +67,7 @@
     <string name="continue_text">Continue</string>
     <string name="ok">OK</string>
     <string name="undo">Undo</string>
+    <string name="no_data_available">No data available</string>
 
     <!-- alert -->
     <string name="location_permission_required">Runs cannot be recorded without precise location permission</string>

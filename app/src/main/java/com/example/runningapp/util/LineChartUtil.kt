@@ -40,8 +40,8 @@ class LineChartUtil {
         }
 
         @JvmStatic
-        fun configureLineChartDuration(chart: LineChart, context: Context) {
-            configureLineChartGeneral(chart, context)
+        fun configureLineChartDuration(chart: LineChart, context: Context, noDataAvailableText: String) {
+            configureLineChartGeneral(chart, context, noDataAvailableText)
 
             chart.xAxis.valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
@@ -53,11 +53,11 @@ class LineChartUtil {
         }
 
         @JvmStatic
-        fun configureLineChartDate(chart: LineChart, context: Context) {
+        fun configureLineChartDate(chart: LineChart, context: Context, noDataAvailableText: String) {
             chart.xAxis.spaceMax = 0.1f
             chart.xAxis.spaceMin = 0.1f
 
-            configureLineChartGeneral(chart, context)
+            configureLineChartGeneral(chart, context, noDataAvailableText)
 
             chart.xAxis.valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
@@ -74,8 +74,9 @@ class LineChartUtil {
         }
 
         @JvmStatic
-        fun configureLineChartGeneral(chart: LineChart, context: Context) {
+        fun configureLineChartGeneral(chart: LineChart, context: Context, noDataAvailableText: String) {
             chart.description.isEnabled = false
+            chart.setNoDataText(noDataAvailableText)
 
             chart.setDrawGridBackground(false)
             chart.xAxis.setDrawGridLines(true)

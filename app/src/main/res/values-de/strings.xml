@@ -66,6 +66,7 @@
     <string name="continue_text">Fortfahren</string>
     <string name="ok">OK</string>
     <string name="undo">Rückgängig</string>
+    <string name="no_data_available">Keie Daten vorhanden</string>
 
     <!-- alert -->
     <string name="location_permission_required">Ohne Berechtigung zum Zugriff auf den genauen Standort können keine Läufe aufgezeichnet werden</string>

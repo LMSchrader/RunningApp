@@ -40,7 +40,7 @@ class HistoryGraphFragment : Fragment() {
 
         chart = binding.lineChart
 
-        context?.let { configureLineChartDuration(chart, it) }
+        context?.let { configureLineChartDuration(chart, it, getString(R.string.no_data_available)) }
 
         historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
             val timeList: MutableList<Float> = mutableListOf()

@@ -95,7 +95,7 @@ class HomeAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-       LineChartUtil.StaticFunctions.configureLineChartDate(holder.chart, holder.context)
+       LineChartUtil.StaticFunctions.configureLineChartDate(holder.chart, holder.context, holder.context.getString(R.string.no_data_available))
 
         holder.chart.axisRight.isEnabled = false
 
