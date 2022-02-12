@@ -97,9 +97,7 @@ class HomeAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
        LineChartUtil.StaticFunctions.configureLineChartDate(holder.chart, holder.context)
 
-        holder.chart.description.isEnabled = true
-
-        holder.chart.setDrawGridBackground(false)
+        holder.chart.axisRight.isEnabled = false
 
         val xAxisPointsList = timePointsMap[position]
         val yAxisPointsList = dataMap[position]
@@ -110,12 +108,21 @@ class HomeAdapter(
             }
         }
 
-        holder.chart.data = LineData(
-            LineDataSet(
+        if (timeSeries.isNotEmpty()) {
+            val data = LineDataSet(
                 timeSeries,
                 labelResourceMap[position]?.let { holder.context.resources.getString(it) }
             )
-        )
+            data.lineWidth = LineChartUtil.StaticFunctions.lineWidth
+            data.circleRadius = 5f
+            data.circleHoleColor = data.color
+
+            holder.chart.data = LineData(
+                data
+            )
+            holder.chart.data.setDrawValues(false)
+        }
+
         holder.chart.animateX(500)
     }
 

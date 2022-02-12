@@ -16,9 +16,9 @@
     <string name="runningDay">Today is a running day!</string>
     <string name="kilometers_run">%1$s kilometers run so far</string>
     <string name="running_days_kept">You have followed your running plan %1$s times!</string>
-    <string name="pace_run_label">Average pace run last 30 days</string>
+    <string name="pace_run_label">Average pace (in min/km) run last 30 days</string>
     <string name="kilometers_run_label">Kilometers run last 30 days</string>
-    <string name="time_run_label">Time run last 30 days</string>
+    <string name="time_run_label">Time (in min) run last 30 days</string>
 
     <!-- running schedule-->
     <string name="addRunningSchedule">Add running schedule entry</string>
@@ -53,8 +53,8 @@
 
     <!-- run history-->
     <string name="run_from">Run from</string>
-    <string name="pace_label">Pace</string>
-    <string name="altitude_label">Altitude</string>
+    <string name="pace_label">Pace (in min/km)</string>
+    <string name="altitude_label">Altitude (in m)</string>
     <string name="distance">Distance</string>
     <string name="mean_pace">Average Pace</string>
     <string name="duration">Duration</string>
