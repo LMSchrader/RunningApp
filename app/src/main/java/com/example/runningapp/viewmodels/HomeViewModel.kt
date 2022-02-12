@@ -6,11 +6,11 @@ import com.example.runningapp.data.RunHistoryDao
 
 class HomeViewModel(repository: HomeRepository) : ViewModel() {
 
-    val kmRunData: LiveData<List<RunHistoryDao.SummedRunHistoryMetaDataTuple>> = repository.kmRunData.asLiveData()
+    val kmRunData: LiveData<List<RunHistoryDao.DailyMetaDataTuple>> = repository.kmRunData.asLiveData()
 
-    val timeRunData: LiveData<List<RunHistoryDao.SummedRunHistoryMetaDataTuple>> = repository.timeRunData.asLiveData()
+    val timeRunData: LiveData<List<RunHistoryDao.DailyMetaDataTuple>> = repository.timeRunData.asLiveData()
 
-    val averagePaceRunData: LiveData<List<RunHistoryDao.SummedRunHistoryMetaDataTuple>> = repository.averagePaceRunData.asLiveData()
+    val averagePaceRunData: LiveData<List<RunHistoryDao.DailyMetaDataTuple>> = repository.averagePaceRunData.asLiveData()
 
     val isTodayARunningDay: LiveData<Boolean> = repository.isTodayARunningDay.asLiveData()
 

@@ -62,7 +62,7 @@ class HistoryMapFragment : Fragment() {
         circleAnnotationManager  = mapView.annotations.createCircleAnnotationManager()
 
         historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
-            points = extractAndTransformPointList(currentRunHistoryEntry)
+            points = extractDataAndTransformToPointList(currentRunHistoryEntry)
             replaceRouteOnMap(points)
             setCameraPositionForMap(points)
         }
@@ -132,7 +132,7 @@ class HistoryMapFragment : Fragment() {
         }
     }
 
-    private fun extractAndTransformPointList (currentRunHistoryEntryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements?) : MutableList<Point>{
+    private fun extractDataAndTransformToPointList(currentRunHistoryEntryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements?) : MutableList<Point>{
         val points = mutableListOf<Point>()
         // Define a list of geographic coordinates to be connected.
         currentRunHistoryEntryMetaDataWithMeasurements?.measurements?.forEach{

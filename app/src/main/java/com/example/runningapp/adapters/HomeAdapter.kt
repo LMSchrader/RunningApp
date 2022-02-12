@@ -17,7 +17,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import kotlin.math.pow
 
 class HomeAdapter(
-    graphDataLiveModel: Map<String, LiveData<*>>,
+    graphLiveDataMap: Map<String, LiveData<*>>,
     lifecycleOwner: LifecycleOwner,
 ) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     private var paceData: MutableList<Float> = mutableListOf()
@@ -32,50 +32,47 @@ class HomeAdapter(
 
     init {
 
-        graphDataLiveModel.forEach { mapEntry ->
+        graphLiveDataMap.forEach { mapEntry ->
             when (mapEntry.key) {
                 "paceData" -> mapEntry.value.observe(lifecycleOwner) { entry ->
                     paceData.clear()
                     paceTime.clear()
                     val averagePaceRunTupleList = entry as List<*>
                     averagePaceRunTupleList.forEach {
-                        val averagePaceRunTuple = it as RunHistoryDao.SummedRunHistoryMetaDataTuple
-                        if (averagePaceRunTuple.date != null && averagePaceRunTuple.summedValue != null) {
-                            paceData.add(averagePaceRunTuple.summedValue)
+                        val averagePaceRunTuple = it as RunHistoryDao.DailyMetaDataTuple
+                        if (averagePaceRunTuple.date != null && averagePaceRunTuple.metaDataValue != null) {
+                            paceData.add(averagePaceRunTuple.metaDataValue)
                             paceTime.add(averagePaceRunTuple.date.toLocalDate().toEpochDay().toFloat())
                         }
                     }
-                    notifyDataSetChanged()
                 }
                 "kmData" -> mapEntry.value.observe(lifecycleOwner) { entry ->
                     kmData.clear()
                     kmTime.clear()
                     val kmRunTupleList = entry as List<*>
                     kmRunTupleList.forEach {
-                        val kmRunTuple = it as RunHistoryDao.SummedRunHistoryMetaDataTuple
-                        if (kmRunTuple.date != null && kmRunTuple.summedValue != null) {
-                            kmData.add(kmRunTuple.summedValue)
+                        val kmRunTuple = it as RunHistoryDao.DailyMetaDataTuple
+                        if (kmRunTuple.date != null && kmRunTuple.metaDataValue != null) {
+                            kmData.add(kmRunTuple.metaDataValue)
                             kmTime.add(kmRunTuple.date.toLocalDate().toEpochDay().toFloat())
                         }
                     }
-                    notifyDataSetChanged()
                 }
                 "timeData" -> mapEntry.value.observe(lifecycleOwner) { entry ->
                     timeData.clear()
                     timeTime.clear()
                     val timeRunTupleList = entry as List<*>
                     timeRunTupleList.forEach {
-                        val timeRunTuple = it as RunHistoryDao.SummedRunHistoryMetaDataTuple
-                        if (timeRunTuple.date != null && timeRunTuple.summedValue != null) {
+                        val timeRunTuple = it as RunHistoryDao.DailyMetaDataTuple
+                        if (timeRunTuple.date != null && timeRunTuple.metaDataValue != null) {
                             var timeValue = 0F
-                            if(timeRunTuple.summedValue > 0F) {
-                                timeValue = timeRunTuple.summedValue.times(10.0.pow(-9)).div(60).toFloat()
+                            if(timeRunTuple.metaDataValue > 0F) {
+                                timeValue = timeRunTuple.metaDataValue.times(10.0.pow(-9)).div(60).toFloat()
                             }
                             timeData.add(timeValue)
                             timeTime.add(timeRunTuple.date.toLocalDate().toEpochDay().toFloat())
                         }
                     }
-                    notifyDataSetChanged()
                 }
                 else -> {
                 }

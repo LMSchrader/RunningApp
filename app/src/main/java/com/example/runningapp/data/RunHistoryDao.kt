@@ -83,18 +83,18 @@ interface RunHistoryDao {
     //fun getKilometersRunInTheLastFourWeeks(): Flow<List<List<Int>>>
 
     @Query("SELECT SUM(kmRun) as summedValue, date FROM run_history_meta_data WHERE date BETWEEN date('now','localtime', '-29 day', 'start of day') AND date('now','localtime', '+1 day', 'start of day') GROUP BY strftime('%d', date)")
-    fun getKilometersRunForTheLastMonth() : Flow<List<SummedRunHistoryMetaDataTuple>>
+    fun getKilometersRunForTheLastMonthPerDay() : Flow<List<DailyMetaDataTuple>>
 
     @Query("SELECT SUM(timeRun) as summedValue, date FROM run_history_meta_data WHERE date BETWEEN date('now','localtime', '-29 day', 'start of day') AND date('now','localtime', '+1 day', 'start of day') GROUP BY strftime('%d', date)")
-    fun getTimeRunForTheLastMonth() : Flow<List<SummedRunHistoryMetaDataTuple>>
+    fun getTimeRunForTheLastMonthPerDay() : Flow<List<DailyMetaDataTuple>>
 
     @Query("SELECT AVG(paceValue) as summedValue, runDate as date FROM run_history_measurement WHERE runDate BETWEEN date('now','localtime', '-29 day', 'start of day') AND date('now','localtime', '+1 day', 'start of day') GROUP BY strftime('%d', date)")
-    fun getAveragePaceRunForTheLastMonth() : Flow<List<SummedRunHistoryMetaDataTuple>>
+    fun getAveragePaceRunForTheLastMonthPerDay() : Flow<List<DailyMetaDataTuple>>
 
 
 
-    data class SummedRunHistoryMetaDataTuple(
-        @ColumnInfo(name = "summedValue") val summedValue: Float?,
+    data class DailyMetaDataTuple(
+        @ColumnInfo(name = "summedValue") val metaDataValue: Float?,
         @ColumnInfo(name = "date") val date: LocalDateTime?
     )
 }
