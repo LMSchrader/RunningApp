@@ -91,27 +91,30 @@ class HistoryMapFragment : Fragment() {
     private fun replaceRouteOnMap(points :MutableList<Point>) {
         circleAnnotationManager.deleteAll()
         polylineAnnotationManager.deleteAll()
-        if(points.size > 1) {
-            // Set options for the resulting line layer.
-            val polylineAnnotationOptions: PolylineAnnotationOptions = PolylineAnnotationOptions()
-                .withPoints(points)
-                // Style the line that will be added to the map.
-                .withLineColor("#ee4e8b")
-                .withLineWidth(5.0)
-            // Add the resulting line to the map.
-            polylineAnnotationManager.create(polylineAnnotationOptions)
-        } else {
-            val circleAnnotationOptions: CircleAnnotationOptions = CircleAnnotationOptions()
-                // Define a geographic coordinate.
-                .withPoint(points[0])
-                // Style the circle that will be added to the map.
-                .withCircleRadius(8.0)
-                .withCircleColor("#ee4e8b")
-                .withCircleStrokeWidth(2.0)
-                .withCircleStrokeColor("#ffffff")
+        if(points.isNotEmpty()) {
+            if (points.size > 1) {
+                // Set options for the resulting line layer.
+                val polylineAnnotationOptions: PolylineAnnotationOptions =
+                    PolylineAnnotationOptions()
+                        .withPoints(points)
+                        // Style the line that will be added to the map.
+                        .withLineColor("#ee4e8b")
+                        .withLineWidth(5.0)
+                // Add the resulting line to the map.
+                polylineAnnotationManager.create(polylineAnnotationOptions)
+            } else {
+                val circleAnnotationOptions: CircleAnnotationOptions = CircleAnnotationOptions()
+                    // Define a geographic coordinate.
+                    .withPoint(points[0])
+                    // Style the circle that will be added to the map.
+                    .withCircleRadius(8.0)
+                    .withCircleColor("#ee4e8b")
+                    .withCircleStrokeWidth(2.0)
+                    .withCircleStrokeColor("#ffffff")
 
-            // Add the resulting circle to the map.
-            circleAnnotationManager.create(circleAnnotationOptions)
+                // Add the resulting circle to the map.
+                circleAnnotationManager.create(circleAnnotationOptions)
+            }
         }
     }
 
