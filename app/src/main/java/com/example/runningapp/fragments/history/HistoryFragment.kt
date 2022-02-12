@@ -12,6 +12,7 @@ import com.example.runningapp.AppApplication
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentHistoryBinding
 import com.example.runningapp.fragments.dialogs.CancelContinueDialogFragment
+import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMode
 import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
 
@@ -62,9 +63,15 @@ class HistoryFragment : Fragment(), CancelContinueDialogFragment.CancelContinueD
         )
         backwardScene = Scene.getSceneForLayout(root, R.layout.fragment_history, requireContext())
 
+        if (context?.let { isLandscapeMode(it) } != historyViewModel.historyFragmentWasLastOrientationLandscape) { //Orientation in comparison to last fragment creation changed
+            historyViewModel.historyFragmentIsInSplitScreenMode = historyViewModel.historyFragmentWasInSplitScreenMode
+        }
+
         if (historyViewModel.historyFragmentIsInSplitScreenMode) {
             doForwardTransition()
         }
+
+        historyViewModel.historyFragmentWasLastOrientationLandscape = context?.let { isLandscapeMode(it) } == true
 
         return root
     }
@@ -72,6 +79,8 @@ class HistoryFragment : Fragment(), CancelContinueDialogFragment.CancelContinueD
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        historyViewModel.historyFragmentWasInSplitScreenMode = historyViewModel.historyFragmentIsInSplitScreenMode
+        historyViewModel.historyFragmentIsInSplitScreenMode = false
     }
 
     fun doForwardTransition() {
@@ -95,6 +104,6 @@ class HistoryFragment : Fragment(), CancelContinueDialogFragment.CancelContinueD
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment) {
-        historyViewModel.currentRunHistoryEntry.value?.let { historyViewModel.delete(it) }
+        historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.value?.let { historyViewModel.delete(it) }
     }
 }

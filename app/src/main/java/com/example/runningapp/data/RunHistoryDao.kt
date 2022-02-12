@@ -6,27 +6,95 @@ import java.time.LocalDateTime
 
 @Dao
 interface RunHistoryDao {
-    @Query("SELECT * FROM run_history ORDER by date")
-    fun getAll(): Flow<List<RunHistoryEntry>>
 
-    @Query("SELECT * FROM run_history Where date == :id")
-    fun get(id: LocalDateTime): RunHistoryEntry
+    @Transaction
+    @Query("SELECT * FROM run_history_meta_data ORDER by date")
+    fun getAll(): Flow<List<RunHistoryEntryMetaDataWithMeasurements>>
 
-    @Query("SELECT * FROM run_history Where date == :id")
-    fun getAsFlow(id: LocalDateTime): Flow<RunHistoryEntry>
+    @Transaction
+    @Query("SELECT * FROM run_history_meta_data Where date == :id")
+    fun get(id: LocalDateTime): RunHistoryEntryMetaDataWithMeasurements
+
+    @Transaction
+    @Query("SELECT * FROM run_history_meta_data Where date == :id")
+    fun getAsFlow(id: LocalDateTime): Flow<RunHistoryEntryMetaDataWithMeasurements>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(entry: RunHistoryEntry)
+    fun insert(entry: RunHistoryEntryMetaData)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(measurement: RunHistoryMeasurement)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(measurement: List<RunHistoryMeasurement>)
+
+    @Transaction
+    fun insert(entryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements) {
+        insert(entryMetaDataWithMeasurements.metaData)
+        insertAll(entryMetaDataWithMeasurements.measurements)
+    }
 
     @Update
-    fun update(entry: RunHistoryEntry)
+    fun update(entry: RunHistoryEntryMetaData)
+
+    @Update
+    fun update(measurement: RunHistoryMeasurement)
+
+    @Update
+    fun updateAll(measurement: List<RunHistoryMeasurement>)
+
+    @Transaction
+    fun update(entryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements) {
+        update(entryMetaDataWithMeasurements.metaData)
+        updateAll(entryMetaDataWithMeasurements.measurements)
+    }
+
+    @Transaction
+    fun updateAndInsertLatestMeasurements(entryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements, startingIndexOfNewMeasurements : Int) {
+        update(entryMetaDataWithMeasurements.metaData)
+        val lastIndex = entryMetaDataWithMeasurements.measurements.lastIndex
+        if(lastIndex>=startingIndexOfNewMeasurements && lastIndex>-1) {
+            insertAll(
+                entryMetaDataWithMeasurements.measurements.subList(
+                    startingIndexOfNewMeasurements,
+                    lastIndex+1
+                )
+            )
+        }
+    }
 
     @Delete
-    fun delete(entry: RunHistoryEntry)
+    fun delete(entry: RunHistoryEntryMetaData)
 
-    @Query("DELETE FROM run_history")
-    fun deleteAll()
+    @Delete
+    fun delete(measurement: RunHistoryMeasurement)
+
+    @Delete
+    fun deleteAll(measurement: List<RunHistoryMeasurement>)
+
+    fun delete(entryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements) {
+        delete(entryMetaDataWithMeasurements.metaData)
+    }
+
+    //@Query("DELETE FROM run_history_meta_data")
+    //fun deleteAll()
 
     //@Query("SELECT cast (strftime('%W', date) as integer) as Week, SUM(kmRun) FROM run_history WHERE date BETWEEN date('now','localtime','weekday 0','-27 day') AND date('now','localtime','weekday 0') GROUP BY cast (strftime('%W', date) as integer)")
     //fun getKilometersRunInTheLastFourWeeks(): Flow<List<List<Int>>>
+
+    @Query("SELECT SUM(kmRun) as summedValue, date FROM run_history_meta_data WHERE date BETWEEN date('now','localtime', '-29 day', 'start of day') AND date('now','localtime', '+1 day', 'start of day') GROUP BY strftime('%d', date)")
+    fun getKilometersRunForTheLastMonth() : Flow<List<SummedRunHistoryMetaDataTuple>>
+
+    @Query("SELECT SUM(timeRun) as summedValue, date FROM run_history_meta_data WHERE date BETWEEN date('now','localtime', '-29 day', 'start of day') AND date('now','localtime', '+1 day', 'start of day') GROUP BY strftime('%d', date)")
+    fun getTimeRunForTheLastMonth() : Flow<List<SummedRunHistoryMetaDataTuple>>
+
+    @Query("SELECT AVG(paceValue) as summedValue, runDate as date FROM run_history_measurement WHERE runDate BETWEEN date('now','localtime', '-29 day', 'start of day') AND date('now','localtime', '+1 day', 'start of day') GROUP BY strftime('%d', date)")
+    fun getAveragePaceRunForTheLastMonth() : Flow<List<SummedRunHistoryMetaDataTuple>>
+
+
+
+    data class SummedRunHistoryMetaDataTuple(
+        @ColumnInfo(name = "summedValue") val summedValue: Float?,
+        @ColumnInfo(name = "date") val date: LocalDateTime?
+    )
 }

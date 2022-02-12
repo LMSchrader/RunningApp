@@ -16,6 +16,9 @@
     <string name="runningDay">Today is a running day!</string>
     <string name="kilometers_run">%1$s kilometers run so far</string>
     <string name="running_days_kept">You have followed your running plan %1$s times!</string>
+    <string name="pace_run_label">Average pace run last 30 days</string>
+    <string name="kilometers_run_label">Kilometers run last 30 days</string>
+    <string name="time_run_label">Time run last 30 days</string>
 
     <!-- running schedule-->
     <string name="addRunningSchedule">Add running schedule entry</string>

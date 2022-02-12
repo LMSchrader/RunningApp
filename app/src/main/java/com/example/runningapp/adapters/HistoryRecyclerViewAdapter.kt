@@ -8,15 +8,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.R
-import com.example.runningapp.data.RunHistoryEntry
+import com.example.runningapp.data.RunHistoryEntryMetaDataWithMeasurements
 import com.example.runningapp.util.DateUtil.StaticFunctions.formatDate
 
 class HistoryRecyclerViewAdapter(
-    runHistoryLiveData: LiveData<List<RunHistoryEntry>>,
+    runHistoryLiveData: LiveData<List<RunHistoryEntryMetaDataWithMeasurements>>,
     private val onClickListener: (position: Int?) -> Unit,
     lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder>() {
-    private var data: List<RunHistoryEntry> = emptyList()
+    private var data: List<RunHistoryEntryMetaDataWithMeasurements> = emptyList()
 
     init {
         runHistoryLiveData.observe(lifecycleOwner) { runHistoryEntries ->
@@ -54,7 +54,7 @@ class HistoryRecyclerViewAdapter(
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.dateTime.text = formatDate(data[position].date)
+        viewHolder.dateTime.text = formatDate(data[position].metaData.date)
     }
 
     // Return the size of your dataset (invoked by the layout manager)

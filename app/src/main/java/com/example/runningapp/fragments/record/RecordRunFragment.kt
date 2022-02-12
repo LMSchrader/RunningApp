@@ -16,7 +16,8 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.fragment.app.*
 import com.example.runningapp.AppApplication
-import com.example.runningapp.data.RunHistoryEntry
+import com.example.runningapp.data.RunHistoryEntryMetaDataWithMeasurements
+import com.example.runningapp.data.RunHistoryEntryMetaData
 import com.example.runningapp.fragments.dialogs.ContinueDialogFragment
 import com.example.runningapp.fragments.dialogs.NoteDialogFragment
 import com.example.runningapp.services.RecordRunService
@@ -75,41 +76,47 @@ class RecordRunFragment : Fragment(), ContinueDialogFragment.CustomDialogListene
         }
     }
 
-    private val observerListener: (run: RunHistoryEntry?) -> Unit = { run ->
-        if (run == null || run.timeValues.isEmpty()) {
+    private val observerListener: (run: RunHistoryEntryMetaDataWithMeasurements?) -> Unit = { run ->
+        if (run == null || run.measurements.isEmpty()) {
             binding.currentTime.text = getString(R.string.time_empty)
             binding.currentKm.text = getString(R.string.value_empty)
             binding.avgPace.text = getString(R.string.value_empty)
             binding.currentPace.text = getString(R.string.value_empty)
-        } else { // TODO: überarbeiten
-            binding.currentTime.text = floor(run.timeValues[run.timeValues.lastIndex].toLong().div(10.toDouble().pow(9)))
+        } else {
+            binding.currentTime.text = floor(run.measurements[run.measurements.lastIndex].timeValue.toLong().div(10.toDouble().pow(9)))
                 .toDuration(DurationUnit.SECONDS).toString()
-            binding.currentKm.text = "%.2f".format(run.kmRun)
+            binding.currentKm.text = "%.2f".format(run.metaData.kmRun)
 
-            //if (run.paceValues.isNotEmpty()) {
-                val pace =
-                    run.paceValues[run.paceValues.lastIndex] //TODO: hier kommt es manchmal zu ArrayIndexOutOfBoundsException und infinit exeptions
-                if (pace != null) {
-                    if(pace.toLong().toDuration(DurationUnit.MINUTES).inWholeDays > 1) {
-                        binding.avgPace.text = getString(R.string.value_empty)
-                    } else {
-                        if(pace.toLong().toDuration(DurationUnit.MINUTES).inWholeHours > 1) {
-                            binding.currentPace.text =
-                                pace.div(60).toLong().toDuration(DurationUnit.MINUTES)
-                                    .toString()
-                        } else {
-                            binding.currentPace.text =
-                                pace.times(60).toLong().toDuration(DurationUnit.SECONDS)
-                                    .toString()
-                        }
-                    }
+            val pace =
+                run.measurements[run.measurements.lastIndex].paceValue
+            if (pace != null) {
+                if(pace.toLong().toDuration(DurationUnit.MINUTES).inWholeDays > 1) {
+                    binding.avgPace.text = getString(R.string.value_empty)
                 } else {
-                    binding.currentPace.text = getString(R.string.value_empty)
+                    if(pace.toLong().toDuration(DurationUnit.MINUTES).inWholeHours > 1) {
+                        binding.currentPace.text =
+                            pace.div(60).toLong().toDuration(DurationUnit.MINUTES)
+                                .toString()
+                    } else {
+                        binding.currentPace.text =
+                            pace.times(60).toLong().toDuration(DurationUnit.SECONDS)
+                                .toString()
+                    }
                 }
+            } else {
+                binding.currentPace.text = getString(R.string.value_empty)
+            }
 
-            run.paceValues.removeAll(listOf(null))
-            if (run.paceValues.isNotEmpty()) {
-                val average = (run.paceValues as List<Float>).average()
+            if (run.measurements.isNotEmpty()) {
+                var sum = 0F
+                var count = 1
+                run.measurements.forEach{
+                    if(it.paceValue != null) {
+                        sum+=it.paceValue!!
+                        count++
+                    }
+                }
+                val average = sum/count
                 if(average.toLong().toDuration(DurationUnit.MINUTES).inWholeDays > 1) {
                     binding.avgPace.text = getString(R.string.value_empty)
                 } else {
@@ -263,7 +270,7 @@ class RecordRunFragment : Fragment(), ContinueDialogFragment.CustomDialogListene
             // create object
             val currentTime = LocalDateTime.now()
             recordRunViewModel.insertAndObserve(
-                RunHistoryEntry(currentTime),
+                RunHistoryEntryMetaDataWithMeasurements(RunHistoryEntryMetaData(currentTime), mutableListOf()),
                 viewLifecycleOwner,
                 observerListener
             )

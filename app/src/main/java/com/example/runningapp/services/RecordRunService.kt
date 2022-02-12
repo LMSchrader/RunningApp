@@ -14,7 +14,8 @@ import com.example.runningapp.AppApplication
 import com.example.runningapp.MainActivity
 import com.example.runningapp.R
 import com.example.runningapp.broadcastReceiver.StopRunBroadcastReceiver
-import com.example.runningapp.data.RunHistoryEntry
+import com.example.runningapp.data.RunHistoryEntryMetaDataWithMeasurements
+import com.example.runningapp.data.RunHistoryMeasurement
 import com.example.runningapp.data.RunHistoryRepository
 import com.example.runningapp.data.RunningScheduleRepository
 import com.example.runningapp.util.DateUtil
@@ -39,7 +40,7 @@ class RecordRunService: LifecycleService() {
 
     private lateinit var runHistoryRepository: RunHistoryRepository
     private lateinit var runningScheduleRepository: RunningScheduleRepository
-    private lateinit var run : RunHistoryEntry
+    private lateinit var run : RunHistoryEntryMetaDataWithMeasurements
 
     companion object {
         private const val ID = 155555
@@ -91,22 +92,25 @@ class RecordRunService: LifecycleService() {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
+                val startingIndexNewMeasurements = run.measurements.lastIndex+1
                     for (location in locationResult.locations) {
                         if (lastLocation != null) {
                             val runKm = location.distanceTo(lastLocation)/1000
-                            run.kmRun += runKm
-                            run.timeValues.add((location.elapsedRealtimeNanos- startTime!!).toFloat())
-                            run.altitudeValues.add(location.altitude.toFloat())
+                            run.metaData.kmRun += runKm
+                            run.metaData.timeRun = (location.elapsedRealtimeNanos- startTime!!).toFloat()
+                            val measurement = RunHistoryMeasurement(run.metaData.date, (location.elapsedRealtimeNanos- startTime!!).toFloat())
+                            measurement.altitudeValue = location.altitude.toFloat()
                             if (location.speed == 0.0F) {
-                                run.paceValues.add(null)
+                                measurement.paceValue = null
                             } else {
-                                run.paceValues.add(
+                                measurement.paceValue =
                                     (location.speed * 0.06F).toDouble().pow((-1).toDouble())
                                         .toFloat()
-                                )
                             }
-                            run.longitudeValues.add(location.longitude)
-                            run.latitudeValues.add(location.latitude)
+                            measurement.longitudeValue = location.longitude
+                            measurement.latitudeValue = location.latitude
+
+                            run.measurements.add(measurement)
 
                             // update kilometers run counter
                             with(sharedPref.edit()) {
@@ -128,7 +132,7 @@ class RecordRunService: LifecycleService() {
                         lastLocation = location
                     }
                 lifecycleScope.launch {
-                    runHistoryRepository.update(run)
+                    runHistoryRepository.updateAndInsertLatestMeasurements(run,startingIndexNewMeasurements)
                 }
             }
         }
@@ -148,7 +152,7 @@ class RecordRunService: LifecycleService() {
             with(sharedPref.edit()) {
                 putString(
                     getString(R.string.last_running_day_preferences),
-                    run.date.toString()
+                    run.metaData.date.toString()
                 )
                 apply()
             }

@@ -3,7 +3,7 @@ package com.example.runningapp.data
 import android.content.Context
 import androidx.room.*
 
-@Database(entities = [RunningScheduleEntry::class, RunHistoryEntry::class], version = 1)
+@Database(entities = [RunningScheduleEntry::class, RunHistoryEntryMetaData::class, RunHistoryMeasurement::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun runningScheduleDao(): RunningScheduleDao

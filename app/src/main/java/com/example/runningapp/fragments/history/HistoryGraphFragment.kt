@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.runningapp.AppApplication
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentHistoryGraphBinding
-import com.example.runningapp.util.LineChartUtil.StaticFunctions.configureLineChart
+import com.example.runningapp.util.LineChartUtil.StaticFunctions.configureLineChartDuration
 import com.example.runningapp.util.LineChartUtil.StaticFunctions.lineWidth
 import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
@@ -40,22 +40,27 @@ class HistoryGraphFragment : Fragment() {
 
         chart = binding.lineChart
 
-        context?.let { configureLineChart(chart, it) }
+        context?.let { configureLineChartDuration(chart, it) }
 
-        historyViewModel.currentRunHistoryEntry.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
-            val timeList = currentRunHistoryEntry?.timeValues
-            val paceList = currentRunHistoryEntry?.paceValues
-            val altitudeList = currentRunHistoryEntry?.altitudeValues
+        historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
+            val timeList : MutableList<Float> = mutableListOf()
+            val paceList : MutableList<Float> = mutableListOf()
+            val altitudeList : MutableList<Float> = mutableListOf()
+            currentRunHistoryEntry?.measurements?.forEach{
+                if(it.paceValue != null && it.altitudeValue != null) {
+                    timeList.add(it.timeValue)
+                    paceList.add(it.paceValue!!)
+                    altitudeList.add(it.altitudeValue!!)
+                }
+            }
             val paceTimeSeries: MutableList<Entry> = mutableListOf()
             val altitudeTimeSeries: MutableList<Entry> = mutableListOf()
-            if (timeList != null) {
-                for (i in timeList.indices) {
-                    paceList?.get(i)?.let { Entry(timeList[i], it) }?.let { paceTimeSeries.add(it) }
-                    altitudeList?.get(i)?.let { Entry(timeList[i], it) }?.let {
-                        altitudeTimeSeries.add(
-                            it
-                        )
-                    }
+            for (i in timeList.indices) {
+                Entry(timeList[i], paceList[i]).let { paceTimeSeries.add(it) }
+                Entry(timeList[i], altitudeList[i]).let {
+                    altitudeTimeSeries.add(
+                        it
+                    )
                 }
             }
 

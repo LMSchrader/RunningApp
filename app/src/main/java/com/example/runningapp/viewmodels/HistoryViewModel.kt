@@ -6,19 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.runningapp.data.RunHistoryEntry
+import com.example.runningapp.data.RunHistoryEntryMetaDataWithMeasurements
 import com.example.runningapp.data.RunHistoryRepository
 import kotlinx.coroutines.launch
 
 class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel() {
 
-    val runHistoryEntries: LiveData<List<RunHistoryEntry>> = repository.runHistory.asLiveData()
+    val runHistoryEntriesMetaDataWithMeasurements: LiveData<List<RunHistoryEntryMetaDataWithMeasurements>> = repository.runHistory.asLiveData()
     //val runHistoryEntriesWithoutCurrentRun: MediatorLiveData<List<RunHistoryEntry>> = MediatorLiveData()
 
-    val currentRunHistoryEntry: MutableLiveData<RunHistoryEntry?> =
+    val currentRunHistoryEntryMetaDataWithMeasurements: MutableLiveData<RunHistoryEntryMetaDataWithMeasurements?> =
         MutableLiveData(null)
-
     var historyFragmentIsInSplitScreenMode: Boolean = false
+    var historyFragmentWasInSplitScreenMode: Boolean = false
+    var historyFragmentWasLastOrientationLandscape: Boolean = false
 
     var currentViewPagerItem: Int = 0
 
@@ -45,20 +46,20 @@ class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel
     //}
 
 
-    fun insert(entry: RunHistoryEntry) = viewModelScope.launch {
-        repository.insert(entry)
+    fun insert(entryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements) = viewModelScope.launch {
+        repository.insert(entryMetaDataWithMeasurements)
     }
 
-    fun update(entry: RunHistoryEntry) = viewModelScope.launch {
-        repository.update(entry)
+    fun update(entryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements) = viewModelScope.launch {
+        repository.update(entryMetaDataWithMeasurements)
     }
 
-    fun delete(entry: RunHistoryEntry) = viewModelScope.launch {
-        repository.delete(entry)
+    fun delete(entryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements) = viewModelScope.launch {
+        repository.delete(entryMetaDataWithMeasurements)
 
         // update current entry
-        if (currentRunHistoryEntry.value?.date?.equals(entry.date) == true) {
-            currentRunHistoryEntry.value = null
+        if (currentRunHistoryEntryMetaDataWithMeasurements.value?.metaData?.date?.equals(entryMetaDataWithMeasurements.metaData.date) == true) {
+            currentRunHistoryEntryMetaDataWithMeasurements.value = null
         }
     }
 }
