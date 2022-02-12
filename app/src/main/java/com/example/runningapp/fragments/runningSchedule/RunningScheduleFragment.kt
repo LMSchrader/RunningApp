@@ -12,8 +12,6 @@ import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMo
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class RunningScheduleFragment : Fragment() {
-    //TODO Navigation: running schedule entry ist im portrait modus und es wird die Orientierung zweimal gewechselt -> es wird die recycler view statt des entries angezeigt
-    // andere master detal views machen das auch
     private var _binding: FragmentRunningScheduleBinding? = null
     private val binding get() = _binding!!
 
@@ -30,7 +28,6 @@ class RunningScheduleFragment : Fragment() {
                 R.id.rightFragment
             ) == null) {
             // add right fragment in landscape mode if not present
-            //TODO: bedingung (nur wenn entry schonmal angesehen wurde) hinzufuegen
             addSecondFragment()
         } else if (context?.let { isLandscapeMode(it) } == false && childFragmentManager.findFragmentById(
                 R.id.rightFragment
