@@ -43,11 +43,11 @@ class HistoryGraphFragment : Fragment() {
         context?.let { configureLineChartDuration(chart, it) }
 
         historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
-            val timeList : MutableList<Float> = mutableListOf()
-            val paceList : MutableList<Float> = mutableListOf()
-            val altitudeList : MutableList<Float> = mutableListOf()
-            currentRunHistoryEntry?.measurements?.forEach{
-                if(it.paceValue != null && it.altitudeValue != null) {
+            val timeList: MutableList<Float> = mutableListOf()
+            val paceList: MutableList<Float> = mutableListOf()
+            val altitudeList: MutableList<Float> = mutableListOf()
+            currentRunHistoryEntry?.measurements?.forEach {
+                if (it.paceValue != null && it.altitudeValue != null) {
                     timeList.add(it.timeValue)
                     paceList.add(it.paceValue!!)
                     altitudeList.add(it.altitudeValue!!)
@@ -64,27 +64,30 @@ class HistoryGraphFragment : Fragment() {
                 }
             }
 
-            val pace = LineDataSet(
-                paceTimeSeries,
-                root.context.resources.getString(R.string.pace_label)
-            )
-            pace.lineWidth = lineWidth
-            pace.setDrawCircles(false)
+            if (paceTimeSeries.isNotEmpty()) {
+                val pace = LineDataSet(
+                    paceTimeSeries,
+                    root.context.resources.getString(R.string.pace_label)
+                )
+                pace.lineWidth = lineWidth
+                pace.setDrawCircles(false)
 
-            val altitude = LineDataSet(
-                altitudeTimeSeries,
-                root.context.resources.getString(R.string.altitude_label)
-            )
-            altitude.color = R.color.purple_200
-            altitude.setCircleColor(R.color.purple_200)
-            altitude.lineWidth = lineWidth
-            altitude.setDrawCircles(false)
+                val altitude = LineDataSet(
+                    altitudeTimeSeries,
+                    root.context.resources.getString(R.string.altitude_label)
+                )
+                altitude.color = R.color.purple_200
+                altitude.setCircleColor(R.color.purple_200)
+                altitude.lineWidth = lineWidth
+                altitude.setDrawCircles(false)
 
-            chart.data = LineData(
-                pace,
-                altitude
-            )
-            chart.data.setDrawValues(false)
+                chart.data = LineData(
+                    pace,
+                    altitude
+                )
+                chart.data.setDrawValues(false)
+            }
+
             chart.animateX(500)
         }
 
