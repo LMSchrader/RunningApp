@@ -55,7 +55,6 @@ class RecordRunService: LifecycleService() {
     }
 
 
-    // TODO: onCreate on startCommand (wo muss was hin)
     override fun onCreate() {
         super.onCreate()
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
@@ -159,8 +158,6 @@ class RecordRunService: LifecycleService() {
             }
         }
 
-        //getLastLocation()
-
         startLocationUpdates()
     }
 
@@ -199,17 +196,6 @@ class RecordRunService: LifecycleService() {
             .build()
 
         startForeground(ID, notification)
-    }
-
-    private fun getLastLocation() {
-        try {
-            fusedLocationProviderClient.lastLocation.addOnSuccessListener()
-            { location: Location? -> //TODO
-                // Got last known location. In some rare situations this can be null.
-            }
-        } catch(e: SecurityException) {
-
-        }
     }
 
     private fun startLocationUpdates() {

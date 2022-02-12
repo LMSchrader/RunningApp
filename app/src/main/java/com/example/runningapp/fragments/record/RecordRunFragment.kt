@@ -303,7 +303,7 @@ class RecordRunFragment : Fragment(), ContinueDialogFragment.CustomDialogListene
                     activity?.let {
                         exception.startResolutionForResult(
                             it,
-                            100 // 100: GPS setting // TODO, anscheinend random wert
+                            100
                         )
                     }
                 } catch (sendEx: IntentSender.SendIntentException) {
