@@ -23,9 +23,6 @@ interface RunHistoryDao {
     fun insert(entry: RunHistoryEntryMetaData)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(measurement: RunHistoryMeasurement)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(measurement: List<RunHistoryMeasurement>)
 
     @Transaction
@@ -36,9 +33,6 @@ interface RunHistoryDao {
 
     @Update
     fun update(entry: RunHistoryEntryMetaData)
-
-    @Update
-    fun update(measurement: RunHistoryMeasurement)
 
     @Update
     fun updateAll(measurement: List<RunHistoryMeasurement>)
@@ -67,20 +61,11 @@ interface RunHistoryDao {
     fun delete(entry: RunHistoryEntryMetaData)
 
     @Delete
-    fun delete(measurement: RunHistoryMeasurement)
-
-    @Delete
     fun deleteAll(measurement: List<RunHistoryMeasurement>)
 
     fun delete(entryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements) {
         delete(entryMetaDataWithMeasurements.metaData)
     }
-
-    //@Query("DELETE FROM run_history_meta_data")
-    //fun deleteAll()
-
-    //@Query("SELECT cast (strftime('%W', date) as integer) as Week, SUM(kmRun) FROM run_history WHERE date BETWEEN date('now','localtime','weekday 0','-27 day') AND date('now','localtime','weekday 0') GROUP BY cast (strftime('%W', date) as integer)")
-    //fun getKilometersRunInTheLastFourWeeks(): Flow<List<List<Int>>>
 
     @Query("SELECT SUM(kmRun) as summedValue, date FROM run_history_meta_data WHERE date BETWEEN date('now','localtime', '-29 day', 'start of day') AND date('now','localtime', '+1 day', 'start of day') GROUP BY strftime('%d', date)")
     fun getKilometersRunForTheLastMonthPerDay() : Flow<List<DailyMetaDataTuple>>
