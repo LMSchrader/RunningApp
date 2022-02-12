@@ -18,8 +18,6 @@ class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel
     val currentRunHistoryEntryMetaDataWithMeasurements: MutableLiveData<RunHistoryEntryMetaDataWithMeasurements?> =
         MutableLiveData(null)
     var historyFragmentIsInSplitScreenMode: Boolean = false
-    var historyFragmentWasInSplitScreenMode: Boolean = false
-    var historyFragmentWasLastOrientationLandscape: Boolean = false
 
     var currentViewPagerItem: Int = 0
 
