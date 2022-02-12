@@ -28,9 +28,9 @@ class HistoryOverviewFragment : Fragment() {
         _binding = FragmentHistoryOverviewBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        historyViewModel.currentRunHistoryEntry.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
+        historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
             if (currentRunHistoryEntry != null) {
-                binding.runFrom.text = formatDate(currentRunHistoryEntry.date)
+                binding.runFrom.text = formatDate(currentRunHistoryEntry.metaData.date)
                 binding.distance.text = null // TODO
                 binding.duration.text = null //TODO
                 binding.pace.text = null //TODO

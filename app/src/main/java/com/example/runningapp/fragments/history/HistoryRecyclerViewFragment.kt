@@ -41,10 +41,10 @@ class HistoryRecyclerViewFragment : Fragment() {
         layoutManager = LinearLayoutManager(context)
         binding.recyclerView.layoutManager = layoutManager
 
-        adapter = HistoryRecyclerViewAdapter(historyViewModel.runHistoryEntries,
+        adapter = HistoryRecyclerViewAdapter(historyViewModel.runHistoryEntriesMetaDataWithMeasurements,
             { position ->
-                historyViewModel.currentRunHistoryEntry.value = position?.let { it ->
-                    historyViewModel.runHistoryEntries.value?.get(
+                historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.value = position?.let { it ->
+                    historyViewModel.runHistoryEntriesMetaDataWithMeasurements.value?.get(
                         it
                     )
                 }

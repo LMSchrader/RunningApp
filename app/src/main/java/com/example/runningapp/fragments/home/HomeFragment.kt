@@ -10,13 +10,13 @@ import com.example.runningapp.AppApplication
 import com.example.runningapp.R
 import com.example.runningapp.adapters.HomeAdapter
 import com.example.runningapp.databinding.FragmentHomeBinding
-import com.example.runningapp.viewmodels.RunningScheduleViewModel
-import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory
+import com.example.runningapp.viewmodels.HomeViewModel
+import com.example.runningapp.viewmodels.HomeViewModelFactory
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment() {
-    private val viewModel: RunningScheduleViewModel by activityViewModels {
-        RunningScheduleViewModelFactory((activity?.application as AppApplication).runningScheduleRepository)
+    private val viewModel: HomeViewModel by activityViewModels {
+        HomeViewModelFactory((activity?.application as AppApplication).homeRepository)
     }
 
     private var _binding: FragmentHomeBinding? = null
@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
 
         initKeyValuePairs()
 
-        binding.pager.adapter = HomeAdapter(viewModel.entries, viewLifecycleOwner)
+        binding.pager.adapter = HomeAdapter(mapOf("kmData" to viewModel.kmRunData, "timeData" to viewModel.timeRunData, "paceData" to viewModel.averagePaceRunData), viewLifecycleOwner)
 
         TabLayoutMediator(binding.tabLayout, binding.pager, true) { _, _ -> }.attach()
 

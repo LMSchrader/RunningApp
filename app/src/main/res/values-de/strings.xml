@@ -17,6 +17,9 @@
     <string name="runningDay">Heute ist ein Lauftag!</string>
     <string name="kilometers_run">Bisher %1$s Kilometer gelaufen</string>
     <string name="running_days_kept">Du hast %1$s mal deinen Laufplan eingehalten!</string>
+    <string name="pace_run_label">Durchschnittlich gelaufener Pace in den letzten 30 Tagen</string>
+    <string name="kilometers_run_label">Gelaufene Kilometer in den letzten 30 Tagen</string>
+    <string name="time_run_label">Gelaufene Zeit in den letzten 30 Tagen</string>
 
     <!-- running schedule-->
     <string name="addRunningSchedule">Laufplaneintrag hinzufügen</string>

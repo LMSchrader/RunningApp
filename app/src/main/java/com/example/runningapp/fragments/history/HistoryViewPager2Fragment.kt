@@ -65,14 +65,14 @@ class HistoryViewPager2Fragment : Fragment() {
     }
 
     private fun showDeleteDialog() {
-        val deletedItem = historyViewModel.currentRunHistoryEntry.value ?: return
-        val dateDeletedItem = formatDate(deletedItem.date)
+        val deletedItem = historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.value ?: return
+        val dateDeletedItem = formatDate(deletedItem.metaData.date)
         val dateActiveRun = (activity?.application as AppApplication).shardPref.getString(
             getString(R.string.service_active_preferences),
             ""
         )
 
-        if (!dateActiveRun.equals(deletedItem.date.toString())) {
+        if (!dateActiveRun.equals(deletedItem.metaData.date.toString())) {
             // delete dialog
             val dialog =
                 CancelContinueDialogFragment.getInstance(

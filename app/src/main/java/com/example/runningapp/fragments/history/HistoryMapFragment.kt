@@ -1,5 +1,6 @@
 package com.example.runningapp.fragments.history
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,7 @@ import com.mapbox.maps.*
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPolylineAnnotationManager
-import com.example.runningapp.data.RunHistoryEntry
+import com.example.runningapp.data.RunHistoryEntryMetaDataWithMeasurements
 import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationManager
 import android.view.MotionEvent
 
@@ -32,6 +33,7 @@ class HistoryMapFragment : Fragment() {
     private val binding get() = _binding!!
     lateinit var points : MutableList<Point>
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,7 +61,7 @@ class HistoryMapFragment : Fragment() {
 
         polylineAnnotationManager = mapView.annotations.createPolylineAnnotationManager()
 
-        historyViewModel.currentRunHistoryEntry.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
+        historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
             points = extractAndTransformPointList(currentRunHistoryEntry)
             replaceRouteOnMap(points)
             setCameraPositionForMap(points)
@@ -114,11 +116,12 @@ class HistoryMapFragment : Fragment() {
         }
     }
 
-    private fun extractAndTransformPointList (currentRunHistoryEntry: RunHistoryEntry?) : MutableList<Point>{
+    private fun extractAndTransformPointList (currentRunHistoryEntryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements?) : MutableList<Point>{
         val points = mutableListOf<Point>()
         // Define a list of geographic coordinates to be connected.
-        currentRunHistoryEntry?.longitudeValues?.zip(currentRunHistoryEntry.latitudeValues) { lon, lat ->
-            points.add(Point.fromLngLat(lon,lat))
+        currentRunHistoryEntryMetaDataWithMeasurements?.measurements?.forEach{
+            it.latitudeValue?.let { it1 -> it.longitudeValue?.let { it2 -> Point.fromLngLat(it2, it1) } }
+                ?.let { it3 -> points.add(it3) }
         }
         return points
     }
