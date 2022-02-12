@@ -14,11 +14,9 @@ import com.example.runningapp.viewmodels.HistoryViewModelFactory
 import com.mapbox.geojson.Point
 import com.mapbox.maps.*
 import com.mapbox.maps.plugin.annotation.annotations
-import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationOptions
-import com.mapbox.maps.plugin.annotation.generated.createPolylineAnnotationManager
 import com.example.runningapp.data.RunHistoryEntryMetaDataWithMeasurements
-import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationManager
 import android.view.MotionEvent
+import com.mapbox.maps.plugin.annotation.generated.*
 
 
 class HistoryMapFragment : Fragment() {
@@ -29,6 +27,7 @@ class HistoryMapFragment : Fragment() {
 
     lateinit var mapView: MapView
     lateinit var polylineAnnotationManager : PolylineAnnotationManager
+    lateinit var circleAnnotationManager  : CircleAnnotationManager
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
     lateinit var points : MutableList<Point>
@@ -60,6 +59,7 @@ class HistoryMapFragment : Fragment() {
         mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
 
         polylineAnnotationManager = mapView.annotations.createPolylineAnnotationManager()
+        circleAnnotationManager  = mapView.annotations.createCircleAnnotationManager()
 
         historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
             points = extractAndTransformPointList(currentRunHistoryEntry)
@@ -89,30 +89,43 @@ class HistoryMapFragment : Fragment() {
     }
 
     private fun replaceRouteOnMap(points :MutableList<Point>) {
-        // Create an instance of the Annotation API and get the polyline manager.
-
+        circleAnnotationManager.deleteAll()
         polylineAnnotationManager.deleteAll()
+        if(points.size > 1) {
+            // Set options for the resulting line layer.
+            val polylineAnnotationOptions: PolylineAnnotationOptions = PolylineAnnotationOptions()
+                .withPoints(points)
+                // Style the line that will be added to the map.
+                .withLineColor("#ee4e8b")
+                .withLineWidth(5.0)
+            // Add the resulting line to the map.
+            polylineAnnotationManager.create(polylineAnnotationOptions)
+        } else {
+            val circleAnnotationOptions: CircleAnnotationOptions = CircleAnnotationOptions()
+                // Define a geographic coordinate.
+                .withPoint(points[0])
+                // Style the circle that will be added to the map.
+                .withCircleRadius(8.0)
+                .withCircleColor("#ee4e8b")
+                .withCircleStrokeWidth(2.0)
+                .withCircleStrokeColor("#ffffff")
 
-        // Set options for the resulting line layer.
-        val polylineAnnotationOptions: PolylineAnnotationOptions = PolylineAnnotationOptions()
-            .withPoints(points)
-            // Style the line that will be added to the map.
-            .withLineColor("#ee4e8b")
-            .withLineWidth(5.0)
-        // Add the resulting line to the map.
-        polylineAnnotationManager.create(polylineAnnotationOptions)
+            // Add the resulting circle to the map.
+            circleAnnotationManager.create(circleAnnotationOptions)
+        }
     }
 
     private fun setCameraPositionForMap(points :MutableList<Point>) {
         if(points.isNotEmpty()) {
-            val cameraOptions = CameraOptions.Builder().center(points[0]).build()
+            val edgeInsets = EdgeInsets(20.0, 20.0, 20.0, 20.0)
+            val cameraOptions = CameraOptions.Builder().center(points[0]).zoom(13.0).padding(edgeInsets).build()
             mapView.getMapboxMap().setCamera(cameraOptions)
 
-
-            val cameraPosition = mapView.getMapboxMap()
-                .cameraForCoordinates(points, EdgeInsets(20.0, 20.0, 20.0, 20.0))
-            // Set camera position
-            mapView.getMapboxMap().setCamera(cameraPosition)
+            if(points.size > 1) {
+                val cameraPosition = mapView.getMapboxMap()
+                    .cameraForCoordinates(points, edgeInsets)
+                mapView.getMapboxMap().setCamera(cameraPosition)
+            }
         }
     }
 
