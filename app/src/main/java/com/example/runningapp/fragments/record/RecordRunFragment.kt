@@ -94,7 +94,7 @@ class RecordRunFragment : Fragment(), ContinueDialogFragment.ContinueDialogListe
 
             if (run.measurements.isNotEmpty()) {
                 var sum = 0F
-                var count = 1
+                var count = 0
                 run.measurements.forEach{
                     if(it.paceValue != null) {
                         sum+=it.paceValue!!

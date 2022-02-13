@@ -57,7 +57,7 @@ class HistoryRecyclerViewFragment : Fragment() {
         )
         binding.recyclerView.adapter = adapter
 
-        if(historyViewModel.currentRecyclerViewPosition != null) {
+        if(historyViewModel.currentRecyclerViewPosition != null && historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.value !=null && historyViewModel.currentRecyclerViewPosition!! <= historyViewModel.runHistoryEntriesMetaDataWithMeasurements.value!!.size) {
             historyViewModel.runHistoryEntriesMetaDataWithMeasurements.observe(viewLifecycleOwner) { runHistory : List<RunHistoryEntryMetaDataWithMeasurements> ->
                 historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.value = historyViewModel.currentRecyclerViewPosition?.let { it ->
                     runHistory[it]
