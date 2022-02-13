@@ -34,7 +34,7 @@ import kotlin.math.round
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
-class RecordRunFragment : Fragment(), ContinueDialogFragment.CustomDialogListener {
+class RecordRunFragment : Fragment(), ContinueDialogFragment.ContinueDialogListener {
     private val recordRunViewModel: RecordRunViewModel by activityViewModels {
         RecordRunViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }

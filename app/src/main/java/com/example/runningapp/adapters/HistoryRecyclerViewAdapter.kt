@@ -36,14 +36,12 @@ class HistoryRecyclerViewAdapter(
 
         init {
             introText.text = view.context.resources.getString(R.string.run_from)
-            // Define click listener for the ViewHolder's View.
             view.setOnClickListener {
                 onClickListener.invoke(adapterPosition)
             }
         }
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
@@ -52,11 +50,9 @@ class HistoryRecyclerViewAdapter(
         return ViewHolder(view, onClickListener)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.dateTime.text = formatDate(data[position].metaData.date)
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = data.size
 }

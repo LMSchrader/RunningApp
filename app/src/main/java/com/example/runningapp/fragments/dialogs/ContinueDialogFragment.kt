@@ -7,11 +7,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.runningapp.R
 
+/**
+ * Dialog with continue button
+ */
 class ContinueDialogFragment : DialogFragment() {
     private lateinit var text: String
-    private lateinit var listener: CustomDialogListener
+    private lateinit var listener: ContinueDialogListener
 
-    interface CustomDialogListener {
+    interface ContinueDialogListener {
         fun onDialogPositiveClick(dialog: DialogFragment)
     }
 
@@ -34,9 +37,9 @@ class ContinueDialogFragment : DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            listener = parentFragment as CustomDialogListener
+            listener = parentFragment as ContinueDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException((parentFragment.toString() + " must implement CustomDialogListener"))
+            throw ClassCastException((parentFragment.toString() + " must implement ContinueDialogListener"))
         }
     }
 
@@ -52,7 +55,7 @@ class ContinueDialogFragment : DialogFragment() {
     }
 
     companion object {
-        const val TAG = "CustomDialogFragment"
+        const val TAG = "ContinueDialogFragment"
 
         fun getInstance(text: String): DialogFragment {
             val dialog = ContinueDialogFragment()

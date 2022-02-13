@@ -79,7 +79,7 @@ interface RunHistoryDao {
 
 
     data class DailyMetaDataTuple(
-        @ColumnInfo(name = "summedValue") val metaDataValue: Float?,
+        @ColumnInfo(name = "summedValue") val metaDataValue: Float?, //TODO: rename
         @ColumnInfo(name = "date") val date: LocalDateTime?
     )
 }

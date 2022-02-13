@@ -6,6 +6,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.runningapp.R
 
+/**
+ * Dialog with ok button
+ */
 class NoteDialogFragment : DialogFragment() {
     private lateinit var text: String
 

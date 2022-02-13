@@ -47,7 +47,6 @@ class RunningScheduleRecyclerViewAdapter(
         }
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
@@ -56,18 +55,13 @@ class RunningScheduleRecyclerViewAdapter(
         return ViewHolder(view, onClickListener)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
         viewHolder.title.text = data[position].title
         viewHolder.startDate.text = data[position].startDate.toString()
         viewHolder.endDate.text = data[position].endDate.toString()
         viewHolder.weekdays.text = data[position].getWeekdayString(viewHolder.context)
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = data.size
 
 }

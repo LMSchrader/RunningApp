@@ -7,6 +7,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.runningapp.R
 
+/**
+ * Dialog with cancel and continue button
+ */
 class CancelContinueDialogFragment : DialogFragment() {
     private lateinit var text: String
     private lateinit var listener: CancelContinueDialogListener
@@ -27,7 +30,7 @@ class CancelContinueDialogFragment : DialogFragment() {
         try {
             listener = parentFragment as CancelContinueDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException((parentFragment.toString() + " must implement ContinueDialogListener"))
+            throw ClassCastException((parentFragment.toString() + " must implement CancelContinueDialogListener"))
         }
     }
 
