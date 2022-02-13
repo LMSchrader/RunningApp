@@ -40,7 +40,7 @@ class HomeAdapter(
         mapOf(0 to R.string.pace_label, 1 to R.string.kilometer_label, 2 to R.string.time_label)
 
     init {
-
+//TODO: auslagern?
         graphLiveDataMap.forEach { mapEntry ->
             when (mapEntry.key) {
                 "paceData" -> mapEntry.value.observe(lifecycleOwner) { entry ->
