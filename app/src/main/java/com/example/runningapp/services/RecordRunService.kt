@@ -94,10 +94,11 @@ class RecordRunService: LifecycleService() {
                 super.onLocationResult(locationResult)
                 val startingIndexNewMeasurements = run.measurements.lastIndex+1
                     for (location in locationResult.locations) {
-                        if (lastLocation != null) { //TODO: auslagern?
+                        if (lastLocation != null) {
                             val runKm = location.distanceTo(lastLocation)/1000
                             run.metaData.kmRun += runKm
                             run.metaData.timeRun = (location.elapsedRealtimeNanos- startTime!!).toFloat()
+
                             val measurement = RunHistoryMeasurement(run.metaData.date, (location.elapsedRealtimeNanos- startTime!!).toFloat())
                             measurement.altitudeValue = location.altitude.toFloat()
                             if (location.speed == 0.0F) {
