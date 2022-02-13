@@ -46,26 +46,16 @@ class HistoryGraphFragment : Fragment() {
             )
         }
 
-        //todo: auslagern?
         historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
-            val timeList: MutableList<Float> = mutableListOf()
-            val paceList: MutableList<Float> = mutableListOf()
-            val altitudeList: MutableList<Float> = mutableListOf()
-            currentRunHistoryEntry?.measurements?.forEach {
-                if (it.paceValue != null && it.altitudeValue != null) {
-                    timeList.add(it.timeValue)
-                    paceList.add(it.paceValue!!)
-                    altitudeList.add(it.altitudeValue!!)
-                }
-            }
             val paceTimeSeries: MutableList<Entry> = mutableListOf()
             val altitudeTimeSeries: MutableList<Entry> = mutableListOf()
-            for (i in timeList.indices) {
-                Entry(timeList[i], paceList[i]).let { paceTimeSeries.add(it) }
-                Entry(timeList[i], altitudeList[i]).let {
-                    altitudeTimeSeries.add(
-                        it
-                    )
+            currentRunHistoryEntry?.measurements?.forEach {
+                if (it.paceValue != null) {
+                    paceTimeSeries.add(Entry(it.timeValue,it.paceValue!!))
+                }
+
+                if (it.altitudeValue != null) {
+                    altitudeTimeSeries.add(Entry(it.timeValue,it.altitudeValue!!))
                 }
             }
 
