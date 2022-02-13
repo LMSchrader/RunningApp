@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.navigation.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleBinding
@@ -60,7 +61,7 @@ class RunningScheduleFragment : Fragment() {
     fun addSecondFragment() {
         childFragmentManager.commit {
             setReorderingAllowed(true)
-            add<RunningScheduleEntryFragment>(R.id.rightFragment)
+            replace<RunningScheduleEntryFragment>(R.id.rightFragment)
         }
     }
 
