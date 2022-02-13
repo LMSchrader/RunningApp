@@ -117,6 +117,7 @@ class HomeAdapter(
         )
 
         holder.chart.axisRight.isEnabled = false
+        holder.chart.xAxis.granularity = 1F
 
         val xAxisPointsList = timePointsMap[position]
         val yAxisPointsList = dataMap[position]
