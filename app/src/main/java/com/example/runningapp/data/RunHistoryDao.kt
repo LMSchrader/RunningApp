@@ -67,19 +67,19 @@ interface RunHistoryDao {
         delete(entryMetaDataWithMeasurements.metaData)
     }
 
-    @Query("SELECT SUM(kmRun) as summedValue, date FROM run_history_meta_data WHERE date BETWEEN date('now','localtime', '-29 day', 'start of day') AND date('now','localtime', '+1 day', 'start of day') GROUP BY strftime('%d', date) ORDER BY date")
+    @Query("SELECT SUM(kmRun) as metaDataValue, date FROM run_history_meta_data WHERE date BETWEEN date('now','localtime', '-29 day', 'start of day') AND date('now','localtime', '+1 day', 'start of day') GROUP BY strftime('%d', date) ORDER BY date")
     fun getKilometersRunForTheLastMonthPerDay() : Flow<List<DailyMetaDataTuple>>
 
-    @Query("SELECT SUM(timeRun) as summedValue, date FROM run_history_meta_data WHERE date BETWEEN date('now','localtime', '-29 day', 'start of day') AND date('now','localtime', '+1 day', 'start of day') GROUP BY strftime('%d', date) ORDER BY date")
+    @Query("SELECT SUM(timeRun) as metaDataValue, date FROM run_history_meta_data WHERE date BETWEEN date('now','localtime', '-29 day', 'start of day') AND date('now','localtime', '+1 day', 'start of day') GROUP BY strftime('%d', date) ORDER BY date")
     fun getTimeRunForTheLastMonthPerDay() : Flow<List<DailyMetaDataTuple>>
 
-    @Query("SELECT AVG(paceValue) as summedValue, runDate as date FROM run_history_measurement WHERE runDate BETWEEN date('now','localtime', '-29 day', 'start of day') AND date('now','localtime', '+1 day', 'start of day') GROUP BY strftime('%d', date) ORDER BY date")
+    @Query("SELECT AVG(paceValue) as metaDataValue, runDate as date FROM run_history_measurement WHERE runDate BETWEEN date('now','localtime', '-29 day', 'start of day') AND date('now','localtime', '+1 day', 'start of day') GROUP BY strftime('%d', date) ORDER BY date")
     fun getAveragePaceRunForTheLastMonthPerDay() : Flow<List<DailyMetaDataTuple>>
 
 
 
     data class DailyMetaDataTuple(
-        @ColumnInfo(name = "summedValue") val metaDataValue: Float?, //TODO: rename
+        @ColumnInfo(name = "metaDataValue") val metaDataValue: Float?,
         @ColumnInfo(name = "date") val date: LocalDateTime?
     )
 }
