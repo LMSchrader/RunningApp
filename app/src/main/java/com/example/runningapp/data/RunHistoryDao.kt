@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 interface RunHistoryDao {
 
     @Transaction
-    @Query("SELECT * FROM run_history_meta_data ORDER by date")
+    @Query("SELECT * FROM run_history_meta_data ORDER by date DESC")
     fun getAll(): Flow<List<RunHistoryEntryMetaDataWithMeasurements>>
 
     @Transaction
