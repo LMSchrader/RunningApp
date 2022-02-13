@@ -27,7 +27,7 @@ import java.util.concurrent.Executors.newSingleThreadExecutor
 import kotlin.math.pow
 
 class RecordRunService: LifecycleService() {
-    private val executor: Executor = newSingleThreadExecutor() // TODO: ist executor noch notwendig
+    private val executor: Executor = newSingleThreadExecutor()
 
     private lateinit var sharedPref: SharedPreferences
 
