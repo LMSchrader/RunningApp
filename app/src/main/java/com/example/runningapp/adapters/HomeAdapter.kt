@@ -21,73 +21,77 @@ class HomeAdapter(
     graphLiveDataMap: Map<String, LiveData<*>>,
     lifecycleOwner: LifecycleOwner,
 ) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
-    private var paceData: MutableList<Float> = mutableListOf()
-    private var kmData: MutableList<Float> = mutableListOf()
-    private var timeData: MutableList<Float> = mutableListOf()
-    private var paceTime: MutableList<Float> = mutableListOf()
-    private var kmTime: MutableList<Float> = mutableListOf()
-    private var timeTime: MutableList<Float> = mutableListOf()
-    private var dataMap: Map<Int, MutableList<Float>> =
-        mapOf(0 to paceData, 1 to kmData, 2 to timeData)
-    private var timePointsMap: Map<Int, MutableList<Float>> =
-        mapOf(0 to paceTime, 1 to kmTime, 2 to timeTime)
+    private var paceTimeSeries: MutableList<Entry> = mutableListOf()
+    private var kmTimeSeries: MutableList<Entry> = mutableListOf()
+    private var timeTimeSeries: MutableList<Entry> = mutableListOf()
+    private val paceIndex: Int = 0
+    private val kmIndex: Int = 1
+    private val timeIndex: Int = 2
+
+    private var dataMap: Map<Int, MutableList<Entry>> =
+        mapOf(paceIndex to paceTimeSeries, kmIndex to kmTimeSeries, timeIndex to timeTimeSeries)
     private var titleMap: Map<Int, Int> = mapOf(
-        0 to R.string.pace_run_label,
-        1 to R.string.kilometers_run_label,
-        2 to R.string.time_run_label
+        paceIndex to R.string.pace_run_label,
+        kmIndex to R.string.kilometers_run_label,
+        timeIndex to R.string.time_run_label
     )
     private val labelMap: Map<Int, Int> =
         mapOf(0 to R.string.pace_label, 1 to R.string.kilometer_label, 2 to R.string.time_label)
 
     init {
-//TODO: auslagern?
         graphLiveDataMap.forEach { mapEntry ->
             when (mapEntry.key) {
                 "paceData" -> mapEntry.value.observe(lifecycleOwner) { entry ->
-                    paceData.clear()
-                    paceTime.clear()
+                    paceTimeSeries.clear()
                     val averagePaceRunTupleList = entry as List<*>
                     averagePaceRunTupleList.forEach {
                         val averagePaceRunTuple = it as RunHistoryDao.DailyMetaDataTuple
                         if (averagePaceRunTuple.date != null && averagePaceRunTuple.metaDataValue != null) {
-                            paceData.add(averagePaceRunTuple.metaDataValue)
-                            paceTime.add(
-                                averagePaceRunTuple.date.toLocalDate().toEpochDay().toFloat()
+                            paceTimeSeries.add(
+                                Entry(
+                                    averagePaceRunTuple.date.toLocalDate().toEpochDay().toFloat(),
+                                    averagePaceRunTuple.metaDataValue
+                                )
                             )
                         }
                     }
-                    notifyDataSetChanged()
+                    notifyItemChanged(paceIndex)
                 }
                 "kmData" -> mapEntry.value.observe(lifecycleOwner) { entry ->
-                    kmData.clear()
-                    kmTime.clear()
+                    kmTimeSeries.clear()
+
                     val kmRunTupleList = entry as List<*>
                     kmRunTupleList.forEach {
                         val kmRunTuple = it as RunHistoryDao.DailyMetaDataTuple
                         if (kmRunTuple.date != null && kmRunTuple.metaDataValue != null) {
-                            kmData.add(kmRunTuple.metaDataValue)
-                            kmTime.add(kmRunTuple.date.toLocalDate().toEpochDay().toFloat())
+                            kmTimeSeries.add(
+                                Entry(
+                                    kmRunTuple.date.toLocalDate().toEpochDay().toFloat(),
+                                    kmRunTuple.metaDataValue
+                                )
+                            )
                         }
                     }
-                    notifyDataSetChanged()
+                    notifyItemChanged(kmIndex)
                 }
                 "timeData" -> mapEntry.value.observe(lifecycleOwner) { entry ->
-                    timeData.clear()
-                    timeTime.clear()
+                    timeTimeSeries.clear()
                     val timeRunTupleList = entry as List<*>
                     timeRunTupleList.forEach {
                         val timeRunTuple = it as RunHistoryDao.DailyMetaDataTuple
                         if (timeRunTuple.date != null && timeRunTuple.metaDataValue != null) {
-                            var timeValue = 0F
-                            if (timeRunTuple.metaDataValue > 0F) {
-                                timeValue =
-                                    timeRunTuple.metaDataValue.times(10.0.pow(-9)).div(60).toFloat()
-                            }
-                            timeData.add(timeValue)
-                            timeTime.add(timeRunTuple.date.toLocalDate().toEpochDay().toFloat())
+                            val timeValue =
+                                timeRunTuple.metaDataValue.times(10.0.pow(-9)).div(60)
+                                    .toFloat() //convert nanoseconds to minutes
+                            timeTimeSeries.add(
+                                Entry(
+                                    timeRunTuple.date.toLocalDate().toEpochDay().toFloat(),
+                                    timeValue
+                                )
+                            )
                         }
                     }
-                    notifyDataSetChanged()
+                    notifyItemChanged(timeIndex)
                 }
                 else -> {
                 }
@@ -119,14 +123,7 @@ class HomeAdapter(
         holder.chart.axisRight.isEnabled = false
         holder.chart.xAxis.granularity = 1F
 
-        val xAxisPointsList = timePointsMap[position]
-        val yAxisPointsList = dataMap[position]
-        val timeSeries: MutableList<Entry> = mutableListOf()
-        if (xAxisPointsList != null && yAxisPointsList != null) {
-            for (i in xAxisPointsList.indices) {
-                timeSeries.add(Entry(xAxisPointsList[i], yAxisPointsList[i]))
-            }
-        }
+        val timeSeries: MutableList<Entry> = dataMap[position]!!
 
         if (timeSeries.isNotEmpty()) {
             val data = LineDataSet(
