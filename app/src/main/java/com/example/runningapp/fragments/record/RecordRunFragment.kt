@@ -29,10 +29,6 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 import java.time.LocalDateTime
-import kotlin.math.pow
-import kotlin.math.round
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 class RecordRunFragment : Fragment(), ContinueDialogFragment.ContinueDialogListener {
     private val recordRunViewModel: RecordRunViewModel by activityViewModels {
@@ -43,19 +39,20 @@ class RecordRunFragment : Fragment(), ContinueDialogFragment.ContinueDialogListe
     private val binding get() = _binding!!
 
     private lateinit var sharedPref: SharedPreferences
-    private var prefListener: OnSharedPreferenceChangeListener = OnSharedPreferenceChangeListener { _, key ->
-        if (key == getString(R.string.service_active_preferences)) {
-            val date = sharedPref.getString(getString(R.string.service_active_preferences), "")
+    private var prefListener: OnSharedPreferenceChangeListener =
+        OnSharedPreferenceChangeListener { _, key ->
+            if (key == getString(R.string.service_active_preferences)) {
+                val date = sharedPref.getString(getString(R.string.service_active_preferences), "")
 
-            if (date != "") {
-                binding.startButton.visibility = View.GONE
-                binding.stopButton.visibility = View.VISIBLE
-            } else {
-                binding.startButton.visibility = View.VISIBLE
-                binding.stopButton.visibility = View.GONE
+                if (date != "") {
+                    binding.startButton.visibility = View.GONE
+                    binding.stopButton.visibility = View.VISIBLE
+                } else {
+                    binding.startButton.visibility = View.VISIBLE
+                    binding.stopButton.visibility = View.GONE
+                }
             }
         }
-    }
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -67,56 +64,21 @@ class RecordRunFragment : Fragment(), ContinueDialogFragment.ContinueDialogListe
             binding.currentKm.text = getString(R.string.value_empty)
             binding.avgPace.text = getString(R.string.value_empty)
             binding.currentPace.text = getString(R.string.value_empty)
-        } else {//TODO: auslagern?
-            binding.currentTime.text = round(run.measurements[run.measurements.lastIndex].timeValue.toLong().div(10.toDouble().pow(9)))
-                .toDuration(DurationUnit.SECONDS).toString()
-            binding.currentKm.text = "%.2f".format(run.metaData.kmRun)
+        } else {
+            binding.currentTime.text = run.metaData.getTimeRunAsString()
+            binding.currentKm.text = run.metaData.getKmRunAsString()
 
-            val pace =
-                run.measurements[run.measurements.lastIndex].paceValue
-            if (pace != null) {
-                if(pace.toLong().toDuration(DurationUnit.MINUTES).inWholeDays > 1) {
-                    binding.avgPace.text = getString(R.string.value_empty)
-                } else {
-                    if(pace.toLong().toDuration(DurationUnit.MINUTES).inWholeHours > 1) {
-                        binding.currentPace.text =
-                            pace.div(60).toLong().toDuration(DurationUnit.MINUTES)
-                                .toString()
-                    } else {
-                        binding.currentPace.text =
-                            pace.times(60).toLong().toDuration(DurationUnit.SECONDS)
-                                .toString()
-                    }
-                }
-            } else {
+            if (run.measurements[run.measurements.lastIndex].getPaceValueAsString().isEmpty()) {
                 binding.currentPace.text = getString(R.string.value_empty)
+            } else {
+                binding.currentPace.text =
+                    run.measurements[run.measurements.lastIndex].getPaceValueAsString()
             }
 
-            if (run.measurements.isNotEmpty()) {
-                var sum = 0F
-                var count = 0
-                run.measurements.forEach{
-                    if(it.paceValue != null) {
-                        sum+=it.paceValue!!
-                        count++
-                    }
-                }
-                val average = sum/count
-                if(average.toLong().toDuration(DurationUnit.MINUTES).inWholeDays > 1) {
-                    binding.avgPace.text = getString(R.string.value_empty)
-                } else {
-                    if(average.toLong().toDuration(DurationUnit.MINUTES).inWholeHours > 1) {
-                        binding.avgPace.text =
-                            average.div(60).toLong().toDuration(DurationUnit.MINUTES)
-                                .toString()
-                    } else {
-                        binding.avgPace.text =
-                            average.times(60).toLong().toDuration(DurationUnit.SECONDS)
-                                .toString()
-                    }
-                }
-            } else {
+            if (run.getAveragePaceAsString().isEmpty()) {
                 binding.avgPace.text = getString(R.string.value_empty)
+            } else {
+                binding.avgPace.text = run.getAveragePaceAsString()
             }
         }
     }
@@ -235,12 +197,14 @@ class RecordRunFragment : Fragment(), ContinueDialogFragment.ContinueDialogListe
      * Opens a dialog, that explains why the permissions are needed and asks for the permissions afterwards.
      */
     private fun showPermissionDialog() {
-        val dialog = ContinueDialogFragment.getInstance(getString(R.string.location_permission_required))
+        val dialog =
+            ContinueDialogFragment.getInstance(getString(R.string.location_permission_required))
         dialog.show(childFragmentManager, ContinueDialogFragment.TAG)
     }
 
     private fun showMissingGooglePlayServicesDialog() {
-        val dialog = NoteDialogFragment.getInstance(getString(R.string.google_play_services_missing))
+        val dialog =
+            NoteDialogFragment.getInstance(getString(R.string.google_play_services_missing))
         dialog.show(childFragmentManager, NoteDialogFragment.TAG)
     }
 
@@ -255,7 +219,10 @@ class RecordRunFragment : Fragment(), ContinueDialogFragment.ContinueDialogListe
             // create object
             val currentTime = LocalDateTime.now()
             recordRunViewModel.insertAndObserve(
-                RunHistoryEntryMetaDataWithMeasurements(RunHistoryEntryMetaData(currentTime), mutableListOf()),
+                RunHistoryEntryMetaDataWithMeasurements(
+                    RunHistoryEntryMetaData(currentTime),
+                    mutableListOf()
+                ),
                 viewLifecycleOwner,
                 observerListener
             )
