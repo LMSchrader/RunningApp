@@ -17,16 +17,14 @@ import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
 
 class HistoryRecyclerViewFragment : Fragment() {
-
     private val historyViewModel: HistoryViewModel by activityViewModels {
         HistoryViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
     private var _binding: FragmentRecyclerViewBinding? = null
+    private val binding get() = _binding!!
 
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter: RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder>? = null
-
-    private val binding get() = _binding!!
 
 
     override fun onCreateView(
@@ -62,7 +60,7 @@ class HistoryRecyclerViewFragment : Fragment() {
         if(historyViewModel.currentRecyclerViewPosition != null) {
             historyViewModel.runHistoryEntriesMetaDataWithMeasurements.observe(viewLifecycleOwner) { runHistory : List<RunHistoryEntryMetaDataWithMeasurements> ->
                 historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.value = historyViewModel.currentRecyclerViewPosition?.let { it ->
-                    runHistory[it]  // TODO: index out of bound: wenn itm gelöscht wird und man sich im viepager nicht auf der ersten seite aufhält
+                    runHistory[it]
                 }
             }
         }

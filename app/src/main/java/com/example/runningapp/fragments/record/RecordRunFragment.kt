@@ -40,9 +40,6 @@ class RecordRunFragment : Fragment(), ContinueDialogFragment.ContinueDialogListe
     }
 
     private var _binding: FragmentRecordRunBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     private lateinit var sharedPref: SharedPreferences
@@ -62,19 +59,7 @@ class RecordRunFragment : Fragment(), ContinueDialogFragment.ContinueDialogListe
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        when {
-            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                // Precise location access granted.
-            }
-            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                // Only approximate location access granted.
-            }
-            else -> {
-                // No location access granted.
-            }
-        }
-    }
+    ) { _ -> }
 
     private val observerListener: (run: RunHistoryEntryMetaDataWithMeasurements?) -> Unit = { run ->
         if (run == null || run.measurements.isEmpty()) {
@@ -82,7 +67,7 @@ class RecordRunFragment : Fragment(), ContinueDialogFragment.ContinueDialogListe
             binding.currentKm.text = getString(R.string.value_empty)
             binding.avgPace.text = getString(R.string.value_empty)
             binding.currentPace.text = getString(R.string.value_empty)
-        } else {
+        } else {//TODO: auslagern?
             binding.currentTime.text = round(run.measurements[run.measurements.lastIndex].timeValue.toLong().div(10.toDouble().pow(9)))
                 .toDuration(DurationUnit.SECONDS).toString()
             binding.currentKm.text = "%.2f".format(run.metaData.kmRun)

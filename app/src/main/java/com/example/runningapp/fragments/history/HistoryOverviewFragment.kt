@@ -32,7 +32,7 @@ class HistoryOverviewFragment : Fragment() {
     ): View {
         _binding = FragmentHistoryOverviewBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+//TODO: auslagern?
         historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
             if (currentRunHistoryEntry != null) {
                 binding.runFrom.text = formatDate(currentRunHistoryEntry.metaData.date)
