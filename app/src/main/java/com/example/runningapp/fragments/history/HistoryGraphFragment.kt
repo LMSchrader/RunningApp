@@ -19,12 +19,10 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 
 class HistoryGraphFragment : Fragment() {
-
     private val historyViewModel: HistoryViewModel by activityViewModels {
         HistoryViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
     private var _binding: FragmentHistoryGraphBinding? = null
-
     private val binding get() = _binding!!
 
     private lateinit var chart: LineChart
@@ -40,8 +38,15 @@ class HistoryGraphFragment : Fragment() {
 
         chart = binding.lineChart
 
-        context?.let { configureLineChartDuration(chart, it, getString(R.string.no_data_available)) }
+        context?.let {
+            configureLineChartDuration(
+                chart,
+                it,
+                getString(R.string.no_data_available)
+            )
+        }
 
+        //todo: auslagern?
         historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
             val timeList: MutableList<Float> = mutableListOf()
             val paceList: MutableList<Float> = mutableListOf()
@@ -99,5 +104,4 @@ class HistoryGraphFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

@@ -18,19 +18,17 @@ import com.example.runningapp.data.RunHistoryEntryMetaDataWithMeasurements
 import android.view.MotionEvent
 import com.mapbox.maps.plugin.annotation.generated.*
 
-
 class HistoryMapFragment : Fragment() {
-
-    private val historyViewModel: HistoryViewModel by activityViewModels{
+    private val historyViewModel: HistoryViewModel by activityViewModels {
         HistoryViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
 
-    lateinit var mapView: MapView
-    lateinit var polylineAnnotationManager : PolylineAnnotationManager
-    lateinit var circleAnnotationManager  : CircleAnnotationManager
+    private lateinit var mapView: MapView
+    private lateinit var polylineAnnotationManager: PolylineAnnotationManager
+    private lateinit var circleAnnotationManager: CircleAnnotationManager
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
-    lateinit var points : MutableList<Point>
+    private lateinit var points: MutableList<Point>
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -45,13 +43,13 @@ class HistoryMapFragment : Fragment() {
         mapView = binding.mapView
         var interceptMove = false
         mapView.setOnTouchListener { view, motionEvent ->
-            // Disallow the touch request for recyclerView scroll
+            // Disallow the touch request for viewPager2 scroll
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN ->            // See if we touch the screen borders
                     interceptMove =
                         100 * motionEvent.x > 5 * view.width && 100 * motionEvent.x < 95 * view.width
-                MotionEvent.ACTION_MOVE -> if (interceptMove &&  view.parent != null) {
-                view.parent.requestDisallowInterceptTouchEvent(true)
+                MotionEvent.ACTION_MOVE -> if (interceptMove && view.parent != null) {
+                    view.parent.requestDisallowInterceptTouchEvent(true)
                 }
             }
             false
@@ -59,7 +57,7 @@ class HistoryMapFragment : Fragment() {
         mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
 
         polylineAnnotationManager = mapView.annotations.createPolylineAnnotationManager()
-        circleAnnotationManager  = mapView.annotations.createCircleAnnotationManager()
+        circleAnnotationManager = mapView.annotations.createCircleAnnotationManager()
 
         historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
             points = extractDataAndTransformToPointList(currentRunHistoryEntry)
@@ -67,18 +65,9 @@ class HistoryMapFragment : Fragment() {
             setCameraPositionForMap(points)
         }
 
-        mapView.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+        mapView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
             setCameraPositionForMap(points)
         }
-
-        //mapView.viewTreeObserver.addOnGlobalLayoutListener(
-        //    object : OnGlobalLayoutListener {
-        //        override fun onGlobalLayout() {
-        //            // gets called after layout has been done but before display
-        //            // so we can get the height then hide the view
-        //            setCameraPositionForMap(points)
-        //        }
-        //    })
 
         return root
     }
@@ -88,10 +77,10 @@ class HistoryMapFragment : Fragment() {
         _binding = null
     }
 
-    private fun replaceRouteOnMap(points :MutableList<Point>) {
+    private fun replaceRouteOnMap(points: MutableList<Point>) {
         circleAnnotationManager.deleteAll()
         polylineAnnotationManager.deleteAll()
-        if(points.isNotEmpty()) {
+        if (points.isNotEmpty()) {
             if (points.size > 1) {
                 // Set options for the resulting line layer.
                 val polylineAnnotationOptions: PolylineAnnotationOptions =
@@ -118,13 +107,14 @@ class HistoryMapFragment : Fragment() {
         }
     }
 
-    private fun setCameraPositionForMap(points :MutableList<Point>) {
-        if(points.isNotEmpty()) {
+    private fun setCameraPositionForMap(points: MutableList<Point>) {
+        if (points.isNotEmpty()) {
             val edgeInsets = EdgeInsets(20.0, 20.0, 20.0, 20.0)
-            val cameraOptions = CameraOptions.Builder().center(points[0]).zoom(13.0).padding(edgeInsets).build()
+            val cameraOptions =
+                CameraOptions.Builder().center(points[0]).zoom(13.0).padding(edgeInsets).build()
             mapView.getMapboxMap().setCamera(cameraOptions)
 
-            if(points.size > 1) {
+            if (points.size > 1) {
                 val cameraPosition = mapView.getMapboxMap()
                     .cameraForCoordinates(points, edgeInsets)
                 mapView.getMapboxMap().setCamera(cameraPosition)
@@ -132,7 +122,7 @@ class HistoryMapFragment : Fragment() {
         }
     }
 
-    private fun extractDataAndTransformToPointList(currentRunHistoryEntryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements?) : MutableList<Point>{
+    private fun extractDataAndTransformToPointList(currentRunHistoryEntryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements?): MutableList<Point> {
         val points = mutableListOf<Point>()
         // Define a list of geographic coordinates to be connected.
         currentRunHistoryEntryMetaDataWithMeasurements?.measurements?.forEach{
