@@ -56,6 +56,8 @@
     <string name="pace_label">Pace (in min/km)</string>
     <string name="altitude_label">Altitude (in m)</string>
     <string name="distance">Distance</string>
+    <string name="kilometer_label">Kilometer</string>
+    <string name="time_label">Time (in min)</string>
     <string name="mean_pace">Average Pace</string>
     <string name="duration">Duration</string>
 

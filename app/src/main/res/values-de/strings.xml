@@ -55,6 +55,8 @@
     <string name="pace_label">Pace (in min/km)</string>
     <string name="altitude_label">Altitude (in m)</string>
     <string name="distance">Strecke</string>
+    <string name="kilometer_label">Kilometer</string>
+    <string name="time_label">Zeit (in min)</string>
     <string name="mean_pace">Mittlerer Pace</string>
     <string name="duration">Dauer</string>
 
@@ -66,7 +68,7 @@
     <string name="continue_text">Fortfahren</string>
     <string name="ok">OK</string>
     <string name="undo">Rückgängig</string>
-    <string name="no_data_available">Keie Daten vorhanden</string>
+    <string name="no_data_available">Keine Daten vorhanden</string>
 
     <!-- alert -->
     <string name="location_permission_required">Ohne Berechtigung zum Zugriff auf den genauen Standort können keine Läufe aufgezeichnet werden</string>

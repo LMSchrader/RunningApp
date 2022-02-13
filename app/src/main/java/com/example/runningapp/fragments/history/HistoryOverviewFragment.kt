@@ -52,8 +52,6 @@ class HistoryOverviewFragment : Fragment() {
                 } else {
                     binding.pace.text = getString(R.string.value_empty)
                 }
-            } else {
-                //nothing to display // TODO
             }
         }
 

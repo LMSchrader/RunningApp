@@ -62,7 +62,7 @@ class HistoryRecyclerViewFragment : Fragment() {
         if(historyViewModel.currentRecyclerViewPosition != null) {
             historyViewModel.runHistoryEntriesMetaDataWithMeasurements.observe(viewLifecycleOwner) { runHistory : List<RunHistoryEntryMetaDataWithMeasurements> ->
                 historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.value = historyViewModel.currentRecyclerViewPosition?.let { it ->
-                    runHistory[it]
+                    runHistory[it]  // TODO: index out of bound: wenn itm gelöscht wird und man sich im viepager nicht auf der ersten seite aufhält
                 }
             }
         }
