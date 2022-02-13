@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.R
 import com.example.runningapp.data.RunHistoryEntryMetaDataWithMeasurements
-import com.example.runningapp.util.DateUtil.StaticFunctions.formatDate
+import com.example.runningapp.util.DateAndDateTimeUtil.StaticFunctions.formatLocalDateTime
 
 class HistoryRecyclerViewAdapter(
     runHistoryLiveData: LiveData<List<RunHistoryEntryMetaDataWithMeasurements>>,
@@ -51,7 +51,7 @@ class HistoryRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.dateTime.text = formatDate(data[position].metaData.date)
+        viewHolder.dateTime.text = formatLocalDateTime(data[position].metaData.date)
     }
 
     override fun getItemCount() = data.size

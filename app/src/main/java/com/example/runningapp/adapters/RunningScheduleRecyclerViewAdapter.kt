@@ -10,7 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.R
 import com.example.runningapp.data.RunningScheduleEntry
-import com.example.runningapp.util.SwipableViewHolder
+import com.example.runningapp.util.SwipeableViewHolder
 
 class RunningScheduleRecyclerViewAdapter(
     liveData: LiveData<List<RunningScheduleEntry>>,
@@ -32,7 +32,7 @@ class RunningScheduleRecyclerViewAdapter(
      * (custom ViewHolder).
      */
     class ViewHolder(view: View, private val onClickListener: (position: Int?) -> Unit) :
-        SwipableViewHolder(view, view.findViewById(R.id.view_foreground)) {
+        SwipeableViewHolder(view, view.findViewById(R.id.view_foreground)) {
         val context: Context = view.context
 
         val title: TextView = view.findViewById(R.id.title)

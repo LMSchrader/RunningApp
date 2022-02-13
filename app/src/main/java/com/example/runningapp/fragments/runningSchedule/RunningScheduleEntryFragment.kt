@@ -20,7 +20,6 @@ class RunningScheduleEntryFragment : Fragment(), CancelContinueDialogFragment.Ca
         RunningScheduleViewModelFactory((activity?.application as AppApplication).runningScheduleRepository)
     }
     private var _binding: FragmentRunningScheduleEntryBinding? = null
-
     private val binding get() = _binding!!
 
     private var childFragmentManagerWasNotEmpty = false

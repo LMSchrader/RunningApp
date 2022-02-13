@@ -9,8 +9,6 @@ class RunningScheduleViewModel(private val repository: RunningScheduleRepository
 
     val entries: LiveData<List<RunningScheduleEntry>> = repository.runningSchedule.asLiveData()
 
-    val isTodayARunningDay: LiveData<Boolean> = repository.isTodayARunningDay.asLiveData()
-
     var currentEntry: MutableLiveData<RunningScheduleEntry?> = MutableLiveData(null)
 
 

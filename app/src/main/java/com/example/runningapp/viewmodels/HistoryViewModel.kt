@@ -13,36 +13,13 @@ import kotlinx.coroutines.launch
 class HistoryViewModel(private val repository: RunHistoryRepository) : ViewModel() {
 
     val runHistoryEntriesMetaDataWithMeasurements: LiveData<List<RunHistoryEntryMetaDataWithMeasurements>> = repository.runHistory.asLiveData()
-    //val runHistoryEntriesWithoutCurrentRun: MediatorLiveData<List<RunHistoryEntry>> = MediatorLiveData()
 
     val currentRunHistoryEntryMetaDataWithMeasurements: MutableLiveData<RunHistoryEntryMetaDataWithMeasurements?> =
         MutableLiveData(null)
-    var historyFragmentIsInSplitScreenMode: Boolean = false
 
+    var historyFragmentIsInSplitScreenMode: Boolean = false
     var currentRecyclerViewPosition: Int? = null
     var currentViewPagerItem: Int = 0
-
-    //init {
-    //    runHistoryEntriesWithoutCurrentRun.addSource(runHistoryEntriesWithCurrentRun) {
-    //        val allRunHistoryEntries: MutableList<RunHistoryEntry> = mutableListOf()
-    //        allRunHistoryEntries.addAll(it)
-    //        val relevantEntries = allRunHistoryEntries.filter { entry ->
-    //            entry.date != currentRun.value?.date
-    //        }
-    //        runHistoryEntriesWithoutCurrentRun.setValue(relevantEntries)
-    //    }
-//
-    //    runHistoryEntriesWithoutCurrentRun.addSource(currentRun) {
-    //        val allRunHistoryEntries = runHistoryEntriesWithCurrentRun.value
-    //        val allRunHistoryEntriesCopy: MutableList<RunHistoryEntry> = mutableListOf()
-    //        if (allRunHistoryEntries != null) {
-    //            allRunHistoryEntriesCopy.addAll(allRunHistoryEntries)
-    //        }
-    //        val relevantEntries = allRunHistoryEntriesCopy.filter { entry -> entry.date == currentRun.value?.date } //relevantEntries.remove(it)
-//
-    //        runHistoryEntriesWithoutCurrentRun.setValue(relevantEntries)
-    //    }
-    //}
 
 
     fun insert(entryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements) = viewModelScope.launch {

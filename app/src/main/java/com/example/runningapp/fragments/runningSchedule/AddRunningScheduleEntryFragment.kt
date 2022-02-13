@@ -11,7 +11,7 @@ import com.example.runningapp.databinding.FragmentEditRunningScheduleEntryBindin
 import com.example.runningapp.data.RunningScheduleEntry
 import com.example.runningapp.fragments.dialogs.CancelContinueDialogFragment
 import com.example.runningapp.fragments.dialogs.DatePickerFragment
-import com.example.runningapp.util.DateUtil.StaticFunctions.getTodaysDate
+import com.example.runningapp.util.DateAndDateTimeUtil.StaticFunctions.getTodaysDate
 import com.example.runningapp.util.KeyboardUtil
 import com.example.runningapp.viewmodels.RunningScheduleViewModel
 import com.example.runningapp.viewmodels.RunningScheduleViewModelFactory

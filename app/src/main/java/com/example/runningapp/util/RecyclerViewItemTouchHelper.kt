@@ -24,27 +24,6 @@ class RecyclerViewItemTouchHelper(
         return false
     }
 
-    //override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
-    //    if (viewHolder != null) {
-    //        getDefaultUIUtil().onSelected(getForegroundView(viewHolder))
-    //    }
-    //}
-
-    //override fun onChildDrawOver(
-    //    c: Canvas,
-    //    recyclerView: RecyclerView,
-    //    viewHolder: RecyclerView.ViewHolder?,
-    //    dX: Float,
-    //    dY: Float,
-    //    actionState: Int,
-    //    isCurrentlyActive: Boolean
-    //) {
-    //    getDefaultUIUtil().onDrawOver(
-    //        c, recyclerView, viewHolder?.let { getForegroundView(it) }, dX, dY,
-    //        actionState, isCurrentlyActive
-    //    )
-    //}
-
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         getDefaultUIUtil().clearView(getForegroundView(viewHolder))
     }
@@ -70,9 +49,9 @@ class RecyclerViewItemTouchHelper(
 
     private fun getForegroundView(viewHolder: RecyclerView.ViewHolder): View {
         try {
-            return (viewHolder as SwipableViewHolder).viewForeground
+            return (viewHolder as SwipeableViewHolder).viewForeground
         } catch (e: ClassCastException) {
-            throw ClassCastException(("$viewHolder must be SwipableViewHolder"))
+            throw ClassCastException(("$viewHolder must be SwipeableViewHolder"))
         }
     }
 }

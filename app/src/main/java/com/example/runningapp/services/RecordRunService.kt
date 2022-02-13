@@ -18,7 +18,7 @@ import com.example.runningapp.data.RunHistoryEntryMetaDataWithMeasurements
 import com.example.runningapp.data.RunHistoryMeasurement
 import com.example.runningapp.data.RunHistoryRepository
 import com.example.runningapp.data.RunningScheduleRepository
-import com.example.runningapp.util.DateUtil
+import com.example.runningapp.util.DateAndDateTimeUtil
 import com.google.android.gms.location.*
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -94,7 +94,7 @@ class RecordRunService: LifecycleService() {
                 super.onLocationResult(locationResult)
                 val startingIndexNewMeasurements = run.measurements.lastIndex+1
                     for (location in locationResult.locations) {
-                        if (lastLocation != null) {
+                        if (lastLocation != null) { //TODO: auslagern?
                             val runKm = location.distanceTo(lastLocation)/1000
                             run.metaData.kmRun += runKm
                             run.metaData.timeRun = (location.elapsedRealtimeNanos- startTime!!).toFloat()
@@ -140,7 +140,7 @@ class RecordRunService: LifecycleService() {
 
         // update counter running days kept
         val lastRunningDay = sharedPref.getString(getString(R.string.last_running_day_preferences), "")
-        if ((lastRunningDay == "" || !LocalDateTime.parse(lastRunningDay).toLocalDate().equals(DateUtil.StaticFunctions.getTodaysDate())) && runningScheduleRepository.isTodayARunningDayOneTimeRequest()) {
+        if ((lastRunningDay == "" || !LocalDateTime.parse(lastRunningDay).toLocalDate().equals(DateAndDateTimeUtil.StaticFunctions.getTodaysDate())) && runningScheduleRepository.isTodayARunningDayOneTimeRequest()) {
             with(sharedPref.edit()) {
                 putInt(
                     getString(R.string.running_days_kept_preferences),

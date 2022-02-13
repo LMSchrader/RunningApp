@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class DateUtil {
+class DateAndDateTimeUtil {
 
     object StaticFunctions {
 
@@ -19,7 +19,7 @@ class DateUtil {
             )
         }
 
-        fun formatDate(dateTime: LocalDateTime): String {
+        fun formatLocalDateTime(dateTime: LocalDateTime): String {
             val datePattern = "yyyy-MM-dd' 'HH:mm:ss"
             val formatter = DateTimeFormatter.ofPattern(datePattern)
             return dateTime.format(formatter).toString()

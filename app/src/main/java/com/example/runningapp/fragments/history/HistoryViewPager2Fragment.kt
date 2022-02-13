@@ -9,7 +9,7 @@ import com.example.runningapp.R
 import com.example.runningapp.adapters.HistoryFragmentStateAdapter
 import com.example.runningapp.databinding.FragmentHistoryViewPager2Binding
 import com.example.runningapp.fragments.dialogs.CancelContinueDialogFragment
-import com.example.runningapp.util.DateUtil.StaticFunctions.formatDate
+import com.example.runningapp.util.DateAndDateTimeUtil.StaticFunctions.formatLocalDateTime
 import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -66,7 +66,7 @@ class HistoryViewPager2Fragment : Fragment() {
 
     private fun showDeleteDialog() {
         val deletedItem = historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.value ?: return
-        val dateDeletedItem = formatDate(deletedItem.metaData.date)
+        val dateDeletedItem = formatLocalDateTime(deletedItem.metaData.date)
         val dateActiveRun = (activity?.application as AppApplication).shardPref.getString(
             getString(R.string.service_active_preferences),
             ""

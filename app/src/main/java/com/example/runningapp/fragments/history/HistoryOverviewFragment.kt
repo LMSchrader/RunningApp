@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.runningapp.AppApplication
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentHistoryOverviewBinding
-import com.example.runningapp.util.DateUtil.StaticFunctions.formatDate
+import com.example.runningapp.util.DateAndDateTimeUtil.StaticFunctions.formatLocalDateTime
 import com.example.runningapp.viewmodels.HistoryViewModel
 import com.example.runningapp.viewmodels.HistoryViewModelFactory
 import kotlin.math.pow
@@ -35,7 +35,7 @@ class HistoryOverviewFragment : Fragment() {
 //TODO: auslagern?
         historyViewModel.currentRunHistoryEntryMetaDataWithMeasurements.observe(viewLifecycleOwner) { currentRunHistoryEntry ->
             if (currentRunHistoryEntry != null) {
-                binding.runFrom.text = formatDate(currentRunHistoryEntry.metaData.date)
+                binding.runFrom.text = formatLocalDateTime(currentRunHistoryEntry.metaData.date)
                 binding.distance.text = getString(R.string.kilometer_with_number, "%.2f".format(currentRunHistoryEntry.metaData.kmRun))
                 binding.duration.text = round(currentRunHistoryEntry.metaData.timeRun.toLong().div(10.toDouble().pow(9))).toDuration(DurationUnit.SECONDS).toString()
                 if (currentRunHistoryEntry.measurements.isNotEmpty()) {
