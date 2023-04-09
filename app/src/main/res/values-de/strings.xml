@@ -16,7 +16,10 @@
     <string name="restDay">Heute ist ein Ruhetag!</string>
     <string name="runningDay">Heute ist ein Lauftag!</string>
     <string name="kilometers_run">Bisher %1$s Kilometer gelaufen</string>
-    <string name="running_days_kept">Du hast %1$s mal infolge deinen Laufplan eingehalten!</string>
+    <string name="running_days_kept">Du hast %1$s mal deinen Laufplan eingehalten!</string>
+    <string name="pace_run_label">Durchschnittlich gelaufener Pace (in min/km) in den letzten 30 Tagen</string>
+    <string name="kilometers_run_label">Gelaufene Kilometer in den letzten 30 Tagen</string>
+    <string name="time_run_label">Gelaufene Zeit (in min) in den letzten 30 Tagen</string>
 
     <!-- running schedule-->
     <string name="addRunningSchedule">Laufplaneintrag hinzufügen</string>
@@ -37,20 +40,25 @@
     <!-- record run-->
     <string name="time">Zeit</string>
     <string name="kilometer">KM</string>
+    <string name="kilometer_with_number">%1$s km</string>
     <string name="current_pace">Aktueller Pace</string>
     <string name="avg_pace">Mittlerer Pace</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="pause">Pause</string>
     <string name="value_empty">--,--</string>
-    <string name="service_active">Service aktiv</string>
     <string name="record_run_notification_title">Dein Lauf wird aufgezeichnet</string>
     <string name="record_run_notification_text">Klicken um zur App zurückzukehren</string>
 
     <!-- run history-->
-    <string name="intro_text">Lauf vom</string>
-    <string name="pace_label">Pace</string>
-    <string name="altitude_label">Altitude</string>
+    <string name="run_from">Lauf vom</string>
+    <string name="pace_label">Pace (in min/km)</string>
+    <string name="altitude_label">Altitude (in m)</string>
+    <string name="distance">Strecke</string>
+    <string name="kilometer_label">Kilometer</string>
+    <string name="time_label">Zeit (in min)</string>
+    <string name="mean_pace">Mittlerer Pace</string>
+    <string name="duration">Dauer</string>
 
     <!-- general -->
     <string name="save">Speichern</string>
@@ -59,11 +67,15 @@
     <string name="delete">Löschen</string>
     <string name="continue_text">Fortfahren</string>
     <string name="ok">OK</string>
+    <string name="undo">Rückgängig</string>
+    <string name="no_data_available">Keine Daten vorhanden</string>
 
     <!-- alert -->
     <string name="location_permission_required">Ohne Berechtigung zum Zugriff auf den genauen Standort können keine Läufe aufgezeichnet werden</string>
     <string name="google_play_services_missing">Google Play Services sind auf deinem Gerät nicht installiert. Ohne diese können keine Läufe aufgezeichnet werden.</string>
     <string name="data_loss">Änderungen werden beim Verlassen nicht gespeichert. Wollen Sie fortfahren?</string>
+    <string name="delete_item">Soll %1$s gelöscht werden?</string>
+    <string name="could_not_delete">%1$s wird gerade aufgezeichnet und kann nicht gelöscht werden</string>
     <string name="incorrect_date">Start Datum muss vor dem Enddatum liegen</string>
     <string name="incorrect_title">Titel muss gesetzt werden</string>
 
@@ -71,6 +83,7 @@
     <string name="service_description">Dieser Service nimmt einen Lauf auf.</string>
 
     <!-- settings -->
+    <string name="notification_category">Benachrichtigungen</string>
     <string name="notification">Benachrichtigungen aktivieren</string>
     <string name="notification_summary">Du wirst über anstehende Laufeinheiten benachricht</string>
 

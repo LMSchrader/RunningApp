@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.navigation.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRunningScheduleBinding
@@ -12,12 +13,7 @@ import com.example.runningapp.util.OrientationUtil.StaticFunctions.isLandscapeMo
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class RunningScheduleFragment : Fragment() {
-    //TODO Navigation: running schedule entry ist im portrait modus und es wird die Orientierung zweimal gewechselt -> es wird die recycler view statt des entries angezeigt
-    // andere master detal views machen das auch
     private var _binding: FragmentRunningScheduleBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +29,6 @@ class RunningScheduleFragment : Fragment() {
                 R.id.rightFragment
             ) == null) {
             // add right fragment in landscape mode if not present
-            //TODO: bedingung (nur wenn entry schonmal angesehen wurde) hinzufuegen
             addSecondFragment()
         } else if (context?.let { isLandscapeMode(it) } == false && childFragmentManager.findFragmentById(
                 R.id.rightFragment
@@ -66,7 +61,7 @@ class RunningScheduleFragment : Fragment() {
     fun addSecondFragment() {
         childFragmentManager.commit {
             setReorderingAllowed(true)
-            add<RunningScheduleEntryFragment>(R.id.rightFragment)
+            replace<RunningScheduleEntryFragment>(R.id.rightFragment)
         }
     }
 

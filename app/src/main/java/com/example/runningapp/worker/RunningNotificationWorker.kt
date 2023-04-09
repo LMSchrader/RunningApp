@@ -8,6 +8,8 @@ import androidx.navigation.NavDeepLinkBuilder
 import androidx.work.*
 import com.example.runningapp.MainActivity
 import com.example.runningapp.R
+import com.example.runningapp.data.AppDatabase.Companion.getDatabase
+import com.example.runningapp.data.RunningScheduleRepository
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -15,8 +17,7 @@ import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 
 class RunningNotificationWorker(appContext: Context, workerParams: WorkerParameters) :
-    Worker(appContext, workerParams) {
-    //TODO: testen
+    CoroutineWorker(appContext, workerParams) {
     companion object {
         private const val WORKER_NAME = "RunningNotification"
         private const val hour = 0
@@ -54,13 +55,16 @@ class RunningNotificationWorker(appContext: Context, workerParams: WorkerParamet
     }
 
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
         try {
             // remove old notifications
             (applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
                 .cancel(ID)
 
-            if (true) { // TODO
+            val database = getDatabase(applicationContext)
+            val repository = RunningScheduleRepository(database.runningScheduleDao())
+
+            if (repository.isTodayARunningDayOneTimeRequest()) {
                 showNotification()
             }
 

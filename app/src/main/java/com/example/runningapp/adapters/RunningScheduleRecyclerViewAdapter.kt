@@ -10,12 +10,13 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.R
 import com.example.runningapp.data.RunningScheduleEntry
+import com.example.runningapp.util.SwipeableViewHolder
 
-class RunningScheduleAdapter(
+class RunningScheduleRecyclerViewAdapter(
     liveData: LiveData<List<RunningScheduleEntry>>,
     private val onClickListener: (position: Int?) -> Unit,
     lifecycleOwner: LifecycleOwner
-) : RecyclerView.Adapter<RunningScheduleAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<RunningScheduleRecyclerViewAdapter.ViewHolder>() {
 
     private var data: List<RunningScheduleEntry> = emptyList()
 
@@ -31,7 +32,7 @@ class RunningScheduleAdapter(
      * (custom ViewHolder).
      */
     class ViewHolder(view: View, private val onClickListener: (position: Int?) -> Unit) :
-        RecyclerView.ViewHolder(view) {
+        SwipeableViewHolder(view, view.findViewById(R.id.view_foreground)) {
         val context: Context = view.context
 
         val title: TextView = view.findViewById(R.id.title)
@@ -46,7 +47,6 @@ class RunningScheduleAdapter(
         }
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
@@ -55,18 +55,13 @@ class RunningScheduleAdapter(
         return ViewHolder(view, onClickListener)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
         viewHolder.title.text = data[position].title
         viewHolder.startDate.text = data[position].startDate.toString()
         viewHolder.endDate.text = data[position].endDate.toString()
         viewHolder.weekdays.text = data[position].getWeekdayString(viewHolder.context)
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = data.size
 
 }

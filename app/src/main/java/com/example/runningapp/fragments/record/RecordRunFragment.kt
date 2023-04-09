@@ -8,18 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentRecordRunBinding
-import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.SharedPreferences
-import android.widget.TextView
-import androidx.fragment.app.activityViewModels
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import androidx.fragment.app.*
 import com.example.runningapp.AppApplication
-import com.example.runningapp.data.RunHistoryEntry
+import com.example.runningapp.data.RunHistoryEntryMetaDataWithMeasurements
+import com.example.runningapp.data.RunHistoryEntryMetaData
+import com.example.runningapp.fragments.dialogs.ContinueDialogFragment
+import com.example.runningapp.fragments.dialogs.NoteDialogFragment
 import com.example.runningapp.services.RecordRunService
 import com.example.runningapp.viewmodels.RecordRunViewModel
 import com.example.runningapp.viewmodels.RecordRunViewModelFactory
@@ -29,61 +29,63 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 import java.time.LocalDateTime
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
-class RecordRunFragment : Fragment() {
+class RecordRunFragment : Fragment(), ContinueDialogFragment.ContinueDialogListener {
     private val recordRunViewModel: RecordRunViewModel by activityViewModels {
         RecordRunViewModelFactory((activity?.application as AppApplication).runHistoryRepository)
     }
 
     private var _binding: FragmentRecordRunBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     private lateinit var sharedPref: SharedPreferences
+    private var prefListener: OnSharedPreferenceChangeListener =
+        OnSharedPreferenceChangeListener { _, key ->
+            if (key == getString(R.string.service_active_preferences)) {
+                val date = sharedPref.getString(getString(R.string.service_active_preferences), "")
+
+                if (date != "") {
+                    binding.startButton.visibility = View.GONE
+                    binding.stopButton.visibility = View.VISIBLE
+                } else {
+                    binding.startButton.visibility = View.VISIBLE
+                    binding.stopButton.visibility = View.GONE
+                }
+            }
+        }
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        when {
-            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                // Precise location access granted.
-            }
-            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                // Only approximate location access granted.
-            }
-            else -> {
-                // No location access granted.
-            }
-        }
-    }
+    ) { _ -> }
 
-    private val observerListener: (run: RunHistoryEntry?) -> Unit = { run ->
-        if (run == null || run.timeValues.isEmpty()) {
+    private val observerListener: (run: RunHistoryEntryMetaDataWithMeasurements?) -> Unit = { run ->
+        if (run == null || run.measurements.isEmpty()) {
             binding.currentTime.text = getString(R.string.time_empty)
             binding.currentKm.text = getString(R.string.value_empty)
             binding.avgPace.text = getString(R.string.value_empty)
             binding.currentPace.text = getString(R.string.value_empty)
         } else {
-            binding.currentTime.text = run.timeValues[run.timeValues.lastIndex].toLong()
-                .toDuration(DurationUnit.NANOSECONDS).toString(DurationUnit.MINUTES, 2)
-            binding.currentKm.text = "%.2f".format(run.kmRun)
+            binding.currentTime.text = run.metaData.getTimeRunAsString()
+            binding.currentKm.text = run.metaData.getKmRunAsString()
 
-            val pace = run.paceValues[run.paceValues.lastIndex]
-            if (pace != null) {
-                binding.currentPace.text = "%.2f".format(pace)
-            } else {
+            if (run.measurements[run.measurements.lastIndex].getPaceValueAsString().isEmpty()) {
                 binding.currentPace.text = getString(R.string.value_empty)
+            } else {
+                binding.currentPace.text =
+                    run.measurements[run.measurements.lastIndex].getPaceValueAsString()
             }
 
-            run.paceValues.removeAll(listOf(null))
-            if (run.paceValues.isNotEmpty()) {
-                binding.avgPace.text = "%.2f".format((run.paceValues as List<Float>).average())
+            if (run.getAveragePaceAsString().isEmpty()) {
+                binding.avgPace.text = getString(R.string.value_empty)
+            } else {
+                binding.avgPace.text = run.getAveragePaceAsString()
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedPref = (activity?.application as AppApplication).shardPref
     }
 
     override fun onCreateView(
@@ -97,8 +99,7 @@ class RecordRunFragment : Fragment() {
         binding.stopButton.setOnClickListener { stopRun() }
 
 
-        sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)!!
-        val date = sharedPref.getString(getString(R.string.service_active), "")
+        val date = sharedPref.getString(getString(R.string.service_active_preferences), "")
 
         // if service is active, show stop button
         if (!date.isNullOrEmpty()) {
@@ -122,6 +123,16 @@ class RecordRunFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sharedPref.registerOnSharedPreferenceChangeListener(prefListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sharedPref.unregisterOnSharedPreferenceChangeListener(prefListener)
     }
 
     override fun onDestroyView() {
@@ -159,37 +170,13 @@ class RecordRunFragment : Fragment() {
 
         recordRunViewModel.removeObserver(viewLifecycleOwner)
 
-        // switch buttons
-        binding.startButton.visibility = View.VISIBLE
-        binding.stopButton.visibility = View.GONE
-        //TODO: auslagern in service
+        // mark service as stopped
         with(sharedPref.edit()) {
             putString(
-                getString(R.string.service_active),
+                getString(R.string.service_active_preferences),
                 ""
             )
             apply()
-        }
-
-
-        with(sharedPref.edit()) {
-            putInt(
-                getString(R.string.kilometers_run),
-                sharedPref.getInt(getString(R.string.kilometers_run), 0) + 10
-            )
-            apply()
-        }
-
-        //TODO
-        val runningDay = true
-        if (runningDay) {
-            with(sharedPref.edit()) {
-                putInt(
-                    getString(R.string.running_days_kept),
-                    sharedPref.getInt(getString(R.string.running_days_kept), 0) + 1
-                )
-                apply()
-            }
         }
     }
 
@@ -210,37 +197,15 @@ class RecordRunFragment : Fragment() {
      * Opens a dialog, that explains why the permissions are needed and asks for the permissions afterwards.
      */
     private fun showPermissionDialog() {
-        val dialog = context?.let { Dialog(it) }
-        dialog?.setContentView(R.layout.permission_dialog)
-        dialog?.findViewById<TextView>(R.id.description)?.text =
-            getString(R.string.location_permission_required)
-        val btn: TextView? = dialog?.findViewById(R.id.button)
-        btn?.setOnClickListener {
-            dialog.dismiss()
-            locationPermissionRequest.launch(
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            )
-        }
-        dialog?.show()
+        val dialog =
+            ContinueDialogFragment.getInstance(getString(R.string.location_permission_required))
+        dialog.show(childFragmentManager, ContinueDialogFragment.TAG)
     }
 
     private fun showMissingGooglePlayServicesDialog() {
-        val dialog = context?.let { Dialog(it) }
-        dialog?.setContentView(R.layout.permission_dialog)
-        dialog?.findViewById<TextView>(R.id.description)?.text =
-            getString(R.string.google_play_services_missing)
-
-        val btn: TextView? = dialog?.findViewById(R.id.button)
-
-        btn?.text = getString(R.string.ok)
-
-        btn?.setOnClickListener {
-            dialog.dismiss()
-        }
-        dialog?.show()
+        val dialog =
+            NoteDialogFragment.getInstance(getString(R.string.google_play_services_missing))
+        dialog.show(childFragmentManager, NoteDialogFragment.TAG)
     }
 
     private fun checkLocationSettingsAndStartService(locationRequest: LocationRequest) {
@@ -254,18 +219,19 @@ class RecordRunFragment : Fragment() {
             // create object
             val currentTime = LocalDateTime.now()
             recordRunViewModel.insertAndObserve(
-                RunHistoryEntry(currentTime),
+                RunHistoryEntryMetaDataWithMeasurements(
+                    RunHistoryEntryMetaData(currentTime),
+                    mutableListOf()
+                ),
                 viewLifecycleOwner,
                 observerListener
             )
 
-            // switch buttons
-            binding.startButton.visibility = View.GONE
-            binding.stopButton.visibility = View.VISIBLE
 
+            // mark service as active
             with(sharedPref.edit()) {
                 putString(
-                    getString(R.string.service_active),
+                    getString(R.string.service_active_preferences),
                     currentTime.toString()
                 )
                 apply()
@@ -277,7 +243,7 @@ class RecordRunFragment : Fragment() {
                 Intent(
                     context,
                     RecordRunService()::class.java
-                ).putExtra("id", currentTime.toString()) //TODO: nicht mehr nötig -> in sharedPreferences
+                ).putExtra("id", currentTime.toString())
             )
         }
 
@@ -289,7 +255,7 @@ class RecordRunFragment : Fragment() {
                     activity?.let {
                         exception.startResolutionForResult(
                             it,
-                            100 // 100: GPS setting // TODO, anscheinend random wert
+                            100
                         )
                     }
                 } catch (sendEx: IntentSender.SendIntentException) {
@@ -297,5 +263,14 @@ class RecordRunFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        locationPermissionRequest.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
     }
 }

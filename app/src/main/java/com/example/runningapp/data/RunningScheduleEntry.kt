@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.runningapp.R
-import com.example.runningapp.util.DatePickerUtil.StaticFunctions.getTodaysDate
+import com.example.runningapp.util.DateAndDateTimeUtil.StaticFunctions.getTodaysDate
 import java.time.LocalDate
 
 @Entity(tableName = "running_schedule")

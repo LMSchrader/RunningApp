@@ -6,35 +6,47 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 
 class RunHistoryRepository(private val runHistoryDao: RunHistoryDao) {
-    val runHistory: Flow<List<RunHistoryEntry>> = runHistoryDao.getAll()
+    val runHistory: Flow<List<RunHistoryEntryMetaDataWithMeasurements>> = runHistoryDao.getAll()
 
-    suspend fun get(entry: LocalDateTime): RunHistoryEntry {
+    val kilometersRunForTheLastMonthPerDay: Flow<List<RunHistoryDao.DailyMetaDataTuple>> = runHistoryDao.getKilometersRunForTheLastMonthPerDay()
+
+    val timeRunForTheLastMonthPerDay: Flow<List<RunHistoryDao.DailyMetaDataTuple>> = runHistoryDao.getTimeRunForTheLastMonthPerDay()
+
+    val averagePaceRunForTheLastMonthPerDay: Flow<List<RunHistoryDao.DailyMetaDataTuple>> = runHistoryDao.getAveragePaceRunForTheLastMonthPerDay()
+
+    suspend fun get(entry: LocalDateTime): RunHistoryEntryMetaDataWithMeasurements {
         return withContext(Dispatchers.IO) {
             runHistoryDao.get(entry)
         }
     }
 
-    suspend fun getAsFlow(entry: LocalDateTime): Flow<RunHistoryEntry> {
+    suspend fun getAsFlow(entry: LocalDateTime): Flow<RunHistoryEntryMetaDataWithMeasurements> {
         return withContext(Dispatchers.IO) {
             runHistoryDao.getAsFlow(entry)
         }
     }
 
-    suspend fun insert(entry: RunHistoryEntry) {
+    suspend fun insert(entryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements) {
         withContext(Dispatchers.IO) {
-            runHistoryDao.insert(entry)
+            runHistoryDao.insert(entryMetaDataWithMeasurements)
         }
     }
 
-    suspend fun update(entry: RunHistoryEntry) {
+    suspend fun update(entryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements) {
         withContext(Dispatchers.IO) {
-            runHistoryDao.update(entry)
+            runHistoryDao.update(entryMetaDataWithMeasurements)
         }
     }
 
-    suspend fun delete(entry: RunHistoryEntry) {
+    suspend fun delete(entryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements) {
         withContext(Dispatchers.IO) {
-            runHistoryDao.delete(entry)
+            runHistoryDao.delete(entryMetaDataWithMeasurements)
+        }
+    }
+
+    suspend fun updateAndInsertLatestMeasurements(entryMetaDataWithMeasurements: RunHistoryEntryMetaDataWithMeasurements, startingIndexOfNewMeasurements : Int) {
+        withContext(Dispatchers.IO) {
+            runHistoryDao.updateAndInsertLatestMeasurements(entryMetaDataWithMeasurements, startingIndexOfNewMeasurements)
         }
     }
 }

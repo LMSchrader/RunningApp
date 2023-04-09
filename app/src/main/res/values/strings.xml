@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">RunningApp</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -15,7 +15,10 @@
     <string name="restDay">Today is a rest day!</string>
     <string name="runningDay">Today is a running day!</string>
     <string name="kilometers_run">%1$s kilometers run so far</string>
-    <string name="running_days_kept">You have followed your running plan %1$s times in a row!</string>
+    <string name="running_days_kept">You have followed your running plan %1$s times!</string>
+    <string name="pace_run_label">Average pace (in min/km) run last 30 days</string>
+    <string name="kilometers_run_label">Kilometers run last 30 days</string>
+    <string name="time_run_label">Time (in min) run last 30 days</string>
 
     <!-- running schedule-->
     <string name="addRunningSchedule">Add running schedule entry</string>
@@ -27,7 +30,7 @@
     <string name="to">To</string>
     <string name="to_short" translatable="false">-</string>
     <string name="monday">Mo</string>
-    <string name="tuesday">Th</string>
+    <string name="tuesday">Tue</string>
     <string name="wednesday">We</string>
     <string name="thursday">Th</string>
     <string name="friday">Fr</string>
@@ -37,6 +40,7 @@
     <!-- record run-->
     <string name="time">Time</string>
     <string name="kilometer">KM</string>
+    <string name="kilometer_with_number">%1$s km</string>
     <string name="current_pace">Current Pace</string>
     <string name="avg_pace">Avg Pace</string>
     <string name="start">Start</string>
@@ -44,27 +48,35 @@
     <string name="pause">Pause</string>
     <string name="time_empty" translatable="false">--:--</string>
     <string name="value_empty">--.--</string>
-    <string name="service_active">service active</string>
     <string name="record_run_notification_title">Your run is recorded</string>
     <string name="record_run_notification_text">Click to return to the app</string>
 
     <!-- run history-->
-    <string name="intro_text">Run from</string>
-    <string name="pace_label">Pace</string>
-    <string name="altitude_label">Altitude</string>
+    <string name="run_from">Run from</string>
+    <string name="pace_label">Pace (in min/km)</string>
+    <string name="altitude_label">Altitude (in m)</string>
+    <string name="distance">Distance</string>
+    <string name="kilometer_label">Kilometer</string>
+    <string name="time_label">Time (in min)</string>
+    <string name="mean_pace">Average Pace</string>
+    <string name="duration">Duration</string>
 
     <!-- general -->
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
-    <string name="continue_text">continue</string>
+    <string name="continue_text">Continue</string>
     <string name="ok">OK</string>
+    <string name="undo">Undo</string>
+    <string name="no_data_available">No data available</string>
 
     <!-- alert -->
     <string name="location_permission_required">Runs cannot be recorded without precise location permission</string>
     <string name="google_play_services_missing">Google Play Services are not installed on your device. Without them, runs cannot be recorded.</string>
     <string name="data_loss">Changes will not be saved when exiting. Do you want to continue?</string>
+    <string name="delete_item">Should %1$s be deleted?</string>
+    <string name="could_not_delete">%1$s is being recorded and cannot be deleted</string>
     <string name="incorrect_date">Start date must be before the end date</string>
     <string name="incorrect_title">Title must be set</string>
 
@@ -72,10 +84,22 @@
     <string name="service_description">This service records a run.</string>
 
     <!-- settings -->
-    <string name="notification">Enable message notifications</string>
+    <string name="notification_category">Notifications</string>
+    <string name="notification">Enable notifications</string>
     <string name="notification_summary">You will be notified about upcoming running sessions</string>
 
     <!-- notification channels -->
     <string name="channel_name_running_day">Running day notification</string>
     <string name="channel_name_record_run">Record run</string>
+
+    <!-- shared preferences -->
+    <string name="record_run_preferences_file" translatable="false">record run</string>
+    <string name="service_active_preferences" translatable="false">service active</string>
+    <string name="last_running_day_preferences" translatable="false">last running day</string>
+    <string name="running_days_kept_preferences" translatable="false">running days kept</string>
+    <string name="kilometers_run_preferences" translatable="false">kilometers run</string>
+
+
+    <!-- public mapbox access token -->
+    <string name="mapbox_access_token" translatable="false" tools:ignore="Typos">pk.eyJ1IjoidW9sYW5kcm9pZGxhdWZhcHAiLCJhIjoiY2t5d3k4NTVzMDUwYzJxbXZzeWp3dWhkOCJ9.fZnP3Wx3tzXk7mtiCL_BUA</string>
 </resources>

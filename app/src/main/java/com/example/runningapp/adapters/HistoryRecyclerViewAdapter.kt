@@ -8,15 +8,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.runningapp.R
-import com.example.runningapp.data.RunHistoryEntry
-import java.time.format.DateTimeFormatter
+import com.example.runningapp.data.RunHistoryEntryMetaDataWithMeasurements
+import com.example.runningapp.util.DateAndDateTimeUtil.StaticFunctions.formatLocalDateTime
 
-class HistoryAdapter(
-    runHistoryLiveData: LiveData<List<RunHistoryEntry>>,
+class HistoryRecyclerViewAdapter(
+    runHistoryLiveData: LiveData<List<RunHistoryEntryMetaDataWithMeasurements>>,
     private val onClickListener: (position: Int?) -> Unit,
     lifecycleOwner: LifecycleOwner
-) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
-    private var data: List<RunHistoryEntry> = emptyList()
+) : RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder>() {
+    private var data: List<RunHistoryEntryMetaDataWithMeasurements> = emptyList()
 
     init {
         runHistoryLiveData.observe(lifecycleOwner) { runHistoryEntries ->
@@ -35,15 +35,13 @@ class HistoryAdapter(
         val dateTime: TextView = view.findViewById(R.id.date_time)
 
         init {
-            introText.text = view.context.resources.getString(R.string.intro_text)
-            // Define click listener for the ViewHolder's View.
+            introText.text = view.context.resources.getString(R.string.run_from)
             view.setOnClickListener {
                 onClickListener.invoke(adapterPosition)
             }
         }
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
@@ -52,18 +50,9 @@ class HistoryAdapter(
         return ViewHolder(view, onClickListener)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
-        val TS_DATE_PATTERN = "yyyy-MM-dd' 'HH:mm:ss"
-        val formatter = DateTimeFormatter.ofPattern(TS_DATE_PATTERN)
-
-        viewHolder.dateTime.text = data[position].date.format(formatter).toString()
-
+        viewHolder.dateTime.text = formatLocalDateTime(data[position].metaData.date)
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = data.size
 }
