@@ -1,5 +1,5 @@
 # Description
-Andorid running app for Android 8 and higher.
+Android running app for Android 8 and higher.
 
 It offers the following:
 - the creation of an individual running plan
